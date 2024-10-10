@@ -1,5 +1,6 @@
 package com.seproject.buildmanager.controller;
 
+import java.util.List;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
@@ -16,11 +17,12 @@ import com.seproject.buildmanager.common.MstCodeEnums;
 import com.seproject.buildmanager.entity.MstMatter;
 import com.seproject.buildmanager.form.MstAcceptingOrderDetailForm;
 import com.seproject.buildmanager.form.MstAcceptingOrderForm;
+import com.seproject.buildmanager.form.MstEstimateItemForm;
 import com.seproject.buildmanager.form.MstMatterForm;
 import com.seproject.buildmanager.service.MstAcceptingOrderService;
 import com.seproject.buildmanager.service.MstCodeService;
-import com.seproject.buildmanager.service.MstCustomerService;
 import com.seproject.buildmanager.service.MstEstimateItemService;
+import com.seproject.buildmanager.service.MstEstimateManagementService;
 import com.seproject.buildmanager.service.MstMaterialsManagementService;
 import com.seproject.buildmanager.service.MstMatterService;
 import com.seproject.buildmanager.service.MstSupplierManagementService;
@@ -39,16 +41,13 @@ public class AcceptingOrderController { // OrderManagement
 
   private final MstMatterService mstCaseService;
 
-  private final MstCustomerService mstCustomerService;
-
   private final MstEstimateItemService mstEstimateItemService;
 
   private final MstSupplierManagementService mstSupplierService;
 
   private final MstMaterialsManagementService mstMaterialsManagementService;
 
-  // Enumから都道府県のcode_kindの値を取得
-  private static final int PREFECTURES = MstCodeEnums.PREFECTURES.getValue();
+  private final MstEstimateManagementService mstEstimateService;
 
   // Enumから種別を取得するためののcode_kindの値を取得
   private static final int TASK_SUBSTANCE = MstCodeEnums.TASK_SUBSTANCE.getValue();
@@ -56,21 +55,24 @@ public class AcceptingOrderController { // OrderManagement
   // Enumから状況ステータスを取得するため
   private static final int SITUATION_STATUS = MstCodeEnums.SITUATION_STATUS.getValue();
 
+  private static final int ORDER_STATUS = MstCodeEnums.ORDER_STATUS.getValue();
+
   private static final int ACCEPTING_ORDERS_STATUS =
       MstCodeEnums.ACCEPTING_ORDERS_STATUS.getValue();
 
   public AcceptingOrderController(MstCodeService mstCodeService,
       MstAcceptingOrderService mstOrderService, MstMatterService mstCaseService,
-      MstCustomerService mstCustomerService, MstEstimateItemService mstEstimateItemService,
+      MstEstimateItemService mstEstimateItemService,
       MstSupplierManagementService mstSupplierService,
-      MstMaterialsManagementService mstMaterialsManagementService) {
+      MstMaterialsManagementService mstMaterialsManagementService,
+      MstEstimateManagementService mstEstimateService) {
     this.mstCodeService = mstCodeService;
     this.mstOrderService = mstOrderService;
     this.mstCaseService = mstCaseService;
-    this.mstCustomerService = mstCustomerService;
     this.mstEstimateItemService = mstEstimateItemService;
     this.mstSupplierService = mstSupplierService;
     this.mstMaterialsManagementService = mstMaterialsManagementService;
+    this.mstEstimateService = mstEstimateService;
   }
 
   // 受注一覧
@@ -81,13 +83,14 @@ public class AcceptingOrderController { // OrderManagement
     CsrfToken csrfToken = (CsrfToken) request.getAttribute(CsrfToken.class.getName());
     model.addAttribute("csrfToken", csrfToken.getToken());
     model.addAttribute("csrfHeaderName", csrfToken.getHeaderName());
-    model.addAttribute("orderFormList", this.mstOrderService.viewOrderForm()); // またはordersData
+
+    // model.addAttribute("orderFormList", this.mstOrderService.viewOrderForm()); // またはordersData
     model.addAttribute("caseFormList",
-        this.mstCaseService.selectViewMatterForm(this.mstCaseService.viewCaseForm()));
+        this.mstOrderService.selectViewMatterForm(this.mstCaseService.viewCaseForm()));
     model.addAttribute("statusTrue", Constants.STATUS_TRUE);
 
     // 検索用
-    model.addAttribute("search", mstCaseService.registerCaseForm());
+    // model.addAttribute("search", mstCaseService.registerCaseForm());
 
     // 状況ステータスを取得するためのリスト
     model.addAttribute("situations", mstCodeService.getCodeByKind(SITUATION_STATUS));
@@ -119,9 +122,13 @@ public class AcceptingOrderController { // OrderManagement
 
     MstMatter mstCase = mstCaseService.findDisplayById(id);
     model.addAttribute("mstCaseForm", mstCaseService.updateCaseForm(mstCase));
-    model.addAttribute("estimateItem",
-        mstEstimateItemService.findByDisplyById(id, mstCase.getEstimatefinalversion()));
+    List<MstEstimateItemForm> itemForm =
+        mstEstimateItemService.findByDisplyById(id, mstCase.getEstimatefinalversion());
+    model.addAttribute("estimateItem", itemForm);
+
     model.addAttribute("Status", mstCodeService.getCodeByKindStatus(ACCEPTING_ORDERS_STATUS));
+    model.addAttribute("estimate",
+        mstEstimateService.getEstimateByMatterIdAndVarsion(id, mstCase.getEstimatefinalversion()));
 
     logger.info("--- AcceptingOrderController.viewUchiwake END ---");
 
@@ -143,7 +150,7 @@ public class AcceptingOrderController { // OrderManagement
     model.addAttribute("csrfHeaderName", csrfToken.getHeaderName());
     model.addAttribute("orderFormList", this.mstOrderService.viewOrderForm()); // またはordersData
     model.addAttribute("caseFormList", this.mstOrderService.selectMatterBySituationStatus(
-        this.mstCaseService.selectViewMatterForm(this.mstCaseService.viewCaseForm())));
+        this.mstOrderService.selectViewMatterForm(this.mstCaseService.viewCaseForm())));
     model.addAttribute("statusTrue", Constants.STATUS_TRUE);
 
     // 状況ステータスを取得するためのリスト
@@ -154,7 +161,7 @@ public class AcceptingOrderController { // OrderManagement
 
   // 発注一覧
   @GetMapping("order")
-  public String getAllCase(@RequestParam(value = "id") int id, Model model,
+  public String getAllCase(@RequestParam(value = "id") String id, Model model,
       HttpServletRequest request) {
 
 
@@ -165,9 +172,11 @@ public class AcceptingOrderController { // OrderManagement
     model.addAttribute("csrfHeaderName", csrfToken.getHeaderName());
     // 案件情報
     model.addAttribute("mstCaseForm",
-        mstCaseService.updateCaseForm(mstCaseService.findDisplayById(id)));
+        mstCaseService.updateCaseForm(mstCaseService.findDisplayById(Integer.parseInt(id))));
     // 発注一覧
-    model.addAttribute("acceptionOrder", mstOrderService.viewAcceptionOrderForm(id));
+    model.addAttribute("acceptionOrder",
+        mstOrderService.viewAcceptionOrderForm(Integer.parseInt(id)));
+    model.addAttribute("orderSituations", mstCodeService.getCodeByKind(ORDER_STATUS));
     // 検索用
     model.addAttribute("search", mstOrderService.showAcceptingOrderForm());
     // logger.info("--- UserController.getAllUsers END ---");
@@ -191,15 +200,27 @@ public class AcceptingOrderController { // OrderManagement
     model.addAttribute("acceptionOrderDetail",
         mstOrderService.viewAcceptionOrderDetailForm(orderId));
     // 見積
-    model.addAttribute("estimate", mstEstimateItemService.findAllById(estimateId));
+    MstMatter mstCase = mstCaseService.findDisplayById(id);
+    model.addAttribute("estimate",
+        mstEstimateItemService.findByDisplyById(estimateId, mstCase.getEstimatefinalversion()));
+    // 資材メーカー
+    model.addAttribute("materials", mstMaterialsManagementService.getAllMaterials());
+    // 業者・仕入先
+    model.addAttribute("suppliers", mstSupplierService.getAllSupplierManagement());
     return "order/detail";
   }
 
+  // @GetMapping("select")
+  // public String materialsSelect(HttpSession session, Model model) {
+  // model.addAttribute("materials", mstMaterialsManagementService.getAllMaterials());
+  // return "order/materials_select";
+  // }
+
+
   // 発注 検索
   @GetMapping("order-search")
-  public String orderSearch(@RequestParam(value = "id") int id, HttpServletRequest request,
-      Model model, @ModelAttribute("search") MstMatterForm mstCaseForm,
-      MstAcceptingOrderForm mstAcceptingOrderForm) {
+  public String orderSearch(@RequestParam(name = "id") String id, HttpServletRequest request,
+      Model model, @ModelAttribute("search") MstAcceptingOrderForm mstAcceptingOrderForm) {
 
     // logger.info("--- UserController.getAllUsers START ---");
 
@@ -208,11 +229,13 @@ public class AcceptingOrderController { // OrderManagement
     model.addAttribute("csrfHeaderName", csrfToken.getHeaderName());
     // 案件情報
     model.addAttribute("mstCaseForm",
-        mstCaseService.updateCaseForm(mstCaseService.findDisplayById(id)));
+        mstCaseService.updateCaseForm(mstCaseService.findDisplayById(Integer.parseInt(id))));
     // 発注一覧
-    model.addAttribute("acceptionOrder", mstOrderService.viewAcceptionOrderForm(id));
+    model.addAttribute("acceptionOrder",
+        mstOrderService.orderSearch(mstAcceptingOrderForm, Integer.parseInt(id)));
+    model.addAttribute("orderSituations", mstCodeService.getCodeByKind(ORDER_STATUS));
     // 検索用
-    model.addAttribute("search", mstOrderService.orderSearch(mstAcceptingOrderForm));
+    model.addAttribute("search", mstOrderService.showAcceptingOrderForm());
 
     // logger.info("--- UserController.getAllUsers END ---");
     return "order/list";
@@ -220,12 +243,13 @@ public class AcceptingOrderController { // OrderManagement
 
   // 発注 発注書作成
   @GetMapping("/make-order")
-  public String makeOrder(@RequestParam(name = "id") int id, Model model, HttpSession session) {
+  public String makeOrder(@RequestParam(name = "id") int id,
+      @RequestParam(name = "checkboxs") int number, Model model, HttpSession session) {
 
     MstMatter mstCase = mstCaseService.findDisplayById(id);
     model.addAttribute("mstCaseForm", mstCaseService.updateCaseForm(mstCase));
     model.addAttribute("estimateItem",
-        mstEstimateItemService.findByDisplyById(id, mstCase.getEstimatefinalversion()));
+        mstEstimateItemService.findByDisplyById(id, mstCase.getEstimatefinalversion()).get(number));
     model.addAttribute("Status", mstCodeService.getCodeByKindStatus(ACCEPTING_ORDERS_STATUS));
     model.addAttribute("supplier", mstSupplierService.viewSupplierForm());
     model.addAttribute("supplierForm", mstSupplierService.showSupplierManagementForm());

@@ -1,5 +1,6 @@
 package com.seproject.buildmanager.form;
 
+import com.seproject.buildmanager.entity.MstFacilitiesDetailTitle;
 import lombok.Data;
 
 @Data
@@ -8,9 +9,5 @@ public class MstFacilitiesDetailForm {
 
   private String value;
 
-  private String name;
-
-  private String preposition;
-
-  private String postposition;
+  private MstFacilitiesDetailTitle title;
 }

@@ -24,7 +24,7 @@ public class SecurityConfig {
 
     // addFilterBeforeでオリジナルのFilterをUsernamePasswordAuthenticationFilterの前に追加
     http.addFilterBefore(new CustomLoginFilter(), UsernamePasswordAuthenticationFilter.class)
-        .formLogin(login -> login.loginPage("/login") // ログインが必要な時、このURLに対応するページを送出する
+        .formLogin(login -> login.loginPage("/select") // ログインが必要な時、このURLに対応するページを送出する
             .defaultSuccessUrl("/menu").permitAll() // フォーム認証画面は認証不要
             .failureUrl("/login?error").permitAll()) // 認証失敗時にリダイレクトするurl
         .authorizeHttpRequests(authz -> authz.requestMatchers("/css/**").permitAll() // CSSファイルは認証不要
@@ -35,8 +35,8 @@ public class SecurityConfig {
             .requestMatchers("/favicon.ico").permitAll() // faviconファイルは認証不要
             .requestMatchers("/").permitAll() // トップページは認証不要
             .requestMatchers("/error").permitAll() // エラーページは認証不要
-            .requestMatchers("/forgotPassword").permitAll().requestMatchers("/emailRedirect")
-            .permitAll().requestMatchers("/resetPassword") // パスワード変更用のページは認証不要
+            .requestMatchers("/forgotPassword").permitAll().requestMatchers("/login").permitAll()
+            .requestMatchers("/emailRedirect").permitAll().requestMatchers("/resetPassword") // パスワード変更用のページは認証不要
             .permitAll().requestMatchers("/save").permitAll().requestMatchers("/errorPassword")
             .permitAll()/* .requestMatchers("/owner").hasAuthority("ROLE_ADMIN") */.anyRequest()
             .authenticated() // 他のURLはログイン後アクセス可能

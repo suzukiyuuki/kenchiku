@@ -63,7 +63,7 @@ public class MstOwnerManagementForm {
       groups = {ValidationGroups.Registration.class, ValidationGroups.Update.class})
   private String fNameKana;// 名かな
 
-  @Pattern(regexp = "^\\d{3}-\\d{4}$|",
+  @Pattern(regexp = "^\\d{3}\\d{4}$|",
       groups = {ValidationGroups.Registration.class, ValidationGroups.Update.class},
       message = "正しい郵便番号を表示してください")
   @NotBlank(message = "郵便番号は必須項目です",
@@ -81,14 +81,15 @@ public class MstOwnerManagementForm {
   private String buildingName;// 建物名
 
 
-  @Pattern(regexp = "^0[1-9]0-\\d{4}-\\d{4}$|",
+  @Pattern(
+      regexp = "\\A0(\\d{1}[(]?\\d{4}|\\d{2}[(]?\\d{3}|\\d{3}[(]?\\d{2}|\\d{4}[(]?\\d{1})[)]?\\d{4}\\z|\\A0[5789]0\\d{4}\\d{4}\\z|",
       groups = {ValidationGroups.Registration.class, ValidationGroups.Update.class},
       message = "正しい電話番号を入力してください")
   @NotBlank(message = "電話番号は必須項目です",
       groups = {ValidationGroups.Registration.class, ValidationGroups.Update.class})
   private String phone;// 電話番号
 
-  @Pattern(regexp = "^0[789]0-\\d{4}-\\d{4}$|",
+  @Pattern(regexp = "\\A0[5789]0\\d{4}\\d{4}\\z|",
       groups = {ValidationGroups.Registration.class, ValidationGroups.Update.class},
       message = "正しい携帯番号を入力してください")
   private String mobilePhone;// 携帯番号

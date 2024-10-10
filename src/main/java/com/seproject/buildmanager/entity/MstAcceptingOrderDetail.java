@@ -6,6 +6,8 @@ import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
+import jakarta.persistence.JoinColumn;
+import jakarta.persistence.OneToOne;
 import jakarta.persistence.Table;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -22,14 +24,15 @@ public class MstAcceptingOrderDetail {
   @GeneratedValue(strategy = GenerationType.IDENTITY)
   private Integer id;
 
-  @Column(name = "order_id")
-  private Integer orderId; // 発注id
+  @JoinColumn(name = "order_id")
+  @OneToOne
+  private MstAcceptingOrder orderId; // 発注id
 
   @Column(name = "matter_id")
   private Integer matterId; // 案件id
 
   @Column(name = "estimate_item_id")
-  private Integer estimateId; // 見積id
+  private Integer estimateItemId; // 見積項目id
 
   @Column(name = "content")
   private String content; // 内容

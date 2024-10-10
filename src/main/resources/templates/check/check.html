@@ -88,31 +88,18 @@
             <div class="row">
               <div class="col-12">
                 <div class="card">
+                <div class="card-header">
+                    <a href="check/register"
+                      class="btn btn-primary btn-lg w-25 ml-1 btn-square mt-2">新規作成</a>
+                   </div>
                   <div class="card-body">
-                    <div class="table table-bordered pt-3 pb-4 pl-4">
-                      <label class="">■リフォーム・修繕箇所チェック項目登録</label><br />
-                      <div class="col d-flex">
-
-                        <input type="text" class="form-control form-control-lg w-50 float-left"
-                          id="check_save" th:value="${mstCheckForm.checkDetail}" />
-                        <button type="submit" id="save" class="btn btn-success btn-lg">新規登録</button>
-                        <!-- Main Content -->
-                                                <form method="post" th:action="@{/FileUploadController/upload}" class="upload-form">
-                          <button type="button" class="btn btn-primary btn-lg fas fa-upload btn-icon-center"
-                            id="uploadButton" title="アップロード"></button>
-                        </form>
-                        
-                        <a th:href="@{/check/poi}"
-                          class="btn btn-primary btn-lg btn-download btn-icon-center" title="ダウンロード">
-                          <i class="fas fa-download"></i>
-                        </a>
-                        </div>
-                      </div>
                       <div class="table-responsive">
                         <table class="table table-striped" id="check-table">
                           <thead>
                             <tr>
+                              <th class="text-center"></th>
                               <th>ステータス</th>
+							  <th>顧客名<br />顧客名カナ </th>
                               <th>リフォーム・修繕箇所チェック項目</th>
                               <th>登録日<br />更新日
                               </th>
@@ -121,6 +108,8 @@
                           <tbody id="tbody">
                             <th:block th:each="check : ${checks}">
                               <tr>
+                              <td><a th:href="@{/check/update(id=${check.id})}"
+                                class="btn btn-primary">詳細</a></td>
                                 <td>
                                   <div class="form-group mb-0">
                                     <th:block th:if="${check.status} eq ${statusTrue}">
@@ -143,12 +132,13 @@
                                     </th:block>
                                   </div>
                                 </td>
+								<!--<td><span th:text="${customer.lName} + ${customer.fName}"></span><br />
+								  <span th:text="${customer.lNameKana} + ${customer.fNameKana}"></span></td>-->
                                 <td class=""><input th:id="${check.id}" type="text"
                                   class="form-control form-control-lg w-75 float-left"
                                   name="check_update" required autofocus
                                   th:value="${check.checkDetail}" />
-                                  <button type="button" th:value="${check.id}" id="update"
-                                    class="btn btn-primary btn-lg ml-1 update">変更</button></td>
+                                 </td>
                                 <td>
                                   <div>[[${#temporals.format(check.createdAt, 'yyyy-MM-dd
                                     HH:mm:ss')}]]</div>

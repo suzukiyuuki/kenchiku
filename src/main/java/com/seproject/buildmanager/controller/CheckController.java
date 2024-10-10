@@ -1,6 +1,5 @@
 package com.seproject.buildmanager.controller;
 
-import java.io.IOException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -11,8 +10,6 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
 import com.seproject.buildmanager.common.Constants;
-import com.seproject.buildmanager.common.ExcelFileService;
-import com.seproject.buildmanager.entity.MstCheck;
 import com.seproject.buildmanager.form.MstCheckForm;
 import com.seproject.buildmanager.service.MstCheckService;
 import jakarta.servlet.http.HttpServletRequest;
@@ -47,23 +44,6 @@ public class CheckController {
     logger.info("--- CheckController.getAllChecks END ---");
 
     return "check/check";
-  }
-
-  @GetMapping("poi")
-  public String generateExcel(jakarta.servlet.http.HttpServletResponse response)
-      throws IOException {
-    ExcelFileService<MstCheck> fileService = new ExcelFileService<MstCheck>("チェック項目管理.xlsx");
-    try {
-      fileService.exportDataTypeExcel(mstCheckService.getAllChecks(), "sheet1");
-      fileService.release();
-      // mstOwnerService.poi(response);
-      // サービスクラスのpoiメソッドを呼び出し、HTTPレスポンスにExcelファイルを書き込む
-    } catch (IOException e) {
-      // IOExceptionが発生した場合、エラーハンドリングを行う
-      // TODO 自動生成された catch ブロック
-      e.printStackTrace(); // エラーのスタックトレースを標準エラーストリームに出力
-    }
-    return "redirect:/check";
   }
 
   @GetMapping("search")

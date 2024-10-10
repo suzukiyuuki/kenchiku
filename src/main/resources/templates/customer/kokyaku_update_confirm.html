@@ -23,6 +23,21 @@
 <link rel="stylesheet" th:href="@{/assets/css/components.css}">
 </head>
 
+<style>
+  /* 各行のスタイル */
+  tr {
+    height: 50px; /* 行の高さを指定 */
+  }
+
+  /* 各セルのスタイル */
+  td {
+    border: none;
+    padding: 15px; /* セルの内側の余白を指定 */
+    width: 30%;
+  }
+</style>
+
+
 <body>
   <div id="app">
     <div class="main-wrapper">
@@ -48,90 +63,144 @@
                 <form method = "post" th:object="${mstCustomerForm}" th:action="@{/customer/save-update}">
                   <div class="card">
                     <div class="card-body">
-                    
                      <div class="form-group">
-                      <h6>個人・法人区分<span class="badge badge badge-danger ml-1 mt-0">必須</span></h6>
-                      <h5><span th:text="${mstCustomerForm.cust_kind}"></span></h5> 
-                     <input type="hidden" th:field="*{cust_kind}" th:value="${mstCustomerForm.cust_kind}">
-                    </div>
-                    
-                      <div class="form-group p-1">
-                        <h6>法人名</h6> <input type="text" class="form-control"
-                          th:value="${mstCustomerForm.corpName}" readonly>
-                      </div>
-                      
-                      <div class="form-group p-1">
-                        <h6>法人名カナ</h6> <input type="text" class="form-control"
-                          th:value="${mstCustomerForm.corpKana}" readonly>
-                      </div>
-                      
-                      <div class="form-group w-5 p-1">
-                        <h6>部署</h6> <input type="text" class="form-control"
-                          th:value="${mstCustomerForm.department}" readonly>
-                      </div>
-                      
-                      <div class="form-group w-50 float-left p-1">
-                        <h6>姓<span class="badge badge badge-danger ml-1 mt-0">必須</span></h6> <input type="text" class="form-control"
-                          th:value="${mstCustomerForm.lName}" readonly>
-                      </div>
-                      
-                      <div class="form-group p-1">
-                        <h6>名<span class="badge badge badge-danger ml-1 mt-0">必須</span></h6> <input type="text" class="form-control w-50"
-                          th:value="${mstCustomerForm.fName}" readonly>
-                      </div>
-                      
-                      <div class="form-group w-50 float-left p-1">
-                        <h6>姓カナ<span class="badge badge badge-danger ml-1 mt-0">必須</span></h6> <input type="text" class="form-control"
-                          th:value="${mstCustomerForm.lNameKana}" readonly>
-                      </div>
-                      
-                      <div class="form-group p-1">
-                        <h6>名カナ<span class="badge badge badge-danger ml-1 mt-0">必須</span></h6> <input type="text" class="form-control w-50"
-                          th:value="${mstCustomerForm.fNameKana}" readonly>
-                      </div>
-                      
-                      <div class="form-group p-1">
-                        <h6>郵便番号</h6> <input type="text" class="form-control"
-                          th:value="${mstCustomerForm.zip}" readonly>
-                      </div>
-                      
-                      <div class="form-group">
-                      <h6>都道府県<span class="badge badge badge-danger ml-1 mt-0">必須</span></h6>
-                      <h5><span th:text="${mstCustomerForm.prefectures}"></span></h5> 
-                        <input type="hidden" th:field="*{prefectures}" th:value="${mstCustomerForm.prefectures}">
-                    </div>
+                      <table style="border-collapse: collapse; width: 100%;">
+                        <tr>
+                          <td><h6>個人・法人区分<span class="badge badge badge-danger ml-1 mt-0">必須</span></h6></td>
+                          <td>
+                            <h5><span th:text="${mstCustomerForm.cust_kind}"></span></h5> 
+                            <input type="hidden" th:field="*{cust_kind}" th:value="${mstCustomerForm.cust_kind}">
+                          </td>
+                        </tr>
+                        <tr>
+                          <td><h6>法人名</h6></td>
+                          <td>
+                            <h5><span th:text="${mstCustomerForm.corpName}"></span></h5> 
+                            <input type="hidden" class="form-control" th:value="${mstCustomerForm.corpName}">
+                          </td>
+                        </tr>
+                        <tr>
+                          <td><h6>法人名カナ</h6></td>
+                          <td>
+                            <h5><span th:text="${mstCustomerForm.corpKana}"></span></h5> 
+                            <input type="hidden" class="form-control" th:value="${mstCustomerForm.corpKana}">
+                          </td>
+                        </tr>
+                        <tr>
+                          <td><h6>部署</h6></td>
+                          <td>
+                            <h5><span th:text="${mstCustomerForm.department}"></span></h5> 
+                            <input type="hidden" class="form-control" th:value="${mstCustomerForm.department}">
+                          </td>
+                        </tr>
+                        <tr>
+                          <td><h6>姓<span class="badge badge badge-danger ml-1 mt-0">必須</span></h6></td>
+                          <td>
+                            <h5><span th:text="${mstCustomerForm.lName}"></span></h5> 
+                            <input type="hidden" class="form-control" th:value="${mstCustomerForm.lName}">
+                          </td>
+                        </tr>
+                        <tr>
+                          <td><h6>名<span class="badge badge badge-danger ml-1 mt-0">必須</span></h6></td>
+                          <td>
+                            <h5><span th:text="${mstCustomerForm.fName}"></span></h5> 
+                            <input type="hidden" class="form-control w-50" th:value="${mstCustomerForm.fName}">
+                          </td>
+                        </tr>
+                        <tr>
+                          <td><h6>姓カナ<span class="badge badge badge-danger ml-1 mt-0">必須</span></h6></td>
+                          <td>
+                            <h5><span th:text="${mstCustomerForm.lNameKana}"></span></h5> 
+                            <input type="hidden" class="form-control" th:value="${mstCustomerForm.lNameKana}">
+                          </td>
+                        </tr>
+                        <tr>
+                          <td><h6>名カナ<span class="badge badge badge-danger ml-1 mt-0">必須</span></h6></td>
+                          <td>
+                            <h5><span th:text="${mstCustomerForm.fNameKana}"></span></h5> 
+                            <input type="hidden" class="form-control w-50" th:value="${mstCustomerForm.fNameKana}">
+                          </td>
+                        </tr>
+                        <tr>
+                          <td><h6>郵便番号</h6></td>
+                          <td>
+                            <h5><span th:text="${mstCustomerForm.zip}"></span></h5> 
+                            <input type="hidden" class="form-control" th:value="${mstCustomerForm.zip}">
+                          </td>
+                        </tr>
+                        <tr>
+                          <td><h6>都道府県<span class="badge badge badge-danger ml-1 mt-0">必須</span></h6></td>
+                          <td>
+                            <h5><span th:text="${mstCustomerForm.prefectures}"></span></h5> 
+                            <input type="hidden" th:field="*{prefectures}" th:value="${mstCustomerForm.prefectures}">
+                          </td>
+                        </tr>
+                        <tr>
+                          <td><h6>住所</h6></td>
+                          <td>
+                            <h5><span th:text="${mstCustomerForm.address1}"></span></h5> 
+                            <input type="hidden" class="form-control" th:value="${mstCustomerForm.address1}">
+                          </td>
+                        </tr>
+                        <tr>
+                          <td><h6>建物名</h6></td>
+                          <td>
+                            <h5><span th:text="${mstCustomerForm.address2}"></span></h5> 
+                            <input type="hidden" class="form-control" th:value="${mstCustomerForm.address2}">
+                          </td>
+                        </tr>
+                        <tr>
+                          <td><h6>電話番号</h6></td>
+                          <td>
+                            <h5><span th:text="${mstCustomerForm.tel}"></span></h5> 
+                            <input type="hidden" class="form-control" th:value="${mstCustomerForm.tel}">
+                          </td>
+                        </tr>
+                        <tr>
+                          <td><h6>携帯番号</h6></td>
+                          <td>
+                            <h5><span th:text="${mstCustomerForm.mobile}"></span></h5> 
+                            <input type="hidden" class="form-control" th:value="${mstCustomerForm.mobile}">
+                          </td>
+                        </tr>
+                        <tr>
+                          <td><h6>メールアドレス<span class="badge badge badge-danger ml-1 mt-0">必須</span></h6></td>
+                          <td>
+                            <h5><span th:text="${mstCustomerForm.mail}"></span></h5> 
+                            <input type="hidden" class="form-control" th:value="${mstCustomerForm.mail}">
+                          </td>
+                        </tr>
+                        <tr>
+                          <td><h6>退去立会後メール</h6></td>
+                          <td><h5><span th:if="${mstCustomerForm.mailFlg == true}">メールを送信する</span></h5>
+                          <h5><span th:if="${mstCustomerForm.mailFlg == false}">送信しない</span></h5></td>
+                        </tr>
+                       </table>
+					   
+					   <input type="hidden" th:field="*{id}" th:value="${mstCustomerForm.id}" />
+					   <input type="hidden" th:field="*{corpName}" th:value="${mstCustomerForm.corpName}" />
+					   <input type="hidden" th:field="*{corpKana}" th:value="${mstCustomerForm.corpKana}" />
+					   <input type="hidden" th:field="*{department}" th:value="${mstCustomerForm.department}" />
+					   <input type="hidden" th:field="*{lName}" th:value="${mstCustomerForm.lName}" />
+					   <input type="hidden" th:field="*{fName}" th:value="${mstCustomerForm.fName}" />
+					   <input type="hidden" th:field="*{lNameKana}" th:value="${mstCustomerForm.lNameKana}" />
+					   <input type="hidden" th:field="*{fNameKana}" th:value="${mstCustomerForm.fNameKana}" />
+					   <input type="hidden" th:field="*{tel}" th:value="${mstCustomerForm.tel}" />
+					   <input type="hidden" th:field="*{mobile}" th:value="${mstCustomerForm.mobile}" />
+					   <input type="hidden" th:field="*{mail}" th:value="${mstCustomerForm.mail}" />
+					   <input type="hidden"  th:field="*{status}" th:value="${mstCustomerForm.status}" />
+					   <input type="hidden" th:field="*{transactionToken}" th:value="${mstCustomerForm.transactionToken}" />
+					   <input type="hidden" th:field="*{zip}" th:value="${mstCustomerForm.zip}" />
+					   <input type="hidden" th:field="*{address1}" th:value="${mstCustomerForm.address1}" />
+					   <input type="hidden" th:field="*{address2}" th:value="${mstCustomerForm.address2}" />
+					   <input type="hidden" th:field="*{createdAt}" th:alue="${mstCustomerForm.createdAt}">
 
-                    
-                    <div class="form-group p-1">
-                        <h6>住所</h6> <input type="text" class="form-control"
-                          th:value="${mstCustomerForm.address1}" readonly>
+					   
+					   
+					   
+					   
                       </div>
                       
-                      <div class="form-group p-1">
-                        <h6>建物名</h6> <input type="text" class="form-control"
-                          th:value="${mstCustomerForm.address2}" readonly>
-                      </div>
-                      
-                      <div class="form-group">
-                        <h6>電話番号</h6> <input type="tel" class="form-control"
-                          th:value="${mstCustomerForm.tel}" readonly>
-                      </div>
-                      
-                      <div class="form-group">
-                        <h6>携帯番号</h6> <input type="tel" class="form-control"
-                          th:value="${mstCustomerForm.mobile}" readonly>
-                      </div>
-                      
-                      <div class="form-group">
-                        <h6>メールアドレス</h6> <input type="email" class="form-control"
-                          th:value="${mstCustomerForm.mail}" readonly>
-                      </div>
-                      
-                      <div>
-                        <h6>退去立会後メール<span class="badge badge badge-danger ml-1 mt-0">必須</span></h6>
-                         <p th:if="${mstCustomerForm.mailFlg == true}">メールを送信する</p>
-                         <p th:if="${mstCustomerForm.mailFlg == false}">送信しない</p>
-                  </div>
                   <div class="form-group">
                       <label class="custom-switch mt-2 pl-0">
                           
@@ -139,32 +208,13 @@
                           <span class="custom-switch-description">同じ内容をオーナー情報にも登録する</span>
                       </label>
                       </div>
-
-                      <input type="hidden" th:field="*{id}" th:value="${mstCustomerForm.id}" />
-                      <input type="hidden" th:field="*{corpName}" th:value="${mstCustomerForm.corpName}" />
-                      <input type="hidden" th:field="*{corpKana}" th:value="${mstCustomerForm.corpKana}" />
-                      <input type="hidden" th:field="*{department}" th:value="${mstCustomerForm.department}" />
-                      <input type="hidden" th:field="*{lName}" th:value="${mstCustomerForm.lName}" />
-                      <input type="hidden" th:field="*{fName}" th:value="${mstCustomerForm.fName}" />
-                      <input type="hidden" th:field="*{lNameKana}" th:value="${mstCustomerForm.lNameKana}" />
-                      <input type="hidden" th:field="*{fNameKana}" th:value="${mstCustomerForm.fNameKana}" />
-                      <input type="hidden" th:field="*{tel}" th:value="${mstCustomerForm.tel}" />
-                      <input type="hidden" th:field="*{mobile}" th:value="${mstCustomerForm.mobile}" />
-                      <input type="hidden" th:field="*{mail}" th:value="${mstCustomerForm.mail}" />
-                      <input type="hidden"  th:field="*{status}" th:value="${mstCustomerForm.status}" />
-                      <input type="hidden" th:field="*{transactionToken}" th:value="${mstCustomerForm.transactionToken}" />
-                      <input type="hidden" th:field="*{zip}" th:value="${mstCustomerForm.zip}" />
-                      <input type="hidden" th:field="*{address1}" th:value="${mstCustomerForm.address1}" />
-                      <input type="hidden" th:field="*{address2}" th:value="${mstCustomerForm.address2}" />
-                      <input type="hidden" th:field="*{createdAt}" th:alue="${mstCustomerForm.createdAt}">
-
                     </div>
                   </div>
 
                   <div class="section-body">
                     <div class="buttons">
-                      <a href="javascript:history.back();" class="btn btn-light btn-lg">前の画面へ戻る</a>
-                      <button type="submit" class="btn btn-success btn-lg">変更</button>
+                      <button type="submit" class="btn btn-light btn-lg" name="btn" value="btn1">前の画面へ戻る</button>
+                      <button type="submit" class="btn btn-success btn-lg" name="btn" value="btn2">変更</button>
                     </div>
                   </div>
                 </form>

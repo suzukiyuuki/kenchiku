@@ -23,6 +23,20 @@
 <link rel="stylesheet" th:href="@{/assets/css/components.css}">
 </head>
 
+<style>
+/* 各行のスタイル */
+tr {
+  height: 50px; /* 行の高さを指定 */
+}
+
+/* 各セルのスタイル */
+td {
+  border: none;
+  padding: 15px; /* セルの内側の余白を指定 */
+  width: 30%;
+}
+</style>
+
 <body>
   <div id="app">
     <div class="main-wrapper">
@@ -48,61 +62,91 @@
                 <form method = "post" th:object="${mstSupplierForm}" th:action="@{/supplier-management/saveUpdate}">
                   <div class="card">
                     <div class="card-body">
-                    
                      <div class="form-group">
-                      <h6>種別</h6>
-                      <h5><span th:text="${mstSupplierForm.classification}"></span></h5> 
-                    </div>
+                      <table style="border-collapse: collapse; width: 100%;">
+                        <tr>
+                          <td><h6>種別</h6></td>
+                          <td><h5><span th:text="${mstSupplierForm.classification}"></span></h5></td>
+                        </tr>
                     
-                      <div class="form-group p-1">
-                        <h6>業者・仕入先名<span class="badge badge badge-danger ml-1 mt-0">必須</span></h6> <input type="text" class="form-control"
-                          th:value="${mstSupplierForm.venderName}" readonly>
-                      </div>
+                        <tr>
+                          <td><h6>業者・仕入先名<span class="badge badge badge-danger ml-1 mt-0">必須</span></h6></td>
+                          <td>
+                            <h5><span th:text="${mstSupplierForm.venderName}"></span></h5>
+                            <input type="hidden" class="form-control" th:value="${mstSupplierForm.venderName}">
+                          </td>
+                        </tr>
                       
-                      <div class="form-group w-5 p-1">
-                        <h6>郵便番号<span class="badge badge badge-danger ml-1 mt-0">必須</span></h6> <input type="text" class="form-control"
-                          th:value="${mstSupplierForm.postCode}" readonly>
-                      </div>
+                        <tr>
+                          <td><h6>郵便番号<span class="badge badge badge-danger ml-1 mt-0">必須</span></h6></td>
+                          <td>
+                            <h5><span th:text="${mstSupplierForm.postCode}"></span></h5>
+                            <input type="hidden" class="form-control" th:value="${mstSupplierForm.postCode}">
+                          </td>
+                        </tr>
+                                              
+                        <tr>
+                          <td><h6>都道府県</h6></td>
+                          <td><h5><span th:text="${mstSupplierForm.prefectures}"></span></h5></td>
+                        </tr>
+                   
                       
-                      <div class="form-group">
-                      <h6>都道府県</h6>
-                      <h5><span th:text="${mstSupplierForm.prefectures}"></span></h5> 
-                     
-                    </div>
+                        <tr>
+                          <td><h6>住所<span class="badge badge badge-danger ml-1 mt-0">必須</span></h6></td>
+                          <td>
+                            <h5><span th:text="${mstSupplierForm.address}"></span></h5>
+                            <input type="hidden" class="form-control" th:value="${mstSupplierForm.address}">
+                          </td>
+                        </tr>
                       
-                      <div class="form-group w-5 p-1">
-                        <h6>住所<span class="badge badge badge-danger ml-1 mt-0">必須</span></h6> <input type="text" class="form-control"
-                          th:value="${mstSupplierForm.address}" readonly>
-                      </div>
+                        <tr>
+                          <td><h6>建物名</h6></td>
+                          <td>
+                            <h5><span th:text="${mstSupplierForm.buildingName}"></span></h5>
+                            <input type="hidden" class="form-control" th:value="${mstSupplierForm.buildingName}">
+                          </td>
+                        </tr>  
                       
-                      <div class="form-group p-1">
-                        <h6>建物名</h6> <input type="text" class="form-control"
-                          th:value="${mstSupplierForm.buildingName}" readonly>
-                      </div>
+                        <tr>
+                          <td><h6>電話番号<span class="badge badge badge-danger ml-1 mt-0">必須</span></h6></td>
+                          <td>
+                            <h5><span th:text="${mstSupplierForm.phone}"></span></h5>
+                            <input type="hidden" class="form-control" th:value="${mstSupplierForm.phone}">
+                          </td>
+                        </tr>
                       
-                      <div class="form-group p-1">
-                        <h6>電話番号<span class="badge badge badge-danger ml-1 mt-0">必須</span></h6> <input type="text" class="form-control"
-                          th:value="${mstSupplierForm.phone}" readonly>
-                      </div>
+                        <tr>
+                          <td><h6>FAX番号</h6></td>
+                          <td>
+                            <h5><span th:text="${mstSupplierForm.faxNum1}"></span></h5>
+                            <input type="hidden" class="form-control" th:value="${mstSupplierForm.faxNum1}">
+                          </td>
+                        </tr>
                       
-                      <div class="form-group p-1">
-                        <h6>FAX番号</h6> <input type="text" class="form-control"
-                          th:value="${mstSupplierForm.faxNum1}" readonly>
-                      </div>
-                      
-                      <div class="form-group p-1">
-                        <h6>メールアドレス<span class="badge badge badge-danger ml-1 mt-0">必須</span></h6> <input type="text" class="form-control"
-                          th:value="${mstSupplierForm.email}" readonly>
-                      </div>
+                        <tr>
+                          <td><h6>メールアドレス<span class="badge badge badge-danger ml-1 mt-0">必須</span></h6></td>
+                          <td>
+                             <h5><span th:text="${mstSupplierForm.email}"></span></h5>
+                             <input type="hidden" class="form-control" th:value="${mstSupplierForm.email}">
+                          </td>
+                        </tr>
               
-                    <div class="form-group p-1">
-                        <h6>担当部署<span class="badge badge badge-danger ml-1 mt-0">必須</span></h6> <input type="text" class="form-control"
-                          th:value="${mstSupplierForm.department}" readonly>
-                      </div>
+                    	<tr>
+                          <td><h6>担当部署<span class="badge badge badge-danger ml-1 mt-0">必須</span></h6></td>
+                          <td>
+                            <h5><span th:text="${mstSupplierForm.department}"></span></h5>
+                            <input type="hidden" class="form-control" th:value="${mstSupplierForm.department}">
+                          </td>
+                        </tr>
                       
-                      <div class="form-group p-1">
-                        <h6>担当者名<span class="badge badge badge-danger ml-1 mt-0">必須</span></h6> <input type="text" class="form-control"
-                          th:value="${mstSupplierForm.staffName}" readonly>
+                        <tr>
+                          <td><h6>担当者名<span class="badge badge badge-danger ml-1 mt-0">必須</span></h6></td>
+                          <td>
+                            <h5><span th:text="${mstSupplierForm.staffName}"></span></h5>
+                            <input type="hidden" class="form-control" th:value="${mstSupplierForm.staffName}">
+                          </td>
+                        </tr>
+                       </table>
                       </div>
                       
                   <div class="form-group">
@@ -128,7 +172,6 @@
                       <input type="hidden" th:field="*{createdAt}" th:value="${mstSupplierForm.createdAt}">
                       <input type="hidden" th:field="*{updatedAt}" th:value="${mstSupplierForm.updatedAt}">
                       
-                  </div>
 
                   <div class="section-body">
                     <div class="buttons">
@@ -137,10 +180,12 @@
                     </div>
                   </div>
                   </div>
+                  </div>
                 </form>
 
               </div>
             </div>
+           </div>
         </section>
       </div>
       <div class="insert" th:insert="~{common/footer :: footer}"></div>

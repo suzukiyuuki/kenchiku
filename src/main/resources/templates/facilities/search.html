@@ -1,0 +1,34 @@
+ <div class="dropdown" th:fragment="facilities_search(object, matterId)">
+    <input type="hidden" id="searchMatterId" th:value="${matterId}">
+    <link rel="stylesheet" th:href="@{/css/table.scroll.css}">
+              <button class="btn btn-primary dropdown-toggle" type="button" id="ownerSearchButton"
+                data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">設備検索</button>
+             
+              <div class="dropdown-menu w-100 p-4 rounded border border-dark"
+                aria-labelledby="ownerSearchButton">
+                      <label>設備名</label>
+                      <input id="facilitiesSearchBox" type="text" class="form-control" >
+                  <div class="scroll">
+                  <table class="table table-striped">
+                    <thead>
+                      <tr>
+                        <th>設備名</th>
+                        <th></th>
+                      </tr>
+                    </thead>
+                    <tbody>
+                      <th:block th:each="o : ${object}">
+                      <tr class="isHidden" th:id="${o.title.name}">
+                        <td><span th:text="${o.title.name}"></span></td>
+                        <td><button class="btn btn-success btn-lg add" th:value="${o.title.id}">追加</button></td>
+                      </tr>
+                      </th:block>
+                    </tbody>
+                  </table>
+                 </div>
+                 </div>
+                  <script th:src="@{/js/facilities/search.js}"></script>
+                  <script th:src="@{/js/facilities/register.js}"></script>
+                 </div>
+              
+              

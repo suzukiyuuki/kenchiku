@@ -2,6 +2,7 @@ package com.seproject.buildmanager.service;
 
 import java.time.LocalDateTime;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -37,27 +38,24 @@ public class MstMatterService implements MstSearchService<MstMatterForm, MstMatt
 
   private final CommonService commonService;
 
-
-  private final MstAcceptingOrderService mstAcceptingOrderService;
-
-
   private final Integer estimatePresence = 1; // 見積もりありの状況ステータス
 
   private final Integer estimateAbsence = 2; // 見積なしの状況ステータス
+
+  private static List<String> statesList =
+      new ArrayList<>(Arrays.asList("現地調査・退去立会後", "見積候補あり", "見積承認待ち", "見積承認却下"));
 
 
   public MstMatterService(MstMatterRepository mstMatterRepository,
       MstCodeRepository mstCodeRepesitory,
       MstFloorManagementRepository mstFloorManagementRepository, MstCodeService mstCodeService,
-      MstTenantRepository mstTenantRepository, CommonService commonService,
-      MstAcceptingOrderService mstAcceptingOrderService) {
+      MstTenantRepository mstTenantRepository, CommonService commonService) {
     this.mstMatterRepository = mstMatterRepository;
     this.mstCodeRepesitory = mstCodeRepesitory;
     this.mstFloorManagementRepository = mstFloorManagementRepository;
     this.mstCodeService = mstCodeService;
     this.mstTenantRepository = mstTenantRepository;
     this.commonService = commonService;
-    this.mstAcceptingOrderService = mstAcceptingOrderService;
 
   }
 
@@ -84,6 +82,19 @@ public class MstMatterService implements MstSearchService<MstMatterForm, MstMatt
     return mstCaseForm;
   }
 
+  public List<MstMatterForm> viewCaseFormByTask() {
+
+    List<MstMatter> mstCase = findDisplay();
+    List<MstMatterForm> mstCaseForm = new ArrayList<MstMatterForm>();
+    MstMatterForm a = new MstMatterForm();
+    for (MstMatter caseNum : mstCase) {
+      a = updateCaseForm(caseNum);
+      if (a.getTaskSubstance().equals("退去立ち合い"))
+        mstCaseForm.add(a);
+    }
+    return mstCaseForm;
+  }
+
   public List<MstMatterForm> estimateMatter() {
 
     List<MstMatter> mstCase = findDisplay();
@@ -93,8 +104,10 @@ public class MstMatterService implements MstSearchService<MstMatterForm, MstMatt
     }
     List<MstMatterForm> mstForm = new ArrayList<MstMatterForm>();
     for (MstMatterForm caseNum : mstCaseForm) {
-      if (caseNum.getSituationStatus().equals("現地調査・退去立会後")) {
-        mstForm.add(caseNum);
+      for (int i = 0; i < statesList.size(); i++) {
+        if (caseNum.getSituationStatus().equals(statesList.get(i))) {
+          mstForm.add(caseNum);
+        }
       }
     }
     return mstForm;
@@ -232,14 +245,12 @@ public class MstMatterService implements MstSearchService<MstMatterForm, MstMatt
   public MstTenantForm mstTenantFromFormToEntity(MstTenant tenant) {
     MstTenantForm tmp = new MstTenantForm();
     tmp.setAddress(tenant.getAddress());
-    tmp.setAreaCode(tenant.getAreaCode());
     tmp.setBankAccountName(tenant.getBankAccountName());
     tmp.setBankAccountNameKana(tenant.getBankAccountNameKana());
     tmp.setBankAccountNumber(tenant.getBankAccountNumber());
     tmp.setBankBranchName(tenant.getBankBranchName());
     tmp.setBankName(tenant.getBankName());
     tmp.setBuildingName(tenant.getBuildingName());
-    tmp.setCityCode(tenant.getCityCode());
     tmp.setCylinderNumber(tenant.getCylinderNumber());
     tmp.setFirstName(tenant.getFirstName());
     tmp.setFirstNameKana(tenant.getFirstNameKana());
@@ -264,14 +275,12 @@ public class MstMatterService implements MstSearchService<MstMatterForm, MstMatt
   public MstTenant mstTenantFromEntityToForm(MstTenantForm tenant) {
     MstTenant tmp = new MstTenant();
     tmp.setAddress(tenant.getAddress());
-    tmp.setAreaCode(tenant.getAreaCode());
     tmp.setBankAccountName(tenant.getBankAccountName());
     tmp.setBankAccountNameKana(tenant.getBankAccountNameKana());
     tmp.setBankAccountNumber(tenant.getBankAccountNumber());
     tmp.setBankBranchName(tenant.getBankBranchName());
     tmp.setBankName(tenant.getBankName());
     tmp.setBuildingName(tenant.getBuildingName());
-    tmp.setCityCode(tenant.getCityCode());
     tmp.setCylinderNumber(tenant.getCylinderNumber());
     tmp.setFirstName(tenant.getFirstName());
     tmp.setFirstNameKana(tenant.getFirstNameKana());
@@ -374,6 +383,18 @@ public class MstMatterService implements MstSearchService<MstMatterForm, MstMatt
         mstCodeRepesitory.findByCodeKindAndName(SITUATION_STATUS, view).orElse(new MstCode());
     mstCase.setSituationStatus(mstCode.getCodeBranchNum());
     mstCase.setUpdateDatetime(LocalDateTime.now());
+
+    MstMatter result = mstMatterRepository.save(mstCase);
+    return result;
+  }
+
+  public MstMatter save(Integer id, Integer varsion, String view) {
+    MstMatter mstCase = getCaseById(id);
+    MstCode mstCode =
+        mstCodeRepesitory.findByCodeKindAndName(SITUATION_STATUS, view).orElse(new MstCode());
+    mstCase.setSituationStatus(mstCode.getCodeBranchNum());
+    mstCase.setUpdateDatetime(LocalDateTime.now());
+    mstCase.setEstimatefinalversion(varsion);
 
     MstMatter result = mstMatterRepository.save(mstCase);
     return result;
@@ -485,17 +506,6 @@ public class MstMatterService implements MstSearchService<MstMatterForm, MstMatt
     return string;
   }
 
-  public List<MstMatterForm> selectViewMatterForm(List<MstMatterForm> selectView) {
-    List<MstMatterForm> form = new ArrayList<MstMatterForm>();
-    for (MstMatterForm a : selectView) {
-      if (a.getSelectViewMatterForm() >= 6 && a.getSelectViewMatterForm() < 11) {
-        a.setConStartDate(mstAcceptingOrderService.getEarliestOrderStartDates(a.getId()));
-        a.setConEndDate(mstAcceptingOrderService.getLattermostOrderEndDates(a.getId()));
-        form.add(a);
-      }
-    }
-    return form;
 
-  }
 
 }

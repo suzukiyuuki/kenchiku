@@ -1,5 +1,6 @@
 package com.seproject.buildmanager.entity;
 
+import java.time.LocalDateTime;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
@@ -18,12 +19,15 @@ public class MstFacilitiesManagement {
   @GeneratedValue(strategy = GenerationType.IDENTITY)
   private Integer id;
 
-  @Column(name = "case_id")
-  private Integer caseId;
+  @Column(name = "matter_id")
+  private Integer matterId;
 
-  @Column(name = "equipment_bit")
-  private Integer equipmentBit;
+  @Column(name = "registration_datetime")
+  private LocalDateTime registrationDatetime;
 
-  @Column(name = "value")
-  private String value;
+  @Column(name = "update_datetime")
+  private LocalDateTime updateDatetime;
+
+  @Column(name = "update_user")
+  private Integer updateUser;
 }

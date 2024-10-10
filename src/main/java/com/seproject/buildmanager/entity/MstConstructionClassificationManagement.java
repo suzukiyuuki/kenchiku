@@ -41,9 +41,6 @@ public class MstConstructionClassificationManagement {
   @Column(name = "cost_contents") // 作業内容
   private String costContents;
 
-  @Column(name = "cost_contents_kana") // 作業内容カナ
-  private String ContentsKana;
-
   @Column(name = "cost_price") // 原状回復工事費用承諾書用単価
   private Integer costPrice;
 

@@ -1,5 +1,6 @@
 <!DOCTYPE html>
-<html lang="jp">
+<html xmlns:th="http://www.thymeleaf.org"
+  xmlns:sec="http://www.thymeleaf.org/extras/spring-security" lang="jp">
 <head>
   <meta charset="UTF-8">
   <meta content="width=device-width, initial-scale=1, maximum-scale=1, shrink-to-fit=no" name="viewport"><meta http-equiv="Pragma" content="no-cache"><meta http-equiv="Cache-Control" content="no-cache">
@@ -14,6 +15,8 @@
   <!-- Template CSS -->
   <link rel="stylesheet" href="../../assets/css/style.css">
   <link rel="stylesheet" href="../../assets/css/components.css">
+  
+  
 </head>
 
 <body>
@@ -45,16 +48,25 @@
                   <div class="card">
                     <div class="card-body">
 
+                      <!-- 顧客名の部分 -->
                       <div class="form-group">
                         <h6>
                           顧客名<span class="badge badge badge-danger ml-1 mt-0">必須</span>
                         </h6>
-                        <select class="form-control w-50" th:field="*{custId}">
-                          <th:block th:each="cus : ${customer}">
-                            <option th:value="${cus.id}"><span th:text="${cus.corpName}"></span></option>
-                          </th:block>
-                        </select>
+                        <div class="input-group">
+                          <input th:type="text" class="form-control" id="corpName" name="corpName" style="height: 38px;">
+                          <input type="hidden" th:field="*{custId}" id="corpId" value="0">
+                          <div class="input-group-append">
+							<button class="btn btn-primary search-button"
+							        type="button" style="height: 38px; padding: 0 12px; font-size: 14px; line-height: 38px;">検索</button>
+                          </div>
+                        </div>
                       </div>
+					  <script type="text/javascript">
+					               function openWindow(url,name) {
+					                  window.open(url, name, 'width=800,height=600');
+					               }
+					  </script>
 
                       <div class="form-group">
                         <h6>
@@ -92,16 +104,6 @@
 
                       <div class="form-group">
                         <h6>
-                          作業内容カナ<span class="badge badge-danger ml-1 mt-0">必須</span>
-                        </h6>
-                        <input type="text" class="form-control" th:field="*{contentsKana}"
-                          th:classappend="${#fields.hasErrors('contentsKana')} ? 'is-invalid'">
-                        <small id="" class="invalid-feedback"
-                          th:if="${#fields.hasErrors('contentsKana')}" th:errors="*{contentsKana}"></small>
-                      </div>
-
-                      <div class="form-group">
-                        <h6>
                           単位<span class="badge badge badge-danger ml-1 mt-0">必須</span>
                         </h6>
                         <select class="form-control w-50" th:field="*{costUnitId}">
@@ -134,7 +136,7 @@
 
                       <div class="section-body">
                         <div class="buttons">
-                          <a href="/cost" class="btn btn-light btn-lg">前の画面へ戻る</a>
+                          <a href="/cost" class="btn btn-light btn-lg" id="back" onclick="showConfirmModal(event)">前の画面へ戻る</a>
                           <button type="submit" class="btn btn-success btn-lg">確認</button>
                         </div>
                       </div>
@@ -146,6 +148,17 @@
           </div>
         </section>
       </div>
+      
+          <!-- 顧客名用モーダルウィンドウ -->
+		  <div class="insert" th:insert="~{common/modal_window :: customer_window(corpId, corpName, ${customer})}"></div>
+      
+  <!-- 編集モーダル -->
+  <div id="model_back">
+    <div class="insert"
+      th:replace="common/modal_window :: modal_window(back_modal, '作成した工事区分情報が登録されていませんが宜しいでしょうか？')"></div>
+  </div>
+      
+      
       <footer class="main-footer">
         <div class="footer-left">
           Copyright &copy; se-project 2024
@@ -156,6 +169,7 @@
       </footer>
     </div>
   </div>
+  
 
   <!-- General JS Scripts -->
   <script src="https://cdn.jsdelivr.net/npm/jquery@3.6.0/dist/jquery.min.js"></script>
@@ -170,6 +184,9 @@
   <!-- Template JS File -->
   <script src="../../assets/js/scripts.js"></script>
   <script src="../../assets/js/custom.js"></script>
+
+  <script th:src="@{/js/Cost/backModal.js}"></script>
+
 
   <!-- Page Specific JS File -->
   

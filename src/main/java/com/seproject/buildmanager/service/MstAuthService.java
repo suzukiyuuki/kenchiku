@@ -42,6 +42,8 @@ public class MstAuthService implements MstSearchService<MstAuthForm, MstAuth> {
 
   private final ExcelFileService<MstAuth> excelFileService;
 
+  private final CommonService commonService;
+
   /**
    * コンストラクタ。
    * 
@@ -49,11 +51,13 @@ public class MstAuthService implements MstSearchService<MstAuthForm, MstAuth> {
    * @param mstAuthTypeRepository 権限タイプリポジトリ
    */
   public MstAuthService(MstAuthRepository mstAuthRepository,
-      MstAuthTypeRepository mstAuthTypeRepository, ExcelFileService<MstAuth> excelFileService) {
+      MstAuthTypeRepository mstAuthTypeRepository, ExcelFileService<MstAuth> excelFileService,
+      CommonService commonService) {
     this.mstAuthRepository = mstAuthRepository;
     this.mstAuthTypeRepository = mstAuthTypeRepository;
     this.excelFileService = excelFileService;
     this.excelFileService.initializeExcel("権限管理.xlsx");
+    this.commonService = commonService;
 
   }
 
@@ -143,9 +147,9 @@ public class MstAuthService implements MstSearchService<MstAuthForm, MstAuth> {
     MstAuth tmp = new MstAuth();
     tmp.setMstAuthTypeId(id);
     tmp.setName(name);
-    tmp.setUpdatedAt(null);
     tmp.setCreatedAt(LocalDateTime.now());
-    tmp.setUpdatedMstUserId(null);
+    tmp.setUpdatedAt(LocalDateTime.now());
+    tmp.setUpdatedMstUserId(this.commonService.getLoginUserId());
     tmp.setStatus(1);
 
     MstAuth result = mstAuthRepository.save(tmp);

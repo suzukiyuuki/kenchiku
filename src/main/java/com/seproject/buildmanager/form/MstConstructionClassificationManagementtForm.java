@@ -35,15 +35,6 @@ public class MstConstructionClassificationManagementtForm {
       groups = {ValidationGroups.Registration.class, ValidationGroups.Update.class})
   private String costContents; // 作業内容
 
-  @NotBlank(message = "作業内容カナは必須項目です",
-      groups = {ValidationGroups.Registration.class, ValidationGroups.Update.class})
-  @Size(max = 200, message = "作業内容カナは200文字以内で入力してください",
-      groups = {ValidationGroups.Registration.class, ValidationGroups.Update.class})
-  @Pattern(regexp = "^[ァ-ンヴー]*$",
-      groups = {ValidationGroups.Registration.class, ValidationGroups.Update.class},
-      message = "カナ文字で入力してください")
-  private String contentsKana; // 作業内容カナ
-
   @Pattern(regexp = "\\d+$", message = "数字のみを入力してください")
   @NotNull(message = "単価は必須項目です",
       groups = {ValidationGroups.Registration.class, ValidationGroups.Update.class})

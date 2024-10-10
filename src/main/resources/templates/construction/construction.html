@@ -88,86 +88,76 @@
                   <div class="card-body">
 
                     <div class="table table-bordered pt-3 pb-4 pl-4">
-                      
+
                       <div class="col d-flex">
-                        <label class="">■工事区分分類登録</label><br />                        
-
-                        <form method="post" th:action="@{/construction/poi2}"
-                          class="upload-form">
-                          <button type="submit"
-                            class="btn btn-primary btn-lg btn-upload btn-icon-center"
-                            id="uploadButton" title="アップロード"><i class="fas fa-upload"></i></button>
+                        <label class="">■工事区分分類登録</label><br />
+                        <form method="post" th:action="@{/construction/poi}"
+                          th:object="${searchConstruction}" class="download-form">
+                          <input type="hidden" class="form-control" th:field="*{costGroupName}"
+                            th:value="${searchConstruction.costGroupName}" id="costGroupName">
+                          <input type="hidden" class="form-control" th:field="*{status}"
+                            th:value="${searchConstruction.status}" id="status"> <input
+                            type="hidden" class="form-control" th:field="*{createdAt1}"
+                            th:value="${searchConstruction.createdAt1}" id="dateFrom"> <input
+                            type="hidden" class="form-control" th:field="*{updatedAt1}"
+                            th:value="${searchConstruction.updatedAt1}" id="updateDate">
                         </form>
-
-                        <form method="post" th:action="@{/construction/poi}" th:object="${searchConstruction}" class="download-form">
-                      <input type="hidden" class="form-control" th:field="*{costGroupName}" th:value="${searchConstruction.costGroupName}" id="costGroupName">
-                      <input type="hidden" class="form-control" th:field="*{status}" th:value="${searchConstruction.status}" id="status">
-                      <input type="hidden" class="form-control" th:field="*{createdAt1}" th:value="${searchConstruction.createdAt1}" id="dateFrom">
-                      <input type="hidden" class="form-control" th:field="*{updatedAt1}" th:value="${searchConstruction.updatedAt1}" id="updateDate">
-                      <button type="submit" class="btn btn-primary btn-lg btn-download btn-icon-center"
-                         id="downloadButton" title="ダウンロード"><i class="fas fa-download"></i></button>
-                    </form>
                       </div>
-                      
-                       <input id="construction_save" type="text"
-                          class="form-control form-control-lg w-50 float-left" name="construction_save"
-                          required autofocus th:value="${MstConstructionForm.costGroupName}" />
-                        <button type="button" class="btn btn-primary btn-lg ml-1" id="save">新規登録</button>
-                      
-                      </div>
-
-                      <div class="table-responsive">
-                      <table class="table table-striped" id="Construction-table">
-                        <thead>
-                          <tr>
-                            <th>ステータス</th>
-                            <th>工事区分分類</th>
-                            <th>登録日<br />更新日
-                            </th>
-                          </tr>
-                        </thead>
-                        <tbody>
-                          <tr th:block th:each="groupe : ${constructions}">
-                            <td>
-                              <div class="form-group mb-0">
-                                <th:block th:if="${groupe.status} eq ${statusTrue}">
-                                  <label class="custom-switch mt-2 pl-0"> <input
-                                    type="checkbox" name="custom-switch-checkbox"
-                                    th:attr="data-groupe-id=${groupe.id}"
-                                    class="custom-switch-input" checked> <span
-                                    class="custom-switch-indicator"></span> <span
-                                    class="custom-switch-description">有効</span>
-                                  </label>
-                                </th:block>
-                                <th:block th:if="${groupe.status} ne ${statusTrue}">
-                                  <label class="custom-switch mt-2 pl-0"> <input
-                                    type="checkbox" name="custom-switch-checkbox"
-                                    th:attr="data-groupe-id=${groupe.id}"
-                                    class="custom-switch-input"> <span
-                                    class="custom-switch-indicator"></span> <span
-                                    class="custom-switch-description">無効</span>
-                                  </label>
-                                </th:block>
-
-                              </div>
-                            </td>
-                            <td><input th:id="${groupe.id}" type="text"
-                              class="form-control form-control-lg w-75 float-left"
-                              name="construction_update" required autofocus
-                              th:value="${groupe.costGroupName}" />
-
-                              <button type="button" class="btn btn-primary btn-lg ml-1" id="update"
-                                th:value="${groupe.id}">変更</button></td>
-                            <td>
-                              <div
-                                th:text="${#temporals.format(groupe.createdAt, 'yyyy-MM-dd HH:mm:ss')}"></div>
-                              <div
-                                th:text="${#temporals.format(groupe.updatedAt, 'yyyy-MM-dd HH:mm:ss')}"></div>
-                            </td>
-                          </tr>
-                        </tbody>
-                      </table>
+                      <a href="construction/register"
+                        class="btn btn-primary btn-lg w-25 ml-1 btn-square mt-2">新規作成</a>
                     </div>
+                    <div class="card-body">
+                      <div class="table-responsive">
+                        <table class="table table-striped" id="Construction-table">
+                          <thead>
+                            <tr>
+                              <th class="text-center"></th>
+                              <th>ステータス</th>
+                              <th>工事区分分類</th>
+                              <th>登録日<br />更新日
+                              </th>
+                            </tr>
+                          </thead>
+                          <tbody>
+                            <tr th:block th:each="groupe : ${constructions}">
+                              <td><a th:href="@{/construction/update(id=${groupe.id})}"
+                                class="btn btn-primary">詳細</a></td>
+                              <td>
+                                <div class="form-group mb-0">
+                                  <th:block th:if="${groupe.status} eq ${statusTrue}">
+                                    <label class="custom-switch mt-2 pl-0"> <input
+                                      type="checkbox" name="custom-switch-checkbox"
+                                      th:attr="data-groupe-id=${groupe.id}"
+                                      class="custom-switch-input" checked> <span
+                                      class="custom-switch-indicator"></span> <span
+                                      class="custom-switch-description">有効</span>
+                                    </label>
+                                  </th:block>
+                                  <th:block th:if="${groupe.status} ne ${statusTrue}">
+                                    <label class="custom-switch mt-2 pl-0"> <input
+                                      type="checkbox" name="custom-switch-checkbox"
+                                      th:attr="data-groupe-id=${groupe.id}"
+                                      class="custom-switch-input"> <span
+                                      class="custom-switch-indicator"></span> <span
+                                      class="custom-switch-description">無効</span>
+                                    </label>
+                                  </th:block>
+
+                                </div>
+                              </td>
+                              <td><span th:text="${groupe.costGroupName}"></span></td>
+                              <td>
+                                <div
+                                  th:text="${#temporals.format(groupe.createdAt, 'yyyy-MM-dd HH:mm:ss')}"></div>
+                                <div
+                                  th:text="${#temporals.format(groupe.updatedAt, 'yyyy-MM-dd HH:mm:ss')}"></div>
+                              </td>
+                            </tr>
+                          </tbody>
+                        </table>
+                      </div>
+                    </div>
+
                   </div>
                 </div>
               </div>

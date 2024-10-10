@@ -58,7 +58,6 @@ public class MatterController {
   @Autowired
   private MstEstimateItemService mstEstimateItemService;
 
-
   @Autowired
   private MstCustomerService mstCustomerService;
 
@@ -230,11 +229,39 @@ public class MatterController {
   // 保存
   @PostMapping("save")
   @TransactionTokenCheck("save")
-  public String saveCase(@ModelAttribute("mstCaseForm") MstMatterForm mstcCaseForm) {
+  public String saveCase(@ModelAttribute("mstCaseForm") MstMatterForm mstCaseForm,
+      @RequestParam("btn") String testValue, HttpSession session, Model model) {
+
 
     logger.info("--- CaseController.saveCase START ---");
 
-    mstMatterService.saveCase(mstcCaseForm);
+    if ("hoge1".equals(testValue)) {
+
+      // 訪問担当者
+      List<MstUser> user = mstUserService.findAllUsersWithAuthName();
+      model.addAttribute("visitUser", user);
+
+      // 顧客情報
+      List<MstCustomer> customer = mstCustomerService.getAllCustomers();
+      model.addAttribute("customer", customer);
+      model.addAttribute("inputCustomer", new MstCustomer());
+
+      model.addAttribute("bukken", mstFloorManagementService.viewFloorForm());
+
+      String transactionToken = UUID.randomUUID().toString();
+      session.setAttribute("transactionToken", transactionToken);
+      model.addAttribute("transactionToken", transactionToken);
+      // 都道府県のリスト
+      model.addAttribute("prefectures", mstCodeService.getCodeByKind(PREFECTURES));
+
+      // 種別を取得するためのリスト
+      model.addAttribute("caseKind", mstCodeService.getCodeByKind(TASK_SUBSTANCE));
+
+      model.addAttribute("mstCase", mstCaseForm);
+
+      return "case/case_register";
+    }
+    mstMatterService.saveCase(mstCaseForm);
 
     logger.info("--- CaseController.saveCase END ---");
     return "redirect:/case/save";
@@ -431,9 +458,10 @@ public class MatterController {
     ver = (estimateVer != null) ? Integer.parseInt(estimateVer) : 1; // リクエストパラムで持ってきた値を代入
 
     // 見積もりがあるかを判定
-    if (mstEstimateItemService.findAllById(id).size() != 0) {
 
-      model.addAttribute("ver", mstEstimateItemService.findAllById(id)); // 案件に対するすべてのバージョンを取得
+    if (mstEstimateManagementService.findByMatterId(id).size() != 0) {
+
+      model.addAttribute("ver", mstEstimateManagementService.findByMatterId(id)); // 案件に対するすべてのバージョンを取得
 
 
       // 初期表示(最新バージョン)判定
@@ -482,12 +510,12 @@ public class MatterController {
       @RequestParam(value = "estimateVer", required = false) String estimateVer) { // DBに登録
 
     logger.info("--- CaseController.saveCustomer START ---");
-
+    String[] update1 = estimateVer.split(",");
+    estimateVer = update1[0];
     // 見積もりがなかった場合の処理（案件のみ登録）
     if (estimateVer == null) {
       MstMatter mstCase = mstMatterService.findDisplayById(id);
-      MstMatter result =
-          mstMatterService.saveCopy(mstMatterService.updateCaseForm(mstCase), estimateAbsence);
+      mstMatterService.saveCopy(mstMatterService.updateCaseForm(mstCase), estimateAbsence);
       return "redirect:/case/save-copy";
     }
 

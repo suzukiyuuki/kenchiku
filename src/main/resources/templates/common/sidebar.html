@@ -8,8 +8,8 @@
     </div>
     <ul class="sidebar-menu">
 
-      <li><a class="nav-link" href="/login"><i class="far fa-square"></i> <span>TODO:ログイン画面</span></a></li>
-      <li><a class="nav-link" href="../front/anken.html"><i class="far fa-square"></i> <span>TODO:案件一覧画面</span></a></li>
+      <li><a class="nav-link" href="/select"><i class="far fa-square"></i> <span>TODO:ログイン画面</span></a></li>
+      <li><a class="nav-link" href="/front"><i class="far fa-square"></i> <span>TODO:案件一覧画面</span></a></li>
 
       <!-- ----------------------------- -->
       <li class="menu-header">マスタ関連</li>
@@ -18,9 +18,9 @@
       <li><a class="nav-link" href="/owner"><i class="fas far fa-user"></i> <span>オーナー管理</span></a></li>
 
       <!-- ----------------------------- -->
-      <li class="menu-header">勤怠管理システム関連</li>
+      <!--<li class="menu-header">勤怠管理システム関連</li>
       <li><a class="nav-link" href="/user_yoshino"><i class="fas far fa-user"></i> <span>吉野管理</span></a></li>
-      <li><a class="nav-link" href="/destination"><i class="fas far fa-user"></i> <span>出向先管理</span></a></li>
+      <li><a class="nav-link" href="/destination"><i class="fas far fa-user"></i> <span>出向先管理</span></a></li>-->
 
       <!-- ----------------------------- -->
       <li class="menu-header">チェック項目マスタ関連</li>
@@ -111,15 +111,8 @@
 
   </aside>
   
-  <div id="myModal" class="modal">
-        <div class="modal-content">
-            <p>新規作成した案件情報が登録されていませんが宜しいでしょうか？</p>
-            <div class="modal-buttons">
-                <button type="button" id="yes_button"  class="btn btn-primary select">はい</button>
-                <button type="button" id="no_button"  class="btn btn-primary select">いいえ</button>
-            </div>
-        </div>
-    </div>
+  <!-- modalのインクルード -->
+  <div class="insert" th:replace="common/modal_window :: modal_window(sideModal, 情報は保存されませんが、よろしいですか？)"></div>
     
 <script th:src="@{/js/sidebar.js}"></script>
 </div>

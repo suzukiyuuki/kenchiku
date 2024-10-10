@@ -184,20 +184,18 @@
                             </tr>
                           </thead>
                           <tbody id="tbody">
+                           <th:block th:each=" estimateItem : ${estimateItem}">
                             <tr>
 
-                              <td><th:block th:each="Status : ${Status}">
+                              <td>
                                   <div class="custom-checkbox custom-control">
-                                    <input class="form-check-input" type="checkbox"
-                                      th:value="${Status.codeBranchNum}" name="checkboxs"
-                                      th:id="${Status.codeBranchNum}"
-                                      th:checked="${Status.codeBranchNum == estimateItem.estimateId.acceptionOrderStatusNum}">
-                                    <label class="form-check-label" th:for="${Status.codeBranchNum}"
-                                      th:text="${Status.codeName}"></label>
+                                  <label>
+                                    <input class="form-check-input" type="checkbox" name="checkboxs" th:text="${estimateItem.estimateId.acceptionOrderStatus}"value="">
+                                    
+                                    </label>
                                   </div>
-                                </th:block></td>
+                                </td>
 
-                              <!--  <td><span th:text="${estimateItem.estimateId.acceptionOrderStatus}"></span></td>-->
                               <td><span
                                 th:text="${estimateItem.constructionClassificationName}"></span></td>
                               <td><span th:text="${estimateItem.unit}"></span></td>
@@ -210,20 +208,23 @@
                               <td><span>[[${#temporals.format(estimateItem.latestUpdateDatetime,
                                   'yyyy-MM-dd HH:mm:ss')}]]</span></td>
                             </tr>
+                             
+                             </th:block>
                             <tr>
                               <td colspan="4"rowspan="3"></td>
                               <th>小計</th>
-                              <td><span th:text="${estimateItem.estimateId.estimateSubtotal}"></span></td>
+                              <td><span th:text="${estimate.estimateSubtotal}"></span></td>
                             </tr>
                             <tr>
                               <th>消費税</th>
                               <td><span
-                                th:text="${estimateItem.estimateId.estimateConsumptionTax}"></span></td>
+                                th:text="${estimate.estimateConsumptionTax}"></span></td>
                             </tr>
                             <tr>
                               <th>合計</th>
-                              <td><span th:text="${estimateItem.estimateId.estimateTotal}"></span></td>
+                              <td><span th:text="${estimate.estimateTotal}"></span></td>
                             </tr>
+                           
                           </tbody>
                         </table>
                       </div>

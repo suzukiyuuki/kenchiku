@@ -16,6 +16,20 @@
 <link rel="stylesheet" th:href="@{/assets/css/components.css}">
 </head>
 
+<style>
+  /* 各行のスタイル */
+  tr {
+    height: 50px; /* 行の高さを指定 */
+  }
+
+  /* 各セルのスタイル */
+  td {
+    border: none;
+    padding: 15px; /* セルの内側の余白を指定 */
+    width: 30%;
+  }
+</style>
+
 <body>
   <div id="app">
     <div class="main-wrapper">
@@ -42,31 +56,78 @@
                   <div class="card">
                     <div class="card-body">
                       <div class="form-group">
-                        <label>ユーザー名</label> <input type="text" class="form-control" th:value="${mstUserForm.loginCd}" readonly>
-                      </div>
-                      <div class="form-group">
-                        <label for="inputPassword5">パスワード</label> <input type="password" class="form-control" value="password" readonly>
-                      </div>
-                      <div class="form-group">
-                        <label>権限</label> <input type="text" class="form-control" th:value="${mstAuth.name}" readonly>
-                      </div>
-                      <div class="form-group w-50 float-left p-1">
-                        <label>姓</label> <input type="text" class="form-control" th:value="${mstUserForm.lName}" readonly>
-                      </div>
-                      <div class="form-group p-1">
-                        <label>名</label> <input type="text" class="form-control w-50" th:value="${mstUserForm.fName}" readonly>
-                      </div>
-                      <div class="form-group w-50 float-left p-1">
-                        <label>姓カナ</label> <input type="text" class="form-control" th:value="${mstUserForm.lNameKana}" readonly>
-                      </div>
-                      <div class="form-group p-1">
-                        <label>名カナ</label> <input type="text" class="form-control w-50" th:value="${mstUserForm.fNameKana}" readonly>
-                      </div>
-                      <div class="form-group">
-                        <label>電話番号</label> <input type="tel" class="form-control" th:value="${mstUserForm.tel}" readonly>
-                      </div>
-                      <div class="form-group">
-                        <label>Email</label> <input type="email" class="form-control" th:value="${mstUserForm.email}" readonly>
+                        <table style="border-collapse: collapse; width: 100%;">
+                          <tr>
+                            <td><h6>ユーザー名</h6></td>
+                            <td>
+                              <h5><span th:text="${mstUserForm.loginCd}"></span></h5> 
+                              <input type="hidden" class="form-control" th:value="${mstUserForm.loginCd}">
+                            </td>
+                          </tr>
+                          
+                          <tr>
+                            <td><h6>パスワード</h6></td>
+                            <td>
+                              <h5><input type="password" class="form-control" value="password"></h5>
+                            </td>
+                          </tr>
+
+                          <tr>
+                            <td><h6>権限</h6></td>
+                            <td>
+                              <h5><span th:text="${mstAuth.name}"></span></h5> 
+                              <input type="hidden" class="form-control" th:value="${mstAuth.name}">
+                            </td>
+                          </tr>
+                          
+                          <tr>
+                            <td><h6>姓</h6></td>
+                            <td>
+                              <h5><span th:text="${mstUserForm.lName}"></span></h5> 
+                              <input type="hidden" class="form-control" th:value="${mstUserForm.lName}">
+                            </td>
+                          </tr>
+                          
+                          <tr>
+                            <td><h6>名</h6></td>
+                            <td>
+                              <h5><span th:text="${mstUserForm.fName}"></span></h5> 
+                              <input type="hidden" class="form-control w-50" th:value="${mstUserForm.fName}">
+                            </td>
+                          </tr>
+                      
+                          <tr>
+                            <td><h6>姓カナ</h6></td>
+                            <td>
+                              <h5><span th:text="${mstUserForm.lNameKana}"></span></h5> 
+                              <input type="hidden" class="form-control" th:value="${mstUserForm.lNameKana}">
+                            </td>
+                          </tr>
+                          
+                          <tr>
+                            <td><h6>名カナ</h6></td>
+                            <td>
+                              <h5><span th:text="${mstUserForm.fNameKana}"></span></h5> 
+                              <input type="hidden" class="form-control w-50" th:value="${mstUserForm.fNameKana}">
+                            </td>
+                          </tr>
+
+                          <tr>
+                            <td><h6>電話番号</h6></td>
+                            <td>
+                              <h5><span th:text="${mstUserForm.tel}"></span></h5> 
+                              <input type="hidden" class="form-control" th:value="${mstUserForm.tel}">
+                            </td>
+                          </tr>
+                          
+                          <tr>
+                            <td><h6>Email</h6></td>
+                            <td>
+                              <h5><span th:text="${mstUserForm.email}"></span></h5> 
+                              <input type="hidden" class="form-control" th:value="${mstUserForm.email}">
+                            </td>
+                          </tr>
+                         </table>
                       </div>
 
                       <input type="hidden" th:field="*{id}" th:value="${mstUserForm.id}" /> <input type="hidden" th:field="*{loginCd}" th:value="${mstUserForm.loginCd}" /> <input type="hidden" th:field="*{password}" th:value="${mstUserForm.password}" /> <input type="hidden" th:field="*{lName}" th:value="${mstUserForm.lName}" /> <input type="hidden" th:field="*{fName}" th:value="${mstUserForm.fName}" /> <input type="hidden" th:field="*{lNameKana}" th:value="${mstUserForm.lNameKana}" /> <input type="hidden" th:field="*{fNameKana}" th:value="${mstUserForm.fNameKana}" /> <input type="hidden" th:field="*{tel}" th:value="${mstUserForm.tel}" /> <input type="hidden" th:field="*{email}" th:value="${mstUserForm.email}" /> <input type="hidden" th:field="*{status}" th:value="${mstUserForm.status}" /> <input type="hidden" th:field="*{mstAuthId}" th:value="${mstUserForm.mstAuthId}" /> <input type="hidden"
@@ -77,8 +138,8 @@
 
                   <div class="section-body">
                     <div class="buttons">
-                      <a href="javascript:history.back();" class="btn btn-light btn-lg">前の画面へ戻る</a>
-                      <button type="submit" class="btn btn-success btn-lg">変更</button>
+                      <button type="submit" class="btn btn-light btn-lg" name="btn" value="btn1">前の画面へ戻る</a>
+                      <button type="submit" class="btn btn-success btn-lg" name="btn" value="btn2">変更</button>
                     </div>
                   </div>
                 </form>

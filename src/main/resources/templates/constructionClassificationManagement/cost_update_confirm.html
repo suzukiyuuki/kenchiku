@@ -21,6 +21,20 @@
   <link rel="stylesheet" th:href="@{/assets/css/components.css}">
 </head>
 
+<style>
+  /* 各行のスタイル */
+  tr {
+    height: 50px; /* 行の高さを指定 */
+  }
+
+  /* 各セルのスタイル */
+  td {
+    border: none;
+    padding: 15px; /* セルの内側の余白を指定 */
+    width: 30%;
+  }
+</style>
+
 <body>
   <div id="app">
     <div class="main-wrapper">
@@ -44,65 +58,77 @@
                 <form method="post" th:object="${mstCostForm}" th:action="@{/cost/saveUpdate}">
                 <div class="card">
                   <div class="card-body">
-                  
                       <div class="form-group">
-                        <h6>顧客名<span class="badge badge-danger ml-1 mt-0">必須</span></h6>
-                        <h5><span th:text="${mstCostForm.custName}"></span></h5> 
-                        <input type="hidden" th:field="*{custName}" th:value="${mstCostForm.custName}">
-                        <input type="hidden" th:field="*{custId}" th:value="${mstCostForm.custId}">
-                      </div>
+                        <table style="border-collapse: collapse; width: 100%;">
+                          <tr>
+                            <td><h6>顧客名<span class="badge badge-danger ml-1 mt-0">必須</span></h6></td>
+                            <td>
+                              <h5><span th:text="${mstCostForm.custName}"></span></h5> 
+                              <input type="hidden" th:field="*{custName}" th:value="${mstCostForm.custName}">
+                              <input type="hidden" th:field="*{custId}" th:value="${mstCostForm.custId}">
+                            </td>
+                          </tr>
                       
-                     <div class="form-group">
-                        <h6>工事区分分類<span class="badge badge-danger ml-1 mt-0">必須</span></h6>
-                        <h5><span th:text="${mstCostForm.groupName}"></span></h5> 
-                        <input type="hidden" th:field="*{groupName}" th:value="${mstCostForm.groupName}">
-                        <input type="hidden" th:field="*{costGroupId}" th:value="${mstCostForm.costGroupId}">
-                      </div>          
+                          <tr>
+                            <td><h6>工事区分分類<span class="badge badge-danger ml-1 mt-0">必須</span></h6></td>
+                            <td>
+                              <h5><span th:text="${mstCostForm.groupName}"></span></h5> 
+                              <input type="hidden" th:field="*{groupName}" th:value="${mstCostForm.groupName}">
+                              <input type="hidden" th:field="*{costGroupId}" th:value="${mstCostForm.costGroupId}">
+                            </td>
+                          </tr>
                       
-                      <div class="form-group p-1">
-                        <h6>表示順</h6> <input type="text" class="form-control"
-                          th:value="${mstCostForm.viewDetail}" readonly>
-                      <input type="hidden" th:field="*{viewDetail}" th:value="${mstCostForm.viewDetail}">
-                      </div>
+                          <tr>
+                            <td><h6>表示順</h6></td>
+                            <td>
+                              <h5><span th:text="${mstCostForm.viewDetail}"></span></h5> 
+                              <input type="hidden" class="form-control" th:value="${mstCostForm.viewDetail}">
+                              <input type="hidden" th:field="*{viewDetail}" th:value="${mstCostForm.viewDetail}">
+                            </td>
+                          </tr>
                                
-                      <div class="form-group p-1">
-                        <h6>作業内容</h6> <input type="text" class="form-control"
-                          th:value="${mstCostForm.costContents}" readonly>
-                      <input type="hidden" th:field="*{costContents}" th:value="${mstCostForm.costContents}">
-                      </div>
-                                          
-                      <div class="form-group p-1">
-                        <h6>作業内容カナ</h6> <input type="text" class="form-control"
-                          th:value="${mstCostForm.ContentsKana}" readonly>
-                      <input type="hidden" th:field="*{contentsKana}" th:value="${mstCostForm.contentsKana}">
-                      </div>
+                      	  <tr>
+                            <td><h6>作業内容</h6></td>
+                            <td>
+                              <h5><span th:text="${mstCostForm.costContents}"></span></h5> 
+                              <input type="hidden" class="form-control" th:value="${mstCostForm.costContents}">
+                              <input type="hidden" th:field="*{costContents}" th:value="${mstCostForm.costContents}">
+                            </td>
+                          </tr>
                       
-                    <div class="form-group">
-                      <h6>単位<span class="badge badge badge-danger ml-1 mt-0">必須</span></h6>
-                        <h5><span th:text="${mstCostForm.costUnitId}"></span></h5> 
-                        <input type="hidden" th:field="*{costUnitId}" th:value="${mstCostForm.costUnitId}">
+                    	 <tr>
+                          <td><h6>単位<span class="badge badge badge-danger ml-1 mt-0">必須</span></h6></td>
+                          <td>
+                            <h5><span th:text="${mstCostForm.costUnitId}"></span></h5> 
+                            <input type="hidden" th:field="*{costUnitId}" th:value="${mstCostForm.costUnitId}">
+                          </td>
+                        </tr>
+                    
+                        <tr>
+                          <td><h6>原状回復工事費用承諾書用単価</h6></td>
+                          <td>
+                            <h5><span th:text="${mstCostForm.costPrice}"></span></h5> 
+                            <input type="hidden" class="form-control" th:value="${mstCostForm.costPrice}">
+                            <input type="hidden" th:field="*{costPrice}" th:value="${mstCostForm.costPrice}">
+                          </td>
+                        </tr>
+                        
+                        <tr>
+                          <td><h6>見積用単価</h6></td>
+                          <td>
+                            <h5><span th:text="${mstCostForm.costPrice2}"></span></h5> 
+                            <input type="hidden" class="form-control" th:value="${mstCostForm.costPrice2}">
+                            <input type="hidden" th:field="*{costPrice2}" th:value="${mstCostForm.costPrice2}">
+                          </td>
+                        </tr>
+                      </table>
                     </div>
-                      
-
-                      <div class="form-group p-1">
-                        <h6>原状回復工事費用承諾書用単価</h6> <input type="text" class="form-control"
-                          th:value="${mstCostForm.costPrice}" readonly>
-                      <input type="hidden" th:field="*{costPrice}" th:value="${mstCostForm.costPrice}">
-                      </div>
-                      
-                      <div class="form-group p-1">
-                        <h6>見積用単価</h6> <input type="text" class="form-control"
-                          th:value="${mstCostForm.costPrice2}" readonly>
-                      <input type="hidden" th:field="*{costPrice2}" th:value="${mstCostForm.costPrice2}">
-                      </div>
                       
                     <input type="hidden" th:field="*{transactionToken}" th:value="${mstCostForm.transactionToken}">
                     <input type="hidden" th:field="*{status}" th:value="${mstCostForm.status}">                    
                     <input type="hidden" th:field="*{id}" th:value="${mstCostForm.id}" />
                      <input type="hidden" th:field="*{createAt}" th:value="${mstCostForm.createAt}">
                 
-                    
-                    
                 </div>
                 </div>
                 <div class="section-body">

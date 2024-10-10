@@ -32,13 +32,14 @@ public interface MstAcceptingOrderRepository extends JpaRepository<MstAcceptingO
           + "a.subtotal, a.total FROM mst_acception_order a "
           + "LEFT JOIN mst_suppliermanager s ON a.suppliermanager_id = s.id "
           + "WHERE CASE WHEN :orderStatus = '' THEN TRUE ELSE a.order_status = :orderStatus END "
-          + "AND CASE WHEN :suppliermanagementName = '' THEN TRUE ELSE s.vender_name = :suppliermanagementName END "
+          + "AND CASE WHEN :suppliermanagementName = '' THEN TRUE ELSE s.vender_name LIKE :suppliermanagementName END "
           + "AND CASE WHEN :cStart = '' THEN TRUE ELSE a.construction_start_date LIKE :cStart END "
-          + "AND CASE WHEN :cEnd = '' THEN TRUE ELSE a.construction_end_date LIKE :cEnd END",
+          + "AND CASE WHEN :cEnd = '' THEN TRUE ELSE a.construction_end_date LIKE :cEnd END "
+          + "AND a.matter_id = :id",
       nativeQuery = true)
   public List<MstAcceptingOrder> search(@Param("orderStatus") String orderStatus,
       @Param("suppliermanagementName") String suppliermanagementName,
-      @Param("cStart") String cStart, @Param("cEnd") String cEnd);
+      @Param("cStart") String cStart, @Param("cEnd") String cEnd, @Param("id") Integer id);
 
 
 }

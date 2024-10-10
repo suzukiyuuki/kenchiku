@@ -225,10 +225,10 @@
                                   <a th:href="@{/facilities/List(id=${caseInfo.id})}"
                                     class="btn btn-primary">新規作成</a>
                                 </th:block></td>
-                              <th><th:block th:if="${caseInfo.situationStatus} eq 'キャンセル'">
+                              <th>
                                   <a th:href="@{/case/copy(id=${caseInfo.id})}"
                                     class="btn btn-primary">コピー</a>
-                                </th:block></th>
+                                </th>
                               <td><span>[[${#temporals.format(caseInfo.registrationDatetime,
                                   'yyyy-MM-dd HH:mm:ss')}]]</span><br /> <span>[[${#temporals.format(caseInfo.updateDatetime,
                                   'yyyy-MM-dd HH:mm:ss')}]]</span></td>

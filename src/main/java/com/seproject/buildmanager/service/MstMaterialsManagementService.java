@@ -69,11 +69,11 @@ public class MstMaterialsManagementService
 
   public List<MstMaterialsManagement> getAllMaterials() {
 
-    logger.info("--- MstCheckGroupeService.getAllGroupes START ---");
+    logger.info("--- MstMaterialsManagementService.getAllMaterials START ---");
 
     List<MstMaterialsManagement> materials = mstMaterialsRepository.findAll();
 
-    logger.info("--- MstUserService.getAllGroupes END ---");
+    logger.info("--- MstMaterialsManagementService.getAllMaterials END ---");
 
     return materials;
   }

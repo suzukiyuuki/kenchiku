@@ -169,13 +169,13 @@
                   <div class="dropdown-menu w-100 p-4 rounded border border-dark"
                     aria-labelledby="orderSearchButton">
                     <form th:action="@{/accepting-order/order-search}" th:object="${search}" method="get">
-                    <input type="hidden" name="id" value="${caseForm.id}">
+                    <input type="hidden" name="id" th:value="${mstCaseForm.id}">
                       <div class="form-row">
                         <div class="form-group col-md-2">
                           <label for="prefecture">発注ステータス</label> <select class="form-control"
                             th:field="*{orderStatus}">
                             <option value=""></option>
-                            <th:block th:each="situation : ${situation}">
+                            <th:block th:each="situation : ${orderSituations}">
                               <option th:value="${situation.codeName}"><span
                                   th:text="${situation.codeName}"></span>
                               </option>
@@ -220,7 +220,7 @@
                         <tbody id="tbody">
                           <th:block th:each="order : ${acceptionOrder}">
                             <tr>
-                              <td><a th:href="@{/accepting-order/order-detail(id=${mstCaseForm.id}, orderId=${order.id}, estimateId=${order.estimateId})}"
+                              <td><a th:href="@{/accepting-order/order-detail(id=${mstCaseForm.id}, orderId=${order.id}, estimateId=${order.estimateItemId.id})}"
                                 class="btn btn-primary">詳細</a></td>
                               <td><span th:text="${order.orderStatus}"></span></td>
                               <td><span th:text="${order.suppliermanagementName}"></span></td>

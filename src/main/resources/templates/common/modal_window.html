@@ -1,0 +1,57 @@
+<!-- 汎用modal -->
+<div th:id="${modalId}" class="modal" th:fragment="modal_window(modalId, message)">
+  <link rel="stylesheet" th:href="@{/css/modal_window.css}" />
+        <div class="modal-content">
+            <p id="modalMessage" th:text="${message}"></p>
+            <div class="modal-buttons">
+                <button type="button" th:id="${modalId} + _yes"  class="btn btn-primary select">はい</button>
+                <button type="button" th:id="${modalId} + _no"  class="btn btn-primary select">いいえ</button>
+            </div>
+        </div>
+</div>
+
+<div th:id="${modalId}" class="modal" th:fragment="conpletion_window(modalId, message)">
+  <link rel="stylesheet" th:href="@{/css/modal_window.css}" />
+        <div class="modal-content">
+            <p id="modalMessage" th:text="${message}"></p>
+            <div class="modal-buttons">
+                <button type="button" th:id="${modalId} + _crose" class="btn btn-primary select">閉じる</button>
+            </div>
+        </div>
+</div>
+
+  <!-- 顧客名用モーダルウィンドウ -->
+<div th:id="customerModal" class="modal" th:fragment="customer_window(custerId, custerName, customer)">
+	<link rel="stylesheet" th:href="@{/css/table.scroll.css}">
+	<input type="hidden" id="inputCustomerId" th:value="${custerId}">
+    <input type="hidden" id="inputCustomerName" th:value="${custerName}">
+  <div class="modal-content">
+    <h3 >顧客検索</h3>
+  <div class="scroll">
+    <table class="table table-striped" id="materials-table">
+      <thead>
+        <tr>
+          <th class="text-center">
+          </th>
+          <th>顧客名</th>
+        </tr>
+      </thead>
+      <tbody id="tbody">
+       <th:block th:each="cus : ${customer}">
+         <tr>
+          <td>
+           <button class="btn btn-primary modal-select"  th:value="${cus.corpName}">選択<input type="hidden" class="chilled" th:value="${cus.id}"></button>
+          </td>
+            <td>
+              <span th:text="${cus.corpName}"></span>
+            </td>
+         </tr>
+        </th:block>
+      </tbody>
+    </table>
+  </div>
+    <button type="button" id="cancel_button_modal"  class="btn btn-primary select">キャンセル</button>
+  </div>
+  <script th:src="@{/js/Cost/find.js}"></script>
+</div>
+    

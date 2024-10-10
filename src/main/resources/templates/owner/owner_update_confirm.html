@@ -29,6 +29,20 @@
 <link rel="stylesheet" th:href="@{/assets/css/components.css}">
 </head>
 
+<style>
+  /* 各行のスタイル */
+  tr {
+    height: 50px; /* 行の高さを指定 */
+  }
+
+  /* 各セルのスタイル */
+  td {
+    border: none;
+    padding: 15px; /* セルの内側の余白を指定 */
+    width: 30%;
+  }
+</style>
+
 <body>
   <div id="app">
     <div class="main-wrapper">
@@ -51,151 +65,145 @@
                   <div class="card">
                     <div class="card-body">
                       <div class="form-group">
-                        <h6>
-                          顧客名<span class="badge badge badge-danger ml-1 mt-0">必須</span>
-                        </h6>
-                        <h5>
-                          <span th:text="${mstOwnerForm.client}"></span>
-                        </h5>
-                        <input type="hidden" th:field="*{client}" th:value="${mstOwnerForm.client}">
-                        <input type="hidden" th:field="*{clientId}"
-                          th:value="${mstOwnerForm.clientId}">
-                      </div>
-                      <div class="form-group">
-                        <h6>
-                          個人・法人区分<span class="badge badge badge-danger ml-1 mt-0">必須</span>
-                        </h6>
-                        <h5>
-                          <span th:text="${mstOwnerForm.individual}"></span>
-                        </h5>
-                        <input type="hidden" th:field="*{individual}"
-                          th:value="${mstOwnerForm.individual}">
-                      </div>
-                      <div class="form-group">
-                        <h6>オーナー名</h6>
-                        <h5>
-                          <span th:text="${mstOwnerForm.corporation}"></span>
-                        </h5>
-                        <input type="hidden" th:field="*{corporation}"
-                          th:value="${mstOwnerForm.corporation}"> <small id=""
-                          class="form-text text-muted"> </small>
-                      </div>
-                      <div class="form-group">
-                        <h6>オーナー名カナ</h6>
-                        <h5>
-                          <span th:text="${mstOwnerForm.corporationKana}"></span>
-                        </h5>
-                        <input type="hidden" th:field="*{corporationKana}"
-                          th:value="${mstOwnerForm.corporationKana}"> <small id=""
-                          class="form-text text-muted"> </small>
-                      </div>
-                      <div class="form-group">
-                        <h6>部署</h6>
-                        <h5>
-                          <span th:text="${mstOwnerForm.department}"></span>
-                        </h5>
-                        <input type="hidden" th:field="*{department}"
-                          th:value="${mstOwnerForm.department}"> <small id=""
-                          class="form-text text-muted"> </small>
-                      </div>
-                      <div class="form-group w-50 float-left p-1">
-                        <h6>
-                          姓<span class="badge badge-danger ml-1 mt-0">必須</span>
-                        </h6>
-                        <h5>
-                          <span th:text="${mstOwnerForm.lName}"></span>
-                        </h5>
-                        <input type="hidden" th:field="*{lName}" th:value="${mstOwnerForm.lName}">
-                      </div>
-                      <div class="form-group p-1">
-                        <h6>
-                          名<span class="badge badge-danger ml-1 mt-0">必須</span>
-                        </h6>
-                        <h5>
-                          <span th:text="${mstOwnerForm.fName}"></span>
-                        </h5>
-                        <input type="hidden" th:field="*{fName}" th:value="${mstOwnerForm.fName}">
-                      </div>
-                      <div class="form-group w-50 float-left p-1">
-                        <h6>
-                          姓カナ<span class="badge badge-danger ml-1 mt-0">必須</span>
-                        </h6>
-                        <h5>
-                          <span th:text="${mstOwnerForm.lNameKana}"></span>
-                        </h5>
-                        <input type="hidden" th:field="*{lNameKana}"
-                          th:value="${mstOwnerForm.lNameKana}">
-                      </div>
-                      <div class="form-group p-1">
-                        <h6>
-                          名カナ<span class="badge badge-danger ml-1 mt-0">必須</span>
-                        </h6>
-                        <h5>
-                          <span th:text="${mstOwnerForm.fNameKana}"></span>
-                        </h5>
-                        <input type="hidden" th:field="*{fNameKana}"
-                          th:value="${mstOwnerForm.fNameKana}">
-                      </div>
-                      <div class="form-group">
-                        <h6>郵便番号</h6>
-                        <h5>
-                          <span th:text="${mstOwnerForm.postCode}"></span>
-                        </h5>
-                        <input type="hidden" th:field="*{postCode}"
-                          th:value="${mstOwnerForm.postCode}"> <small id=""
-                          class="form-text text-muted"> </small>
-                      </div>
-                      <div class="form-group">
-                        <h6>
-                          都道府県<span class="badge badge badge-danger ml-1 mt-0">必須</span>
-                        </h6>
-                        <h5>
-                          <span th:text="${mstOwnerForm.prefectures}"></span>
-                        </h5>
-                        <input type="hidden" th:field="*{prefectures}"
-                          th:value="${mstOwnerForm.prefectures}">
-                      </div>
-                      <div class="form-group">
-                        <h6>住所</h6>
-                        <h5>
-                          <span th:text="${mstOwnerForm.address}"></span>
-                        </h5>
-                        <input type="hidden" th:field="*{address}"
-                          th:value="${mstOwnerForm.address}"> <small id=""
-                          class="form-text text-muted"> </small>
-                      </div>
-                      <div class="form-group">
-                        <h6>建物名</h6>
-                        <h5>
-                          <span th:text="${mstOwnerForm.buildingName}"></span>
-                        </h5>
-                        <input type="hidden" th:field="*{buildingName}"
-                          th:value="${mstOwnerForm.buildingName}"> <small id=""
-                          class="form-text text-muted"> </small>
-                      </div>
-                      <div class="form-group">
-                        <h6>電話番号</h6>
-                        <h5>
-                          <span th:text="${mstOwnerForm.phone}"></span>
-                        </h5>
-                        <input type="hidden" th:field="*{phone}" th:value="${mstOwnerForm.phone}">
-                      </div>
-                      <div class="form-group">
-                        <h6>携帯番号</h6>
-                        <h5>
-                          <span th:text="${mstOwnerForm.mobilePhone}"></span>
-                        </h5>
-                        <input type="hidden" th:field="*{mobilePhone}"
-                          th:value="${mstOwnerForm.mobilePhone}">
-                      </div>
-                      <div class="form-group">
-                        <h6>メールアドレス</h6>
-                        <h5>
-                          <span th:text="${mstOwnerForm.email}"></span>
-                        </h5>
-                        <input type="hidden" th:field="*{email}" th:value="${mstOwnerForm.email}">
-                        <small id="" class="form-text text-muted"> </small>
-                      </div>
+                        <table style="border-collapse: collapse; width: 100%;">
+                          <tr>
+                            <td><h6>顧客名<span class="badge badge badge-danger ml-1 mt-0">必須</span></h6></td>
+                            <td>    
+                              <h5><span th:text="${mstOwnerForm.client}"></span></h5>
+                              <input type="hidden" th:field="*{client}" th:value="${mstOwnerForm.client}">
+                              <input type="hidden" th:field="*{clientId}" th:value="${mstOwnerForm.clientId}">
+                            </td>
+                          </tr>
+                      
+                          <tr>
+                            <td><h6>個人・法人区分<span class="badge badge badge-danger ml-1 mt-0">必須</span></h6></td>
+                            <td>
+                              <h5><span th:text="${mstOwnerForm.individual}"></span></h5>
+                              <input type="hidden" th:field="*{individual}" th:value="${mstOwnerForm.individual}">
+                            </td>
+                          </tr>
+                      
+                          <tr>
+                            <td><h6>オーナー名</h6></td>
+                            <td>
+                              <h5><span th:text="${mstOwnerForm.corporation}"></span></h5>
+                              <input type="hidden" th:field="*{corporation}" th:value="${mstOwnerForm.corporation}">
+                              <small id="" class="form-text text-muted"> </small>
+                            </td>
+                          </tr>
+                      
+                          <tr>
+                            <td><h6>オーナー名カナ</h6></td>
+                            <td>
+                              <h5><span th:text="${mstOwnerForm.corporationKana}"></span></h5>
+                              <input type="hidden" th:field="*{corporationKana}" th:value="${mstOwnerForm.corporationKana}">
+                              <small id="" class="form-text text-muted"> </small>
+                            </td>
+                          </tr>
+                      
+                          <tr>
+                            <td><h6>部署</h6></td>
+                            <td>
+                              <h5><span th:text="${mstOwnerForm.department}"></span></h5>
+                              <input type="hidden" th:field="*{department}" th:value="${mstOwnerForm.department}">
+                              <small id="" class="form-text text-muted"> </small>
+                            </td>
+                          </tr>
+                      
+                          <tr>
+                            <td><h6>姓<span class="badge badge-danger ml-1 mt-0">必須</span></h6></td>
+                            <td>
+                              <h5><span th:text="${mstOwnerForm.lName}"></span></h5>
+                              <input type="hidden" th:field="*{lName}" th:value="${mstOwnerForm.lName}">
+                            </td>
+                          </tr>
+                      
+                          <tr>
+                            <td><h6>名<span class="badge badge-danger ml-1 mt-0">必須</span></h6></td>
+                            <td>
+                              <h5><span th:text="${mstOwnerForm.fName}"></span></h5>
+                              <input type="hidden" th:field="*{fName}" th:value="${mstOwnerForm.fName}">
+                            </td>
+                          </tr>
+                      
+                          <tr>
+                            <td><h6>姓カナ<span class="badge badge-danger ml-1 mt-0">必須</span></h6></td>
+                            <td>
+                              <h5><span th:text="${mstOwnerForm.lNameKana}"></span></h5>
+                              <input type="hidden" th:field="*{lNameKana}" th:value="${mstOwnerForm.lNameKana}">
+                            </td>
+                          </tr>
+                      
+                          <tr>
+                            <td><h6>名カナ<span class="badge badge-danger ml-1 mt-0">必須</span></h6></td>
+                            <td>
+                              <h5><span th:text="${mstOwnerForm.fNameKana}"></span></h5>
+                              <input type="hidden" th:field="*{fNameKana}" th:value="${mstOwnerForm.fNameKana}">
+                            </td>
+                          </tr>
+                      
+                          <tr>
+                            <td><h6>郵便番号</h6></td>
+                            <td>
+                              <h5><span th:text="${mstOwnerForm.postCode}"></span></h5>
+                              <input type="hidden" th:field="*{postCode}" th:value="${mstOwnerForm.postCode}">
+                              <small id="" class="form-text text-muted"></small>
+                            </td>
+                          </tr>
+                      
+                          <tr>
+                            <td><h6>都道府県<span class="badge badge badge-danger ml-1 mt-0">必須</span></h6></td>
+                            <td>
+                              <h5><span th:text="${mstOwnerForm.prefectures}"></span></h5>
+                              <input type="hidden" th:field="*{prefectures}" th:value="${mstOwnerForm.prefectures}">
+                            </td>
+                          </tr>
+                      
+                          <tr>
+                            <td><h6>住所</h6></td>
+                            <td>
+                              <h5><span th:text="${mstOwnerForm.address}"></span></h5>
+                              <input type="hidden" th:field="*{address}" th:value="${mstOwnerForm.address}">
+                              <small id="" class="form-text text-muted"> </small>
+                            </td>
+                          </tr>
+                      
+                          <tr>
+                            <td><h6>建物名</h6></td>
+                            <td>
+                              <h5><span th:text="${mstOwnerForm.buildingName}"></span></h5>
+                              <input type="hidden" th:field="*{buildingName}" th:value="${mstOwnerForm.buildingName}">
+                              <small id="" class="form-text text-muted"> </small>
+                            </td>
+                          </tr>
+                          
+                          <tr>
+                            <td><h6>電話番号</h6></td>
+                            <td>
+                              <h5><span th:text="${mstOwnerForm.phone}"></span></h5>
+                              <input type="hidden" th:field="*{phone}" th:value="${mstOwnerForm.phone}">
+                            </td>
+                          </tr>
+                      
+                          <tr>
+                            <td><h6>携帯番号</h6></td>
+                            <td>
+                              <h5><span th:text="${mstOwnerForm.mobilePhone}"></span></h5>
+                              <input type="hidden" th:field="*{mobilePhone}" th:value="${mstOwnerForm.mobilePhone}">
+                            </td>
+                          </tr>
+                      
+                          <tr>
+                            <td><h6>メールアドレス</h6></td>
+                            <td>
+                              <h5><span th:text="${mstOwnerForm.email}"></span></h5>
+                              <input type="hidden" th:field="*{email}" th:value="${mstOwnerForm.email}">
+                              <small id="" class="form-text text-muted"> </small>
+                            </td>
+                          </tr>
+                         </table>
+                       </div>
+                       
                       <input type="hidden" th:field="*{createdAt}"
                         th:value="${mstOwnerForm.createdAt}"> <input type="hidden"
                         th:field="*{transactionToken}" th:value="${mstOwnerForm.transactionToken}">

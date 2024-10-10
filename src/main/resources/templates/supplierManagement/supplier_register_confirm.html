@@ -35,6 +35,20 @@
 <link rel="stylesheet" th:href="@{/node_modules/owl.carousel/dist/assets/owl.theme.default.min.css}">
 </head>
 
+<style>
+/* 各行のスタイル */
+tr {
+  height: 50px; /* 行の高さを指定 */
+}
+
+/* 各セルのスタイル */
+td {
+  border: none;
+  padding: 15px; /* セルの内側の余白を指定 */
+  width: 30%;
+}
+</style>
+
 <body>
   <div id="app">
     <div class="main-wrapper">
@@ -63,139 +77,107 @@
 
                       <!-- 種別 -->
                       <div class="form-group">
-                        <h6>
-                          種別
-                        </h6>
-                        <h5>
-                          <span th:text="${mstSupplierForm.classification}"></span>
-                        </h5>
-                        <input type="hidden" th:field="*{classification}"
-                          th:value="${mstSupplierForm.classification}">
-                      </div>
+                        <table style="border-collapse: collapse; width: 100%;">
+                          <tr>
+                            <td><h6>種別</h6></td>
+                            <td>
+                              <h5><span th:text="${mstSupplierForm.classification}"></span></h5>
+                              <input type="hidden" th:field="*{classification}" th:value="${mstSupplierForm.classification}">
+                            </td>
+                          </tr>
+                      
+                          <tr>
+                            <td><h6>業者・仕入れ先名<span class="badge badge-danger ml-1 mt-0">必須</span></h6></td>
+                            <td>
+                              <h5><span th:text="${mstSupplierForm.venderName}"></span></h5>
+                              <input type="hidden" th:field="*{venderName}" th:value="${mstSupplierForm.venderName}">
+                              <small id="" class="form-text text-muted"></small>
+                            </td>
+                          </tr>
+                      
+                          <tr>
+                            <td><h6>郵便番号<span class="badge badge-danger ml-1 mt-0">必須</span></h6></td>
+                            <td>
+                              <h5><span th:text="${mstSupplierForm.postCode}"></span></h5>
+                              <input type="hidden" th:field="*{postCode}" th:value="${mstSupplierForm.postCode}">
+                              <small id="" class="form-text text-muted"></small>
+                            </td>
+                          </tr>
+                          
+                          <tr>
+                            <td><h6>都道府県</h6></td>
+                            <td>
+                              <h5><span th:text="${mstSupplierForm.prefectures}"></span></h5>
+                              <input type="hidden" th:field="*{prefectures}" th:value="${mstSupplierForm.prefectures}">
+                              <small id="" class="form-text text-muted"></small>
+                            </td>
+                          </tr>
+                      
+                          <tr>
+                            <td><h6> 住所<span class="badge badge-danger ml-1 mt-0">必須</span></h6></td>
+                            <td>
+                              <h5><span th:text="${mstSupplierForm.address}"></span></h5>
+                              <input type="hidden" th:field="*{address}" th:value="${mstSupplierForm.address}">
+                            </td>
+                          </tr>
 
-                      <!-- 業者・仕入れ先名 -->
-                      <div class="form-group">
-                        <h6>
-                        業者・仕入れ先名<span class="badge badge-danger ml-1 mt-0">必須</span>
-                        </h6>
-                        <h5>
-                          <span th:text="${mstSupplierForm.venderName}"></span>
-                        </h5>
-                        <input type="hidden" th:field="*{venderName}"
-                          th:value="${mstSupplierForm.venderName}"> <small id=""
-                          class="form-text text-muted"></small>
-                      </div>
+                          <tr>
+                            <td><h6> 建物名</h6></td>
+                            <td>
+                              <h5><span th:text="${mstSupplierForm.buildingName}"></span></h5>
+                              <input type="hidden" th:field="*{buildingName}" th:value="${mstSupplierForm.buildingName}">
+                          </td>
+                          </tr>
 
-                      <!-- 郵便番号 -->
-                      <div class="form-group">
-                        <h6>
-                        郵便番号<span class="badge badge-danger ml-1 mt-0">必須</span>
-                        </h6>
-                        <h5>
-                          <span th:text="${mstSupplierForm.postCode}"></span>
-                        </h5>
-                        <input type="hidden" th:field="*{postCode}"
-                          th:value="${mstSupplierForm.postCode}"> <small id=""
-                          class="form-text text-muted"></small>
-                      </div>
+                          <tr>
+                            <td><h6>電話番号<span class="badge badge-danger ml-1 mt-0">必須</span></h6></td>
+                            <td>
+                              <h5><span th:text="${mstSupplierForm.phone}"></span></h5>
+                              <input type="hidden" th:field="*{phone}" th:value="${mstSupplierForm.phone}">
+                            </td>
+                          </tr>
 
-                      <!-- 都道府県 -->
-                      <div class="form-group">
-                        <h6>都道府県</h6>
-                        <h5>
-                          <span th:text="${mstSupplierForm.prefectures}"></span>
-                        </h5>
-                        <input type="hidden" th:field="*{prefectures}"
-                          th:value="${mstSupplierForm.prefectures}"> <small id=""
-                          class="form-text text-muted"></small>
-                      </div>
+                          <tr>
+                            <td><h6>FAX番号</h6></td>
+                            <td>
+                              <h5><span th:text="${mstSupplierForm.faxNum1}"></span></h5>
+                              <input type="hidden" th:field="*{faxNum1}" th:value="${mstSupplierForm.faxNum1}">
+                            </td>
+                          </tr>
 
-                      <!-- 住所 -->
-                      <div class="form-group">
-                        <h6>
-                          住所<span class="badge badge-danger ml-1 mt-0">必須</span>
-                        </h6>
-                        <h5>
-                          <span th:text="${mstSupplierForm.address}"></span>
-                        </h5>
-                        <input type="hidden" th:field="*{address}"
-                          th:value="${mstSupplierForm.address}">
-                      </div>
-
-                      <!-- 建物名 -->
-                      <div class="form-group">
-                        <h6>
-                          建物名
-                        </h6>
-                        <h5>
-                          <span th:text="${mstSupplierForm.buildingName}"></span>
-                        </h5>
-                        <input type="hidden" th:field="*{buildingName}"
-                          th:value="${mstSupplierForm.buildingName}">
-                      </div>
-
-                      <!-- 電話番号 -->
-                      <div class="form-group">
-                        <h6>
-                          電話番号<span class="badge badge-danger ml-1 mt-0">必須</span>
-                        </h6>
-                        <h5>
-                          <span th:text="${mstSupplierForm.phone}"></span>
-                        </h5>
-                        <input type="hidden" th:field="*{phone}" th:value="${mstSupplierForm.phone}">
-                      </div>
-
-                      <!-- FAX番号 -->
-                      <div class="form-group">
-                        <h6>
-                          FAX番号
-                        </h6>
-                        <h5>
-                          <span th:text="${mstSupplierForm.faxNum1}"></span>
-                        </h5>
-                        <input type="hidden" th:field="*{faxNum1}"
-                          th:value="${mstSupplierForm.faxNum1}">
-                      </div>
-
-                      <!-- メールアドレス -->
-                      <div class="form-group">
-                        <h6>
-                        メールアドレス<span class="badge badge-danger ml-1 mt-0">必須</span>
-                        </h6>
-                        <h5>
-                          <span th:text="${mstSupplierForm.email}"></span>
-                        </h5>
-                        <input type="hidden" th:field="*{email}" th:value="${mstSupplierForm.email}">
-                        <small id="" class="form-text text-muted"></small>
-                      </div>
-
-                      <!-- 担当部署 -->
-                      <div class="form-group">
-                        <h6>
-                          担当部署<span class="badge badge badge-danger ml-1 mt-0">必須</span>
-                        </h6>
-                        <h5>
-                          <span th:text="${mstSupplierForm.department}"></span>
-                        </h5>
-                        <input type="hidden" th:field="*{department}"
-                          th:value="${mstSupplierForm.department}">
-                      </div>
-                      <div class="form-group">
-                        <h6>
-                          担当者名<span class="badge badge badge-danger ml-1 mt-0">必須</span>
-                        </h6>
-                        <h5>
-                          <span th:text="${mstSupplierForm.staffName}"></span>
-                        </h5>
-                        <input type="hidden" th:field="*{staffName}"
-                          th:value="${mstSupplierForm.staffName}">
-                      </div>
+                          <tr>
+                            <td><h6>メールアドレス<span class="badge badge-danger ml-1 mt-0">必須</span></h6></td>
+                            <td>
+                              <h5><span th:text="${mstSupplierForm.email}"></span></h5>
+                              <input type="hidden" th:field="*{email}" th:value="${mstSupplierForm.email}">
+                              <small id="" class="form-text text-muted"></small>
+                            </td>
+                          </tr>
+                          
+                          <tr>
+                            <td><h6>担当部署<span class="badge badge badge-danger ml-1 mt-0">必須</span></h6></td>
+                            <td>
+                              <h5><span th:text="${mstSupplierForm.department}"></span></h5>
+                        	  <input type="hidden" th:field="*{department}" th:value="${mstSupplierForm.department}">
+                            </td>
+                          </tr>
+                     
+                          <tr>
+                            <td><h6>担当者名<span class="badge badge badge-danger ml-1 mt-0">必須</span></h6></td>
+                            <td>
+                              <h5><span th:text="${mstSupplierForm.staffName}"></span></h5>
+                              <input type="hidden" th:field="*{staffName}" th:value="${mstSupplierForm.staffName}">
+                            </td>
+                          </tr>
+                         </table>
+                        </div>
+                        
                       <div class="section-body">
                         <div class="buttons">
                           <!-- 前の画面へ戻るボタン -->
-                          <a href="/supplier-management/register" class="btn btn-light btn-lg">前の画面へ戻る</a>
+                          <button type="submit" class="btn btn-light btn-lg" name="btn" value="btn1">前の画面へ戻る</button>
                           <!-- 確認ボタン -->
-                          <button type="submit" class="btn btn-success btn-lg">登録</button>
+                          <button type="submit" class="btn btn-success btn-lg" name="btn" value="btn2">登録</button>
                           <input type="hidden" name="transactionToken"
                             th:value="${transactionToken}">
                         </div>

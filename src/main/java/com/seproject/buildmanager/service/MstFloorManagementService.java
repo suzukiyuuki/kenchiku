@@ -144,7 +144,7 @@ public class MstFloorManagementService
         mstCodeService.getCodeByKindAndName(mstFloorManagementForm.getPrefectures(), PREFECTURES);
     tmp.setPrefectures(mstCode.getCodeBranchNum());
 
-    tmp.setUpdatedAt(null);
+    tmp.setUpdatedAt(LocalDateTime.now());
 
     try {
       tmp.setStatus(Integer.valueOf(mstFloorManagementForm.getStatus()));

@@ -42,14 +42,15 @@
           </div>
 
           <div class="section-body">
-            <h2 class="section-title mb-5">顧客変更</h2>
+            <h2 class="section-title mb-5">顧客情報詳細</h2>
+            
             <p class="section-lead">
               <!-- We use 'DataTables' made by @SpryMedia. You can check the full documentation <a href="https://datatables.net/">here</a>. -->
             </p>
 
             <div class="row">
               <div class="col-12 col-lg-8">
-                <form th:action="@{/customer/update}" th:object="${mstCustomer}" method="post">
+                <form th:action="@{/customer/update}" class="h-adr" th:object="${mstCustomer}" method="post">
                   <!-- Transaction Token -->
                   <input type="hidden" name="transactionToken" th:value="${transactionToken}">
                   <input type="hidden" name="id" th:field="*{id}" th:value="${mstCustomer.id}">
@@ -58,85 +59,86 @@
                     <input type="hidden" th:field="*{createdAt}" th:value="${mstCustomer.createdAt}">
                     
                      <div class="form-group">
-                      <h6>個人・法人区分<span class="badge badge badge-danger ml-1 mt-0">必須</span></h6>
-                      <select class="form-control w-50" th:field="*{cust_kind}">
+                      <h6>個人・法人区分<span class="badge badge badge-danger ml-1 mt-0 required-badge" style="display: none;">必須</span></h6>
+                      <select class="form-control w-50" th:field="*{cust_kind}" disabled>
                           <option th:selected="${mstCustomer.cust_kind == 個人}" value="個人">個人</option>
                           <option th:selected="${mstCustomer.cust_kind == 法人}" value="法人">法人</option>
                       </select>
                     </div>
                                         
                       <div class="form-group">
-                        <h6>法人名<span class="badge badge badge-danger ml-1 mt-0">必須</span></h6>
+                        <h6>法人名<span class="badge badge badge-danger ml-1 mt-0 required-badge" style="display: none;">必須</span></h6>
                         <input type="text" class="form-control" th:field="*{corpName}" th:classappend="${#fields.hasErrors('corpName')} ? 'is-invalid'"
-                          th:value="${mstCustomer.corpName}">
+                          th:value="${mstCustomer.corpName}" disabled>
 
 						<small class="invalid-feedback" th:if="${#fields.hasErrors('corpName')}" th:errors="*{corpName}"></small>
                       </div>
                       
                       <div class="form-group">
-                        <h6>法人名カナ<span class="badge badge badge-danger ml-1 mt-0">必須</span></h6>
+                        <h6>法人名カナ<span class="badge badge badge-danger ml-1 mt-0 required-badge" style="display: none;">必須</span></h6>
                         <input type="text" class="form-control" th:field="*{corpKana}" th:classappend="${#fields.hasErrors('corpKana')} ? 'is-invalid'"
-                          th:value="${mstCustomer.corpKana}">
+                          th:value="${mstCustomer.corpKana}" disabled>
 						<small class="invalid-feedback" th:if="${#fields.hasErrors('corpKana')}" th:errors="*{corpKana}"></small>
                       </div>
                       
                       <div class="form-group">
                         <h6>部署</h6>
                         <input type="text" class="form-control" th:field="*{department}" 
-                          th:value="${mstCustomer.department}">
+                          th:value="${mstCustomer.department}" disabled>
                       </div>
                       
                       <div class="form-group w-50 float-left p-1">
                         <h6>
-                          姓<span class="badge badge-danger ml-1 mt-0">必須</span>
+                          姓<span class="badge badge-danger ml-1 mt-0 required-badge" style="display: none;">必須</span>
                         </h6>
                         <input type="text" class="form-control" th:field="*{lName}"
-                          th:value="${mstCustomer.lName}" th:classappend="${#fields.hasErrors('lName')} ? 'is-invalid'">
+                          th:value="${mstCustomer.lName}" th:classappend="${#fields.hasErrors('lName')} ? 'is-invalid'" disabled>
                           <small id="nameHelpBlock" class="form-text text-muted"> 半角英数字8桁以上の文字列を入力してください </small>
                       <small class="invalid-feedback" th:if="${#fields.hasErrors('lName')}" th:errors="*{lName}"></small>
                           
                       </div>
                       <div class="form-group p-1">
                         <h6>
-                          名<span class="badge badge-danger ml-1 mt-0">必須</span>
+                          名<span class="badge badge-danger ml-1 mt-0 required-badge" style="display: none;">必須</span>
                         </h6>
                         <input type="text" class="form-control w-50" th:field="*{fName}"
-                          th:value="${mstCustomer.fName}" th:classappend="${#fields.hasErrors('fName')} ? 'is-invalid'">
+                          th:value="${mstCustomer.fName}" th:classappend="${#fields.hasErrors('fName')} ? 'is-invalid'" disabled>
                           <small id="nameHelpBlock" class="form-text text-muted"> 半角英数字8桁以上の文字列を入力してください </small>
                       <small class="invalid-feedback" th:if="${#fields.hasErrors('fName')}" th:errors="*{fName}"></small>
                       </div>
                       <div class="form-group w-50 float-left p-1">
                         <h6>
-                          姓カナ<span class="badge badge-danger ml-1 mt-0">必須</span>
+                          姓カナ<span class="badge badge-danger ml-1 mt-0 required-badge" style="display: none;">必須</span>
                         </h6>
                         <input type="text" class="form-control" th:field="*{lNameKana}"
-                          th:value="${mstCustomer.lNameKana}" th:classappend="${#fields.hasErrors('lNameKana')} ? 'is-invalid'">
+                          th:value="${mstCustomer.lNameKana}" th:classappend="${#fields.hasErrors('lNameKana')} ? 'is-invalid'" disabled>
                           <small id="nameHelpBlock" class="form-text text-muted"> 半角英数字8桁以上の文字列を入力してください </small>
                       <small class="invalid-feedback" th:if="${#fields.hasErrors('lNameKana')}" th:errors="*{lNameKana}"></small>
                       </div>
                       <div class="form-group p-1">
                         <h6>
-                          名カナ<span class="badge badge-danger ml-1 mt-0">必須</span>
+                          名カナ<span class="badge badge-danger ml-1 mt-0 required-badge" style="display: none;">必須</span>
                         </h6>
                         <input type="text" class="form-control w-50" th:field="*{fNameKana}"
-                          th:value="${mstCustomer.fNameKana}" th:classappend="${#fields.hasErrors('fNameKana')} ? 'is-invalid'">
+                          th:value="${mstCustomer.fNameKana}" th:classappend="${#fields.hasErrors('fNameKana')} ? 'is-invalid'" disabled>
                           <small id="nameHelpBlock" class="form-text text-muted"> 半角英数字8桁以上の文字列を入力してください </small>
                       <small class="invalid-feedback" th:if="${#fields.hasErrors('fNameKana')}" th:errors="*{fNameKana}"></small>
                       </div>
                       
                       <div class="form-group">
-                        <h6>郵便番号<span class="badge badge badge-danger ml-1 mt-0">必須</span></h6>
-                        <input type="text" class="form-control" th:field="*{zip}" th:classappend="${#fields.hasErrors('zip')} ? 'is-invalid'"
-                          th:value="${mstCustomer.zip}">                  
-						<small id="telHelpBlock" class="form-text text-muted"> ハイフンを含む書式で入力してください（例：123-4567） </small>
+                        <h6>郵便番号<span class="badge badge badge-danger ml-1 mt-0 required-badge" style="display: none;">必須</span></h6>
+                        <input type="text" class="form-control p-postal-code" th:field="*{zip}" th:classappend="${#fields.hasErrors('zip')} ? 'is-invalid'"
+                          th:value="${mstCustomer.zip}" disabled>
+						  <input type="hidden" class="p-country-name" value="Japan">                   
+						<small id="telHelpBlock" class="form-text text-muted"> ハイフンを含まない書式で入力してください</small>
                         <small class="invalid-feedback" th:if="${#fields.hasErrors('zip')}" th:errors="*{zip}"></small>
                       </div>
                       
                      <div class="form-group">
                        <!-- th:if内のpref.codeNameをpref.codeBranchNumに変更 -->
                        <!-- th:valueの値をpref.codeNameからpref.codeBranchNumに変更 -->
-                      <h6>都道府県<span class="badge badge badge-danger ml-1 mt-0">必須</span></h6>
-                      <select class="form-control w-50" th:field="*{prefectures}">
+                      <h6>都道府県<span class="badge badge badge-danger ml-1 mt-0 required-badge" style="display: none;">必須</span></h6>
+                      <select class="p-region form-control w-50" th:field="*{prefectures}" disabled>
                          <th:block th:each="pref : ${prefectures}">
                             <th:block th:if="${mstCustomer.prefectures} eq ${pref.codeName}" >
                               <option selected th:value="${pref.codeName}"><span th:text="${pref.codeName}"></span></option>
@@ -149,25 +151,25 @@
                     </div>
                         
                       <div class="form-group">
-                        <h6>住所<span class="badge badge badge-danger ml-1 mt-0">必須</span></h6>
-                        <input type="text" class="form-control" th:field="*{address1}" th:classappend="${#fields.hasErrors('address1')} ? 'is-invalid'"
-                          th:value="${mstCustomer.address1}">
+                        <h6>住所<span class="badge badge badge-danger ml-1 mt-0 required-badge" style="display: none;">必須</span></h6>
+                        <input type="text" class="form-control p-locality p-street-address p-extended-address" th:field="*{address1}" th:classappend="${#fields.hasErrors('address1')} ? 'is-invalid'"
+                          th:value="${mstCustomer.address1}" disabled>
 						<small class="invalid-feedback" th:if="${#fields.hasErrors('address1')}" th:errors="*{address1}"></small>
                       </div>
                       
                       <div class="form-group">
                         <h6>建物名</h6>
                         <input type="text" class="form-control" th:field="*{address2}"
-                          th:value="${mstCustomer.address2}">
+                          th:value="${mstCustomer.address2}" disabled>
                       </div>
                         
                       <div class="form-group">
                         <h6>
-                          電話番号<span class="badge badge badge-danger ml-1 mt-0">必須</span>
+                          電話番号<span class="badge badge badge-danger ml-1 mt-0 required-badge" style="display: none;">必須</span>
                         </h6>
                         <input type="tel" class="form-control" aria-describedby="telHelpBlock"
-                          th:field="*{tel}" th:value="${mstCustomer.tel}" th:classappend="${#fields.hasErrors('tel')} ? 'is-invalid'">          
-							<small class="form-text text-muted"> ハイフンを含む書式で入力してください（例：123-456-7890） </small> 
+                          th:field="*{tel}" th:value="${mstCustomer.tel}" th:classappend="${#fields.hasErrors('tel')} ? 'is-invalid'" disabled>          
+							<small class="form-text text-muted"> ハイフンを含まない書式で入力してください</small> 
 							<small class="invalid-feedback" th:if="${#fields.hasErrors('tel')}" th:errors="*{tel}"></small>
                       </div>
                       
@@ -176,34 +178,34 @@
                           携帯番号<span class="badge badge-danger ml-1 mt-0"></span>
                         </h6>
                         <input type="tel" class="form-control" aria-describedby="telHelpBlock"
-                          th:field="*{mobile}" th:value="${mstCustomer.mobile}" th:classappend="${#fields.hasErrors('mobile')} ? 'is-invalid'">
-                          <small class="form-text text-muted"> ハイフンを含む書式で入力してください（例：123-456-7890） </small>
+                          th:field="*{mobile}" th:value="${mstCustomer.mobile}" th:classappend="${#fields.hasErrors('mobile')} ? 'is-invalid'" disabled>
+                          <small class="form-text text-muted"> ハイフンを含まない書式で入力してください</small>
 						  <small class="invalid-feedback" th:if="${#fields.hasErrors('mobile')}" th:errors="*{mobile}"></small>
                       </div>
                       <div class="form-group">
                         <h6>
-                          メールアドレス<span class="badge badge badge-danger ml-1 mt-0">必須</span>
+                          メールアドレス<span class="badge badge badge-danger ml-1 mt-0 required-badge" style="display: none;">必須</span>
                         </h6>
                         <input type="email" class="form-control" th:field="*{mail}" th:classappend="${#fields.hasErrors('mail')} ? 'is-invalid'"
-                          th:value="${mstCustomer.mail}">
+                          th:value="${mstCustomer.mail}" disabled>
 						<small class="invalid-feedback" th:if="${#fields.hasErrors('mail')}" th:errors="*{mail}"></small>
                       </div>
                       
                       <div class="form-group">
                       <label class="custom-switch mt-2 pl-0">
                           
-                          <input type="checkbox" class="custom-checkbox" th:field="*{mailFlg}">
+                          <input type="checkbox" class="custom-checkbox" th:field="*{mailFlg}" disabled>
                           <span class="custom-switch-description">退去立会終了後にメール送信</span>
                       </label>
                       </div>
-                      
                     </div>
                   </div>
 
                   <div class="section-body">
                     <div class="buttons">
-                      <a href="/customer" class="btn btn-light btn-lg">前の画面へ戻る</a>
-                      <button type="submit" class="btn btn-success btn-lg">確認</button>
+                      <a href="/customer" class="btn btn-light btn-lg" onclick="showConfirmModal(event)">前の画面へ戻る</a>
+                     <button type="button" id="editButton" class="btn btn-primary btn-lg" onclick="enableEditing()">編集</button>
+                      <button type="submit" class="btn btn-success btn-lg" id="confirmButton" disabled>確認</button>
                     </div>
                   </div>
                 </form>
@@ -218,6 +220,13 @@
     </div>
   </div>
 
+  <!-- 編集モーダル -->
+  <div id="model_back">
+    <div class="insert"
+      th:replace="common/modal_window :: modal_window(back_modal, '変更した顧客情報が反映されていませんが宜しいでしょうか？')"></div>
+  </div>
+
+
   <!-- General JS Scripts -->
   <script src="https://cdn.jsdelivr.net/npm/jquery@3.6.0/dist/jquery.min.js"></script>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js"
@@ -231,10 +240,14 @@
   <script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.24.0/moment.min.js"></script>
 
   <!-- JS Libraies -->
+  <script src="https://yubinbango.github.io/yubinbango/yubinbango.js" charset="UTF-8"></script>
 
   <!-- Template JS File -->
   <script th:src="@{/assets/js/scripts.js}"></script>
   <script th:src="@{/assets/js/custom.js}"></script>
+ 
+  <script th:src="@{/js/customer/back.js}"></script>
+
 
   <!-- Page Specific JS File -->
 

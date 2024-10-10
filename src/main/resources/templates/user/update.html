@@ -17,6 +17,11 @@
   crossorigin="anonymous">
 
 <!-- CSS Libraries -->
+
+<style>
+   [readonly]{pointer-events:none;} 
+ </style>
+ 
 <link rel="stylesheet"
   th:href="@{/node_modules/datatables.net-bs4/css/dataTables.bootstrap4.min.css}">
 <link rel="stylesheet"
@@ -42,7 +47,7 @@
           </div>
 
           <div class="section-body">
-            <h2 class="section-title mb-5">ユーザー変更</h2>
+            <h2 class="section-title mb-5">ユーザー詳細・変更</h2>
             <p class="section-lead">
               <!-- We use 'DataTables' made by @SpryMedia. You can check the full documentation <a href="https://datatables.net/">here</a>. -->
             </p>
@@ -58,71 +63,74 @@
                       <div class="form-group">
                         <h6>ユーザー名</h6>
                         <input type="text" class="form-control" th:classappend="${#fields.hasErrors('loginCd')} ? 'is-invalid'" aria-describedby="nameHelpBlock"
-                          th:field="*{loginCd}" th:value="${mstUser.loginCd}" readonly>
+                          th:field="*{loginCd}" th:value="${mstUser.loginCd}" disabled>
                           <small class="invalid-feedback" th:if="${#fields.hasErrors('loginCd')}" th:errors="*{loginCd}"></small>
                       </div>
                       <div class="form-group">
                         <h6 for="inputPassword5">パスワード</h6>
-                        <input type="password" id="inputPassword5" th:classappend="${#fields.hasErrors('password')} ? 'is-invalid'" class="form-control"
-                          value="password" readonly>
-                          <small class="invalid-feedback" th:if="${#fields.hasErrors('password')}" th:errors="*{password}"></small>
+						<div style="display: inline-flex; align-items: center;">
+                        <input type="password" id="passwordInput" th:classappend="${#fields.hasErrors('password')} ? 'is-invalid'" class="form-control"
+                          value="password" aria-describedby="passwordHelpBlock"  disabled>
+						  <button type="button" id="showPasswordButton" class="btn btn-primary mt-1 ml-1" style="width: 80px;" >表示</button>
+						  </div>
+						  <small class="invalid-feedback" th:if="${#fields.hasErrors('password')}" th:errors="*{password}"></small>
                       </div>
                       <div class="form-group">
                         <h6>
-                          権限<span class="badge badge badge-danger ml-1 mt-0">必須</span>
+                          権限<span class="badge badge badge-danger ml-1 mt-0 required-badge" style="display: none;">必須</span>
                         </h6>
-                        <select class="form-control w-50" th:field="*{mstAuthId}">
+                        <select class="form-control w-50" th:field="*{mstAuthId}" disabled>
                           <option th:each="mstAuth : ${mstAuths}" th:text="${mstAuth.name}" th:value="${mstAuth.id}"></option>
                         </select>
                       </div>
                       <div class="form-group w-50 float-left p-1">
                         <h6>
-                          姓<span class="badge badge-danger ml-1 mt-0">必須</span>
+                          姓<span class="badge badge-danger ml-1 mt-0 required-badge" style="display: none;">必須</span>
                         </h6>
                         <input type="text" class="form-control" th:field="*{lName}" th:classappend="${#fields.hasErrors('lName')} ? 'is-invalid'"
-                          th:value="${mstUser.lName}">
+                          th:value="${mstUser.lName}" disabled>
                         <small class="invalid-feedback" th:if="${#fields.hasErrors('lName')}" th:errors="*{lName}"></small>
                       </div>
                       <div class="form-group p-1">
                         <h6>
-                          名<span class="badge badge-danger ml-1 mt-0">必須</span>
+                          名<span class="badge badge-danger ml-1 mt-0 required-badge" style="display: none;">必須</span>
                         </h6>
                         <input type="text" class="form-control w-50" th:classappend="${#fields.hasErrors('fName')} ? 'is-invalid'" th:field="*{fName}"
-                          th:value="${mstUser.fName}">
+                          th:value="${mstUser.fName}" disabled>
                         <small class="invalid-feedback" th:if="${#fields.hasErrors('fName')}" th:errors="*{fName}"></small>
                       </div>
                       <div class="form-group w-50 float-left p-1">
                         <h6>
-                          姓カナ<span class="badge badge-danger ml-1 mt-0">必須</span>
+                          姓カナ<span class="badge badge-danger ml-1 mt-0 required-badge" style="display: none;">必須</span>
                         </h6>
                         <input type="text" class="form-control" th:classappend="${#fields.hasErrors('lNameKana')} ? 'is-invalid'" th:field="*{lNameKana}"
-                          th:value="${mstUser.lNameKana}">
+                          th:value="${mstUser.lNameKana}" disabled>
                         <small class="invalid-feedback" th:if="${#fields.hasErrors('lNameKana')}" th:errors="*{lNameKana}"></small>
                       </div>
                       <div class="form-group p-1">
                         <h6>
-                          名カナ<span class="badge badge-danger ml-1 mt-0">必須</span>
+                          名カナ<span class="badge badge-danger ml-1 mt-0 required-badge" style="display: none;">必須</span>
                         </h6>
                         <input type="text" class="form-control w-50" th:classappend="${#fields.hasErrors('fNameKana')} ? 'is-invalid'" th:field="*{fNameKana}"
-                          th:value="${mstUser.fNameKana}">
+                          th:value="${mstUser.fNameKana}" disabled>
                         <small class="invalid-feedback" th:if="${#fields.hasErrors('fNameKana')}" th:errors="*{fNameKana}"></small>
                       </div>
                       <div class="form-group">
                         <h6>
-                          電話番号<span class="badge badge-danger ml-1 mt-0">必須</span>
+                          電話番号<span class="badge badge-danger ml-1 mt-0 required-badge" style="display: none;">必須</span>
                         </h6>
                         <input type="tel" class="form-control" th:classappend="${#fields.hasErrors('tel')} ? 'is-invalid'" aria-describedby="telHelpBlock"
-                          th:field="*{tel}" th:value="${mstUser.tel}"> <small
-                          id="telHelpBlock" class="form-text text-muted">
+                          th:field="*{tel}" th:value="${mstUser.tel}" disabled> 
+						  <small id="telHelpBlock" class="form-text text-muted">
                           ハイフンを含む書式で入力してください（例：012-3456-7890） </small>
                         <small class="invalid-feedback" th:if="${#fields.hasErrors('tel')}" th:errors="*{tel}"></small>
                       </div>
                       <div class="form-group">
                         <h6>
-                          Email<span class="badge badge-danger ml-1 mt-0">必須</span>
+                          Email<span class="badge badge-danger ml-1 mt-0 required-badge" style="display: none;">必須</span>
                         </h6>
                         <input type="email" class="form-control" th:classappend="${#fields.hasErrors('email')} ? 'is-invalid'" th:field="*{email}"
-                          th:value="${mstUser.email}" readonly>
+                          th:value="${mstUser.email}" disabled>
                         <small class="invalid-feedback" th:if="${#fields.hasErrors('email')}" th:errors="*{email}"></small>
                       </div>
 
@@ -131,8 +139,9 @@
 
                   <div class="section-body">
                     <div class="buttons">
-                      <a href="/user" class="btn btn-light btn-lg">前の画面へ戻る</a>
-                      <button type="submit" class="btn btn-success btn-lg">確認</button>
+                      <a href="/user" class="btn btn-light btn-lg" onclick="showConfirmModal(event)">前の画面へ戻る</a>
+					  <button type="button" class="btn btn-success btn-lg" id="editButton" onclick="enableEditing()">編集</button>
+                      <button type="submit" class="btn btn-success btn-lg" id="confirmButton" disabled>確認</button>
                     </div>
                   </div>
                 </form>
@@ -146,6 +155,13 @@
       <div class="insert" th:insert="~{common/footer :: footer}"></div>
     </div>
   </div>
+  
+    <!-- 編集モーダル -->
+  <div id="model_back">
+    <div class="insert"
+      th:replace="common/modal_window :: modal_window(back_modal, '変更したユーザー情報が反映されていませんが宜しいでしょうか？')"></div>
+  </div>
+  
 
   <!-- General JS Scripts -->
   <script src="https://cdn.jsdelivr.net/npm/jquery@3.6.0/dist/jquery.min.js"></script>
@@ -164,6 +180,9 @@
   <!-- Template JS File -->
   <script th:src="@{/assets/js/scripts.js}"></script>
   <script th:src="@{/assets/js/custom.js}"></script>
+  <script th:src="@{/js/user/user.js}"></script>
+  <script th:src="@{/js/user/back.js}"></script>
+  
 
   <!-- Page Specific JS File -->
 

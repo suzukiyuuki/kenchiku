@@ -1,6 +1,7 @@
 package com.seproject.buildmanager.repository;
 
 import java.util.List;
+import java.util.Optional;
 import org.springframework.data.jpa.repository.EntityGraph;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
@@ -12,11 +13,17 @@ public interface MstFacilitiesDetailRepository extends JpaRepository<MstFaciliti
   public List<MstFacilitiesDetail> findAll();
 
   @Query(
-      value = "SELECT d.id, d.equipment_detail_bit, d.name, d.preposition, d.postposition FROM mst_facilities_detail d, mst_facilities f "
-          + "WHERE f.id=:facilitiesId AND d.equipment_detail_bit&f.equipment_detail_bit!=0",
+      value = "SELECT id, facilities_subcategory_id, facilities_detail_title_id, status, value FROM mst_facilities_detail d "
+          + "WHERE facilities_subcategory_id=:facilitiesId",
       nativeQuery = true)
-  public List<MstFacilitiesDetail> findFacilitiesDetailByEquipmentDetailBit(
-      @Param("facilitiesId") Integer facilitiesId);
+  public List<MstFacilitiesDetail> findByFacilitiesId(@Param("facilitiesId") Integer facilitiesId);
+
+  @Query(
+      value = "SELECT id, facilities_subcategory_id, facilities_detail_title_id, status, value FROM mst_facilities_detail d "
+          + "WHERE facilities_subcategory_id=:facilitiesId AND facilities_detail_title_id = :titleId",
+      nativeQuery = true)
+  public Optional<MstFacilitiesDetail> findByFacilitiesIdAndTitleId(
+      @Param("facilitiesId") Integer facilitiesId, @Param("titleId") Integer titleId);
 
   // @Query(
   // value = "SELECT id, equipment_detail_bit, name, preposition, postposition FROM

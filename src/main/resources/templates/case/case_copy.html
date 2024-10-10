@@ -166,9 +166,9 @@
                           <input type="hidden" th:value="${id}" name="id"> <select
                             class="form-control" id="estimateVer_select" name="estimateVer">
                             <th:block th:each="verInfo :${ver}">
-                              <option th:value=${verInfo.estimateId.estimateVersion}
-                                th:selected="${verInfo.estimateId.estimateVersion == estimateVer}"
-                                th:inline="text">[[${verInfo.estimateId.estimateVersion}]]</option>
+                              <option th:value=${verInfo.estimateVersion}
+                                th:selected="${verInfo.estimateVersion == estimateVer}"
+                                th:inline="text"><span th:text="${verInfo.estimateVersion}"></span></option>
 
                             </th:block>
                           </select>

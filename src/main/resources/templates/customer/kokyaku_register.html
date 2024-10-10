@@ -40,7 +40,7 @@
 
             <div class="row">
               <div class="col-12 col-lg-8">
-                <form th:action="@{/customer/register}" th:object="${mstCustomer}" method="post">
+                <form th:action="@{/customer/register}" class="h-adr" th:object="${mstCustomer}" method="post">
                   <input type="hidden" name="transactionToken" th:value="${transactionToken}">
                   <div class="card">
                     <div class="card-body">
@@ -54,9 +54,8 @@
                       </div>
 
                       <div class="form-group">
-                        <h6>法人名<span class="badge badge badge-danger ml-1 mt-0">必須</h6>
+                        <h6>法人名<span class="badge badge badge-danger ml-1 mt-0">必須</span></h6>
                         <input type="text" class="form-control" th:field="*{corpName}" th:classappend="${#fields.hasErrors('corpName')} ? 'is-invalid'">
-
 						<small class="invalid-feedback" th:if="${#fields.hasErrors('corpName')}" th:errors="*{corpName}"></small>
                       </div>
                       
@@ -101,15 +100,16 @@
 
                       <div class="form-group">
                         <h6>郵便番号<span class="badge badge badge-danger ml-1 mt-0">必須</span></h6>
-                        <input type="text" class="form-control w-50" th:field="*{zip}" th:classappend="${#fields.hasErrors('zip')} ? 'is-invalid'" />                     
-						<small id="telHelpBlock" class="form-text text-muted"> ハイフンを含む書式で入力してください（例：012-3456） </small>
+                        <input type="text" class="form-control w-50 p-postal-code" th:field="*{zip}" th:classappend="${#fields.hasErrors('zip')} ? 'is-invalid'" />
+						<input type="hidden" class="p-country-name" value="Japan">                    
+						<small id="telHelpBlock" class="form-text text-muted"> ハイフンを含まない書式で入力してください</small>
                         <small class="invalid-feedback" th:if="${#fields.hasErrors('zip')}" th:errors="*{zip}"></small>
                           
                       </div>
                       
                       <div class="form-group">
-                        <h6>都道府県<span class="badge badge badge-danger ml-1 mt-0">必須</span></h6>
-                        <select class="form-control w-50" th:field="*{prefectures}">
+                        <h6>都道府県<span class="badge badge badge-danger ml-1 mt-0 ">必須</span></h6>
+                        <select class="form-control p-region w-50" th:field="*{prefectures}">
                            <th:block th:each="pref : ${prefectures}">
                               <option th:value="${pref.codeName}"><span th:text="${pref.codeName}"></span></option>
                            </th:block>
@@ -118,9 +118,11 @@
 
                       <div class="form-group">
                         <h6>住所<span class="badge badge badge-danger ml-1 mt-0">必須</span></h6>
-                        <input type="text" class="form-control" th:field="*{address1}" th:classappend="${#fields.hasErrors('address1')} ? 'is-invalid'">
+                        <input type="text" class="form-control p-locality p-street-address p-extended-address" th:field="*{address1}" th:classappend="${#fields.hasErrors('address1')} ? 'is-invalid'">
 						<small class="invalid-feedback" th:if="${#fields.hasErrors('address1')}" th:errors="*{address1}"></small>
                       </div>
+					  
+					  
 
                       <div class="form-group">
                         <h6>建物名</h6>
@@ -133,14 +135,14 @@
                       <div class="form-group">
                         <h6>電話番号<span class="badge badge badge-danger ml-1 mt-0">必須</span></h6>
                         <input type="text" class="form-control w-50" th:field="*{tel}" th:classappend="${#fields.hasErrors('tel')} ? 'is-invalid'" />               
-							<small class="form-text text-muted"> ハイフンを含む書式で入力してください（例：012-3456-7890） </small> 
+							<small class="form-text text-muted"> ハイフンを含まない書式で入力してください</small> 
 							<small class="invalid-feedback" th:if="${#fields.hasErrors('tel')}" th:errors="*{tel}"></small>
                       </div>
 
                       <div class="form-group">
                         <h6>携帯番号</h6>
                         <input type="text" class="form-control w-50" th:field="*{mobile}" th:classappend="${#fields.hasErrors('mobile')} ? 'is-invalid'" />
-						<small class="form-text text-muted"> ハイフンを含む書式で入力してください（例：012-3456-7890） </small>
+						<small class="form-text text-muted"> ハイフンを含まない書式で入力してください</small>
 						<small class="invalid-feedback" th:if="${#fields.hasErrors('mobile')}" th:errors="*{mobile}"></small>
                       </div>
 
@@ -160,11 +162,7 @@
                   </div>
                   <div class="section-body">
                     <div class="buttons">
-                      <a
-                        href="/customer"
-                        class="btn btn-light btn-lg"
-                        >前の画面へ戻る</a
-                      >
+                      <a href="/customer" class="btn btn-light btn-lg" id="back" onclick="showConfirmModal(event)">前の画面へ戻る</a>
                       <button type="submit" class="btn btn-success btn-lg">確認</button>
                     </div>
                   </div>
@@ -185,6 +183,13 @@
       </footer>
     </div>
   </div>
+  
+    <!-- 編集モーダル -->
+  <div id="model_back">
+    <div class="insert"
+      th:replace="common/modal_window :: modal_window(back_modal, '作成した顧客情報が登録されていませんが宜しいでしょうか？')"></div>
+  </div>
+  
 
   <!-- General JS Scripts -->
   <script src="https://cdn.jsdelivr.net/npm/jquery@3.6.0/dist/jquery.min.js"></script>
@@ -195,12 +200,15 @@
   <script src="../../assets/js/stisla.js"></script>
 
   <!-- JS Libraries -->
+  <script src="https://yubinbango.github.io/yubinbango/yubinbango.js" charset="UTF-8"></script>
 
   <!-- Template JS File -->
   <script src="../../assets/js/scripts.js"></script>
   <script src="../../assets/js/custom.js"></script>
-
   <!-- Page Specific JS File -->
+  
+  <script th:src="@{/js/customer/backModal.js}"></script>
+  
   
 </body>
 </html>

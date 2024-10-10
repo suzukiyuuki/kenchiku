@@ -161,55 +161,6 @@
                     <a th:href="@{/owner/register}"
                       class="btn btn-primary btn-lg w-25 ml-1 btn-square mt-2">新規作成</a>
                     <!-- Main Content -->
-
-                    <form method="post" th:action="@{/api-MstOwnerServices/upload}"
-                      class="upload-form">
-                      <input type="hidden" name="searh">
-                      <button type="button" class="btn btn-primary btn-lg fas fa-upload"
-                        id="uploadButton" title="アップロード"></button>
-                    </form>
-
-
-                    <form method="post" th:action="@{/owner/download}" th:object="${downloadOwner}"
-                      class="download-form">
-                      <input type="hidden" class="form-control" th:field="*{individual}"
-                        th:value="${downloadOwner.individual}" id="individual"> <input
-                        type="hidden" class="form-control" th:field="*{client}"
-                        th:value="${downloadOwner.client}" id="client"> <input type="hidden"
-                        class="form-control" th:field="*{corporation}"
-                        th:value="${downloadOwner.corporation}" id="corporation"> <input
-                        type="hidden" class="form-control" th:field="*{corporationKana}"
-                        th:value="${downloadOwner.corporationKana}" id="corporationKana"> <input
-                        type="hidden" class="form-control" th:field="*{lName}"
-                        th:value="${downloadOwner.lName}" id="lName"> <input type="hidden"
-                        class="form-control" th:field="*{lNameKana}"
-                        th:value="${downloadOwner.lNameKana}" id="lNameKana"> <input
-                        type="hidden" class="form-control" th:field="*{postCode}"
-                        th:value="${downloadOwner.postCode}" id="postCode"> <input
-                        type="hidden" class="form-control" th:field="*{prefectures}"
-                        th:value="${downloadOwner.prefectures}" id="prefectures"> <input
-                        type="hidden" class="form-control" th:field="*{address}"
-                        th:value="${downloadOwner.address}" id="address"> <input
-                        type="hidden" class="form-control" th:field="*{buildingName}"
-                        th:value="${downloadOwner.buildingName}" id="buildingName"> <input
-                        type="hidden" class="form-control" th:field="*{phone}"
-                        th:value="${downloadOwner.phone}" id="phone"> <input type="hidden"
-                        class="form-control" th:field="*{mobilePhone}"
-                        th:value="${downloadOwner.mobilePhone}" id="mobilePhone"> <input
-                        type="hidden" class="form-control" th:field="*{email}"
-                        th:value="${downloadOwner.email}" id="email"> <input type="hidden"
-                        class="form-control" th:field="*{status}" th:value="${downloadOwner.status}"
-                        id="status"> <input type="hidden" class="form-control"
-                        th:field="*{createdAt1}" th:value="${downloadOwner.createdAt1}"
-                        id="createdAt1"> <input type="hidden" class="form-control"
-                        th:field="*{updatedAt1}" th:value="${downloadOwner.updatedAt1}"
-                        id="updatedAt1">
-                      <button type="submit" class="btn btn-primary btn-lg btn-download"
-                        id="downloadButton" title="ダウンロード">
-                        <i class="fas fa-download"></i>
-                      </button>
-                    </form>
-
                   </div>
 
                   <div class="card-body">
@@ -238,7 +189,7 @@
                           <th:block th:each="owner : ${ownerForms}">
                             <tr>
                               <td><a th:href="@{/owner/update(id=${owner.id})}"
-                                class="btn btn-primary">変更</a></td>
+                                class="btn btn-primary">詳細</a></td>
                               <td>
                                 <div class="form-group mb-0">
                                   <th:block th:if="${owner.status} eq ${statusTrue}">
@@ -295,6 +246,9 @@
   </div>
 
   <div class="insert" th:insert="~{common/update_end :: update_end}"></div>
+  
+  <!-- modal --> 
+      <div class="insert" th:replace="common/modal_window :: modal_window(confirmModal, ステータスを変更しますか？)"></div>
 
   <!-- General JS Scripts -->
   <script src="https://cdn.jsdelivr.net/npm/jquery@3.6.0/dist/jquery.min.js"></script>
@@ -325,6 +279,8 @@
 
   <!-- Page Specific JS File -->
   <script th:src="@{/assets/js/page/modules-datatables.js}"></script>
+  <script th:src="@{/js/common/switchStatus.js}"></script>
+  
   <script th:src="@{/js/owner/owner.js}"></script>
   <script th:src="@{/js/search/search.js}"></script>
   <script th:src="@{/assets/js/admin/sep.dataTables.common.js}"></script>

@@ -32,28 +32,28 @@ public class MstEstimateItem {
   @Column(name = "construction_id")
   private Integer constructionId; // 工事区分分類ID
 
-  @JoinColumn(name = "construction_name")
+  @Column(name = "construction_name")
   private String constructionName;
 
   @Column(name = "construction_classification_id")
   private Integer constructionClassificationId; // 工事区分ID
 
-  @JoinColumn(name = "construction_classification_name")
+  @Column(name = "construction_classification_name")
   private String constructionClassificationName;
 
-  @Column(name = "unit")
+  @Column(name = "unit", updatable = true, nullable = true)
   private Integer unit; // 単位
 
   @Column(name = "volume")
   private Integer volume; // 数量
 
-  @Column(name = "estimate_unit_price")
+  @Column(name = "estimate_unit_price", updatable = true, nullable = true)
   private Integer estimateUnitPrice; // 見積用単価
 
   @Column(name = "estimate_amount")
   private Integer estimateAmount; // 見積用金額
 
-  @Column(name = "approval_unit_price")
+  @Column(name = "approval_unit_price", updatable = true, nullable = true)
   private Integer approvalUnitPrice; // 原状回復工事費用承諾書用単価
 
   @Column(name = "tenant_burden_ratio")

@@ -24,8 +24,9 @@ public class MstSupplierManagementForm {
       groups = {ValidationGroups.Registration.class, ValidationGroups.Update.class})
   private String venderName; // 業者・仕入先名
 
-  @NotBlank(message = "郵便番号は必須項目です",
-      groups = {ValidationGroups.Registration.class, ValidationGroups.Update.class})
+  @Pattern(regexp = "^\\d{3}\\d{4}$",
+      groups = {ValidationGroups.Registration.class, ValidationGroups.Update.class},
+      message = "正しい郵便番号を表示してください")
   private String postCode; // 郵便番号
 
   @NotBlank(message = "都道府県は必須項目です",
@@ -40,7 +41,9 @@ public class MstSupplierManagementForm {
 
   private String buildingName; // 建物名
 
-  @Pattern(regexp = "[0-9-]+", message = "電話番号が正しくありません",
+  @Pattern(
+      regexp = "\\A0(\\d{1}[(]?\\d{4}|\\d{2}[(]?\\d{3}|\\d{3}[(]?\\d{2}|\\d{4}[(]?\\d{1})[)]?\\d{4}\\z|\\A0[5789]0\\d{4}\\d{4}\\z|",
+      message = "電話番号が正しくありません",
       groups = {ValidationGroups.Registration.class, ValidationGroups.Update.class})
   @NotBlank(message = "電話番号は必須項目です",
       groups = {ValidationGroups.Registration.class, ValidationGroups.Update.class})

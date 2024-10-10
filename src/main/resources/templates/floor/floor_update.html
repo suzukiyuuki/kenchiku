@@ -17,6 +17,11 @@
   crossorigin="anonymous">
 
 <!-- CSS Libraries -->
+
+<style>
+   [readonly]{pointer-events:none;} 
+ </style>
+ 
 <link rel="stylesheet"
   th:href="@{/node_modules/datatables.net-bs4/css/dataTables.bootstrap4.min.css}">
 <link rel="stylesheet"
@@ -49,7 +54,7 @@
 
             <div class="row">
               <div class="col-12 col-lg-8">
-                <form th:action="@{/floor-management/update}" th:object="${mstFloorManagementForm}" method="post">
+                <form th:action="@{/floor-management/update}" class="h-adr" th:object="${mstFloorManagementForm}" method="post">
                  <!-- Transaction Token -->
                   <input type="hidden" name="transactionToken" th:value="${transactionToken}">
                   <input type="hidden" name="id" th:field="*{id}" th:value="${mstFloorManagementForm.id}">                  
@@ -57,8 +62,8 @@
                   <div class="card-body">                   
                   
                     <div class="form-group">
-                      <h6>顧客名<span class="badge badge badge-danger ml-1 mt-0">必須</span></h6>
-                      <select class="form-control w-50" th:field="*{customerId}" >
+                      <h6>顧客名<span class="badge badge badge-danger ml-1 mt-0 required-badge" style="display: none;">必須</span></h6>
+                      <select class="form-control w-50" th:field="*{customerId}" disabled>
                         <th:block th:each="cus : ${customer}">
                           <th:block th:if="${mstFloorManagementForm.customerId} eq ${cus.id}">
                            <option selected th:value="${cus.id}" ><span th:text="${cus.corpName}"></span></option>  
@@ -72,8 +77,8 @@
                     </div>                                                                           
 
                     <div class="form-group">
-                      <h6>オーナー名<span class="badge badge badge-danger ml-1 mt-0">必須</span></h6>
-                      <select class="form-control w-50" th:field="*{ownerId}" >
+                      <h6>オーナー名<span class="badge badge badge-danger ml-1 mt-0 required-badge" style="display: none;">必須</span></h6>
+                      <select class="form-control w-50" th:field="*{ownerId}" disabled>
                         <th:block th:each="owner : ${owner}">
                           <th:block th:if="${mstFloorManagementForm.ownerId} eq ${owner.id}">
                            <option selected th:value="${owner.id}" ><span th:text="${owner.lName}"></span>
@@ -91,7 +96,7 @@
                       <div class="form-group">
                         <h6>物件名</h6>
                         <input type="text" class="form-control" th:field="*{floorName}"
-                          th:classappend="${#fields.hasErrors('floorName')} ? 'is-invalid'">
+                          th:classappend="${#fields.hasErrors('floorName')} ? 'is-invalid'" disabled/>
                         <small id="" class="invalid-feedback"
                           th:if="${#fields.hasErrors('floorName')}" th:errors="*{floorName}"></small>
                       </div>
@@ -99,7 +104,7 @@
                       <div class="form-group">
                         <h6>間取り</h6>
                         <input type="text" class="form-control" th:field="*{arrangement}"
-                          th:classappend="${#fields.hasErrors('arrangement')} ? 'is-invalid'">
+                          th:classappend="${#fields.hasErrors('arrangement')} ? 'is-invalid'" disabled/>
                         <small id="" class="invalid-feedback"
                           th:if="${#fields.hasErrors('arrangement')}" th:errors="*{arrangement}"></small>
                       </div>
@@ -107,7 +112,7 @@
                       <div class="form-group">
                         <h6>家賃</h6>
                         <input type="text" class="form-control" th:field="*{rent}"
-                          th:classappend="${#fields.hasErrors('rent')} ? 'is-invalid'">
+                          th:classappend="${#fields.hasErrors('rent')} ? 'is-invalid'" disabled/>
                         <small id="" class="invalid-feedback"
                           th:if="${#fields.hasErrors('rent')}" th:errors="*{rent}"></small>
                       </div>
@@ -115,22 +120,23 @@
                       <div class="form-group">
                         <h6>敷金</h6>
                         <input type="text" class="form-control" th:field="*{securityDeposit}"
-                          th:classappend="${#fields.hasErrors('securityDeposit')} ? 'is-invalid'">
+                          th:classappend="${#fields.hasErrors('securityDeposit')} ? 'is-invalid'" disabled/>
                         <small id="" class="invalid-feedback"
                           th:if="${#fields.hasErrors('securityDeposit')}" th:errors="*{securityDeposit}"></small>
                       </div>
 
                       <div class="form-group">
                       <h6>郵便番号</h6>
-                     <input type="text" class="form-control" th:field="*{postCode}" 
-                      th:classappend="${#fields.hasErrors('postCode')} ? 'is-invalid'"> 
-                      <small id="telHelpBlock" class="form-text text-muted"> ハイフンを含む書式で入力してください（例：111-7890） </small>
+                     <input type="text" class="form-control p-postal-code" th:field="*{postCode}" 
+                      th:classappend="${#fields.hasErrors('postCode')} ? 'is-invalid'" disabled/> 
+					  <input type="hidden" class="p-country-name" value="Japan">
+					  <small id="telHelpBlock" class="form-text text-muted"> ハイフンを含まない書式で入力してください </small>
                           <small class="invalid-feedback" th:if="${#fields.hasErrors('postCode')}" th:errors="*{postCode}"></small>                  
                     </div>    
 
                      <div class="form-group">
-                      <h6>都道府県<span class="badge badge badge-danger ml-1 mt-0">必須</span></h6>
-                      <select class="form-control w-50" th:field="*{prefectures}">
+                      <h6>都道府県<span class="badge badge badge-danger ml-1 mt-0 required-badge" style="display: none;">必須</span></h6>
+                      <select class="form-control w-50 p-region" th:field="*{prefectures}" disabled>
                          <th:block th:each="pref : ${prefectures}">
                             <th:block th:if="${mstFloorManagementForm.prefectures} eq ${pref.codeName}" >
                               <option selected th:value="${pref.codeName}"><span th:text="${pref.codeName}"></span></option>
@@ -144,14 +150,14 @@
 
                       <div class="form-group">
                         <h6>住所</h6>
-                        <input type="text" class="form-control" th:field="*{address}"
-                          th:value="${mstFloorManagementForm.address}">
+                        <input type="text" class="form-control p-locality p-street-address p-extended-address" th:field="*{address}"
+                          th:value="${mstFloorManagementForm.address}" disabled/>
                       </div>
                       
                       <div class="form-group">
                         <h6>建物名</h6>
                         <input type="text" class="form-control" th:field="*{buildingName}"
-                          th:value="${mstFloorManagementForm.buildingName}">
+                          th:value="${mstFloorManagementForm.buildingName}" disabled/>
                       </div>
                         
                       <div class="form-group">
@@ -159,8 +165,8 @@
                           電話番号<span class="badge badge-danger ml-1 mt-0"></span>
                         </h6>
                         <input type="tel" class="form-control" aria-describedby="telHelpBlock"
-                          th:field="*{phone}" th:value="${mstFloorManagementForm.phone}" th:classappend="${#fields.hasErrors('phone')} ? 'is-invalid'">
-                          <small class="form-text text-muted"> ハイフンを含む書式で入力してください（例：123-456-7890） </small> 
+                          th:field="*{phone}" th:value="${mstFloorManagementForm.phone}" th:classappend="${#fields.hasErrors('phone')} ? 'is-invalid'" disabled/>
+                          <small class="form-text text-muted"> ハイフンを含まない書式で入力してください </small> 
 							<small class="invalid-feedback" th:if="${#fields.hasErrors('phone')}" th:errors="*{phone}"></small>
                       </div>
                       
@@ -169,15 +175,15 @@
                           携帯番号<span class="badge badge-danger ml-1 mt-0"></span>
                         </h6>
                         <input type="tel" class="form-control" aria-describedby="telHelpBlock"
-                          th:field="*{mobilePhone}" th:value="${mstFloorManagementForm.mobilePhone}" th:classappend="${#fields.hasErrors('mobilePhone')} ? 'is-invalid'">
-                          <small class="form-text text-muted"> ハイフンを含む書式で入力してください（例：123-456-7890） </small> 
+                          th:field="*{mobilePhone}" th:value="${mstFloorManagementForm.mobilePhone}" th:classappend="${#fields.hasErrors('mobilePhone')} ? 'is-invalid'" disabled/>
+                          <small class="form-text text-muted"> ハイフンを含まない書式で入力してください </small> 
 							<small class="invalid-feedback" th:if="${#fields.hasErrors('mobilePhone')}" th:errors="*{mobilePhone}"></small>
                       </div>
 
                       <div class="form-group">
                         <h6>坪数</h6>
                         <input type="text" class="form-control" th:field="*{area}"
-                          th:value="${mstFloorManagementForm.area}">
+                          th:value="${mstFloorManagementForm.area}" disabled/>
                       </div>
         
 
@@ -186,8 +192,9 @@
               
                   <div class="section-body">
                     <div class="buttons">
-                      <a href="/floor-management" class="btn btn-light btn-lg">前の画面へ戻る</a>
-                      <button type="submit" class="btn btn-success btn-lg">確認</button>
+                      <a href="/floor-management" class="btn btn-light btn-lg" onclick="showConfirmModal(event)">前の画面へ戻る</a>
+					  <button type="button" class="btn btn-success btn-lg" id="editButton" onclick="enableEditing()">編集</button>
+                      <button type="submit" class="btn btn-success btn-lg" id="confirmButton" disabled>確認</button>
                     </div>
                   </div>
                   </div>
@@ -203,6 +210,13 @@
       <div class="insert" th:insert="~{common/footer :: footer}"></div>
     </div>
   </div>
+  
+    <!-- 編集モーダル -->
+  <div id="model_back">
+    <div class="insert"
+      th:replace="common/modal_window :: modal_window(back_modal, '変更した物件情報が反映されていませんが宜しいでしょうか？')"></div>
+  </div>
+  
 
   <!-- General JS Scripts -->
   <script src="https://cdn.jsdelivr.net/npm/jquery@3.6.0/dist/jquery.min.js"></script>
@@ -217,12 +231,15 @@
   <script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.24.0/moment.min.js"></script>
 
   <!-- JS Libraies -->
+  <script src="https://yubinbango.github.io/yubinbango/yubinbango.js" charset="UTF-8"></script>
 
   <!-- Template JS File -->
   <script th:src="@{/assets/js/scripts.js}"></script>
   <script th:src="@{/assets/js/custom.js}"></script>
+  
+  <script th:src="@{/js/Supplier/Supplier_edit.js}"></script>
 
-  <!-- Page Specific JS File -->
+  <script th:src="@{/js/floor/back.js}"></script>
 
 </body>
 </html>

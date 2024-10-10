@@ -1,5 +1,6 @@
 package com.seproject.buildmanager.form;
 
+import java.time.LocalDateTime;
 import java.util.List;
 import lombok.Data;
 
@@ -10,6 +11,12 @@ public class MstFacilitiesManagementForm {
   private Integer caseId;
 
   private String caseName;
+
+  private LocalDateTime registrationDatetime;
+
+  private LocalDateTime updateDatetime;
+
+  private Integer updateUser;
 
   private List<MstFacilitiesForm> mstFacilitiesForms;
 }

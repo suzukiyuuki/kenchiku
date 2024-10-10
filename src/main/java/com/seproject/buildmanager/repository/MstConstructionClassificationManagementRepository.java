@@ -24,7 +24,7 @@ public interface MstConstructionClassificationManagementRepository
   void toggleStatus(@Param("costId") Integer costId);
 
   @Query(
-      value = "SELECT s.id AS id, s.cost_group_id, s.group_name, s.cust_id, s.cust_name, s.view_detail, s.cost_unit_id, s.cost_contents, s.cost_contents_kana, s.cost_price, s.cost_price2, s.status,s.create_at, s.updated_at, s.update_user_id "
+      value = "SELECT s.id AS id, s.cost_group_id, s.group_name, s.cust_id, s.cust_name, s.view_detail, s.cost_unit_id, s.cost_contents, s.cost_price, s.cost_price2, s.status,s.create_at, s.updated_at, s.update_user_id "
           + "FROM mst_construction_classification_management s INNER JOIN mst_customer c ON c.id = s.cust_id "
           + "WHERE s.cost_contents = :costContents AND s.cost_group_id = :costGroupId",
       nativeQuery = true)
@@ -32,26 +32,26 @@ public interface MstConstructionClassificationManagementRepository
       @Param("costContents") String costContents, @Param("costGroupId") Integer costGroupId);
 
   @Query(
-      value = "SELECT s.id AS id, s.cost_group_id, s.group_name, s.cust_id, s.cust_name, s.view_detail, s.cost_unit_id, s.cost_contents, s.cost_contents_kana, s.cost_price, s.cost_price2, s.status,s.create_at, s.updated_at, s.update_user_id "
+      value = "SELECT s.id AS id, s.cost_group_id, s.group_name, s.cust_id, s.cust_name, s.view_detail, s.cost_unit_id, s.cost_contents, s.cost_price, s.cost_price2, s.status,s.create_at, s.updated_at, s.update_user_id "
           + "FROM mst_construction_classification_management s INNER JOIN mst_customer c ON c.id = s.cust_id ",
       nativeQuery = true)
   public List<MstConstructionClassificationManagement> findByCustName();
 
   @Query(
-      value = "SELECT s.id AS id, s.cost_group_id, s.group_name, s.cust_id, s.cust_name, s.view_detail, s.cost_unit_id, s.cost_contents, s.cost_contents_kana, s.cost_price, s.cost_price2, s.status,s.create_at, s.updated_at, s.update_user_id "
+      value = "SELECT s.id AS id, s.cost_group_id, s.group_name, s.cust_id, s.cust_name, s.view_detail, s.cost_unit_id, s.cost_contents, s.cost_price, s.cost_price2, s.status,s.create_at, s.updated_at, s.update_user_id "
           + "FROM mst_construction_classification_management s INNER JOIN mst_customer c ON c.id = s.cust_id WHERE s.id = :costId",
       nativeQuery = true)
   public Optional<MstConstructionClassificationManagement> findByIdAndGroupName(
       @Param("costId") Integer costId);
 
   @Query(
-      value = "SELECT s.id AS id, s.cost_group_id, t.cost_group_name, s.cust_id, s.cust_name,s.view_detail,s.cost_unit_id,s.cost_contents,s.cost_contents_kana,s.cost_price,s.cost_price2,s.status,s.create_at,s.updated_at,s.update_user_id\n"
+      value = "SELECT s.id AS id, s.cost_group_id, t.cost_group_name, s.cust_id, s.cust_name,s.view_detail,s.cost_unit_id,s.cost_contents,s.cost_price,s.cost_price2,s.status,s.create_at,s.updated_at,s.update_user_id\n"
           + "FROM mst_construction_classification_management s INNER JOIN mst_constoruction t ON t.id = s.cost_group_id;",
       nativeQuery = true)
   public List<MstConstructionClassificationManagement> findByGroupName();
 
   @Query(
-      value = "SELECT s.id, s.cost_group_id, t.cost_group_name AS group_name, s.cust_id, s.cust_name, s.view_detail, s.cost_unit_id, s.cost_contents, s.cost_contents_kana, s.cost_price, s.cost_price2, s.status, s.create_at, s.updated_at, s.update_user_id "
+      value = "SELECT s.id, s.cost_group_id, t.cost_group_name AS group_name, s.cust_id, s.cust_name, s.view_detail, s.cost_unit_id, s.cost_contents, s.cost_price, s.cost_price2, s.status, s.create_at, s.updated_at, s.update_user_id "
           + "FROM mst_construction_classification_management s "
           + "INNER JOIN mst_constoruction t ON t.id = s.cost_group_id " + "WHERE "
           + "(:custName = '' OR s.cust_name LIKE :custName) "

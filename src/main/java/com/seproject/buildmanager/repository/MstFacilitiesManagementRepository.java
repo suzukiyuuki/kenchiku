@@ -13,7 +13,7 @@ public interface MstFacilitiesManagementRepository
   @EntityGraph(value = "MstUser.withAllAssociations", type = EntityGraph.EntityGraphType.FETCH)
   public List<MstFacilitiesManagement> findAll();
 
-  @Query(value = "SELECT id, case_id, equipment_bit, value FROM mst_facilities_management WHERE"
-      + " case_id = :caseId", nativeQuery = true)
-  public Optional<MstFacilitiesManagement> findByCaseId(@Param("caseId") Integer caseId);
+  @Query(value = "SELECT id, matter_id, registration_datetime, update_datetime, update_user "
+      + "FROM mst_facilities_management WHERE" + " matter_id = :matterId", nativeQuery = true)
+  public Optional<MstFacilitiesManagement> findByMatterId(@Param("matterId") Integer matterId);
 }

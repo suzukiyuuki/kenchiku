@@ -33,12 +33,6 @@ public class MstTenant {
   @Column(name = "first_name_kana")
   private String firstNameKana; // 入居者名カナ
 
-  @Column(name = "area_code")
-  private String areaCode; // 入居者市外局番
-
-  @Column(name = "city_code")
-  private String cityCode; // 入居者市内局番
-
   @Column(name = "telephone_number")
   private String telNumber; // 入居者電話番号
 

@@ -3,6 +3,8 @@ package com.seproject.buildmanager.controller;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
+import jakarta.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpSession;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
@@ -35,8 +37,6 @@ import com.seproject.buildmanager.service.MstCustomerService;
 import com.seproject.buildmanager.service.MstFloorManagementService;
 import com.seproject.buildmanager.service.MstOwnerManagementService;
 import com.seproject.buildmanager.validation.ValidationGroups;
-import jakarta.servlet.http.HttpServletRequest;
-import jakarta.servlet.http.HttpSession;
 
 @Controller
 @RequestMapping("floor-management")
@@ -161,9 +161,35 @@ public class FloorManagementController {
   @PostMapping("saveRegister")
   @TransactionTokenCheck("saveRegister")
   public String saveFloorRegister(MstFloorManagementForm mstFloorManagementForm,
-      @AuthenticationPrincipal LoginUserDetails user) {// DBに登録
+      @AuthenticationPrincipal LoginUserDetails user,@RequestParam("btn") String btnValue,
+      HttpSession session,Model model) {// DBに登録
 
     logger.info("--- FloorManagementController.saveFloorRegister START ---");
+    
+    if("btn1".equals(btnValue)) {
+      // Getでmodelに値をセットしている場合は、ここでセットしなおす。
+      // ただし、入力用のFormクラスは、値をセットしない(ここでセットしなおすと、Formに入っていたエラーメッセージなどの情報も上書きされてしまうから)
+      List<MstCustomer> customer = mstCustomerService.getAllCustomers();
+      model.addAttribute("customer", customer);
+      model.addAttribute("inputCustomer", new MstCustomer());
+
+      List<MstOwnerManagement> owner = mstOwnerService.getAllOwner();
+      model.addAttribute("owner", owner);
+      model.addAttribute("inputConstruction", new MstOwnerManagement());
+
+
+      String transactionToken = UUID.randomUUID().toString();
+      session.setAttribute("transactionToken", transactionToken);
+      model.addAttribute("transactionToken", transactionToken);
+
+      // 都道府県のリスト
+      model.addAttribute("prefectures", mstCodeService.getCodeByKind(PREFECTURES));
+      
+      model.addAttribute("mstFloorManagement",mstFloorManagementForm); 
+      
+      return "floor/floor_register";
+
+    }
 
 
     mstFloorManagementService.saveFloorRegister(mstFloorManagementForm);

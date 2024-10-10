@@ -57,6 +57,11 @@ public class LoginController {
    * 
    * @return ログインページのテンプレート名 ("login")
    */
+  @GetMapping("/select")
+  public String selectScene() {
+    return "menu";
+  }
+
   @GetMapping("/login")
   public String login(@CookieValue(name = "cookieUserName", required = false) String userName,
       Model model, HttpSession session) {

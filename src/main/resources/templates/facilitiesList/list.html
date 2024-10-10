@@ -48,7 +48,7 @@
               <div class="col-12">
                 <div class="card">
                   <div class="card-header">
-                    <a th:href="@{#}"
+                    <a th:href="@{/facilities-item/register}"
                       class="btn btn-primary btn-lg w-25 ml-1 btn-square mt-2">新規作成</a>
                   </div>
                   <div class="card-body">
@@ -67,11 +67,11 @@
                            <th:block th:each="facilitie : ${mstFacilities}">
                           <tr>
                             <td>
-                              <a th:href="@{#(id=${facilitie.id})}"
+                              <a th:href="@{/facilities-item/update(id=${facilitie.id})}"
                                 class="btn btn-primary">変更</a>
                             </td>
                             <td>
-                             <div class="form-group mb-0">
+                              <div class="form-group mb-0">
                                   <th:block th:if="${facilitie.status} == ${statusTrue}">
                                     <label class="custom-switch mt-2 pl-0"> <input id="id"
                                       type="checkbox" name="custom-switch-checkbox"
@@ -90,7 +90,7 @@
                                       class="custom-switch-description">無効</span>
                                     </label>
                                   </th:block>
-                                </div>
+                                </div> 
                             </td>
                             <td>
                               <span th:text="${facilitie.name}"></span>

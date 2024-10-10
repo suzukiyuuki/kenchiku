@@ -42,6 +42,7 @@ public class MstEstimateItemService {
       MstCodeEnums.ACCEPTING_ORDERS_STATUS.getValue();
 
   private static final int SITUATION_STATUS = MstCodeEnums.SITUATION_STATUS.getValue();
+  private static final int TASK_SUBSTANCE = MstCodeEnums.TASK_SUBSTANCE.getValue();
 
   private final Integer InteinitialVersion = 1; // 初期バージョン (1が入ります)
 
@@ -83,22 +84,26 @@ public class MstEstimateItemService {
     return form;
   }
 
-  public List<MstEstimateItemForm> findByDisply() {
+  // public List<MstEstimateItemForm> findByDisply() {
+  //
+  // List<MstEstimateItem> mstEstimateItem = findAll();
+  // List<MstEstimateItemForm> mstEstimateItemForm = new ArrayList<MstEstimateItemForm>();
+  // for (MstEstimateItem EstimateItem : mstEstimateItem) {
+  // mstEstimateItemForm.add(updateEstimateItemForm(EstimateItem));
+  // }
+  // return mstEstimateItemForm;
+  // }
 
-    List<MstEstimateItem> mstEstimateItem = findAll();
-    List<MstEstimateItemForm> mstEstimateItemForm = new ArrayList<MstEstimateItemForm>();
-    for (MstEstimateItem EstimateItem : mstEstimateItem) {
-      mstEstimateItemForm.add(updateEstimateItemForm(EstimateItem));
-    }
-    return mstEstimateItemForm;
-  }
 
-
-  public MstEstimateItemForm findByDisplyById(Integer id, Integer ver) {
+  public List<MstEstimateItemForm> findByDisplyById(Integer id, Integer ver) {
 
     List<MstEstimateItem> mstEstimateItem = findAllByVerId(id, ver);
+    List<MstEstimateItemForm> a = new ArrayList<>();
+    for (MstEstimateItem i : mstEstimateItem) {
+      a.add(updateEstimateItemForm(i));
+    }
 
-    return updateEstimateItemForm(mstEstimateItem.get(0));
+    return a;
   }
 
   public MstEstimateItemForm updateEstimateItemForm(MstEstimateItem mstEstimateItem) {
@@ -134,22 +139,37 @@ public class MstEstimateItemService {
     MstEstimateItem mstEstimateItem = new MstEstimateItem();
     mstEstimateItem.setId(null);
     MstConstruction cost = mstConstructionService.getConstructionByName(str[0]);
-    mstEstimateItem.setConstructionId(cost.getId());
-    mstEstimateItem.setConstructionName(cost.getCostGroupName());
+    if (cost != null) {
+      mstEstimateItem.setConstructionId(cost.getId());
+      mstEstimateItem.setConstructionName(cost.getCostGroupName());
+    } else {
+      mstEstimateItem.setConstructionId(0);
+      mstEstimateItem.setConstructionName(str[0]);
+    }
+    Integer costId = 0;
+    if (cost != null) {
+      costId = cost.getId();
+    }
     MstConstructionClassificationManagement mstConstructionClassfication =
         mstConstructionClassificationManagementService.getCostClassfinationByContents(str[1],
-            cost.getId());
-    mstEstimateItem.setConstructionClassificationId(mstConstructionClassfication.getId());
-    mstEstimateItem
-        .setConstructionClassificationName(mstConstructionClassfication.getCostContents());
+            costId);
+    if (mstConstructionClassfication != null) {
+      mstEstimateItem.setConstructionClassificationId(mstConstructionClassfication.getId());
+      mstEstimateItem
+          .setConstructionClassificationName(mstConstructionClassfication.getCostContents());
+    } else {
+      mstEstimateItem.setConstructionClassificationId(0);
+      mstEstimateItem.setConstructionClassificationName(str[1]);
+    }
+
     mstEstimateItem.setUnit(Integer.parseInt(str[2]));
     mstEstimateItem.setVolume(Integer.parseInt(str[3]));
     mstEstimateItem.setEstimateUnitPrice(Integer.parseInt(str[4]));
     mstEstimateItem.setEstimateAmount(Integer.parseInt(str[5]));
 
     MstMatter matter = this.mstMatterService.findDisplayById(matterId);
-    MstCode code = this.mstCodeService.getCodeByKindAndName("修繕", SITUATION_STATUS);
-    if (matter.getSituationStatus() != code.getCodeBranchNum()) {
+    MstCode code = this.mstCodeService.getCodeByKindAndName("修繕", TASK_SUBSTANCE);
+    if (matter.getTaskSubstance() != code.getCodeBranchNum()) {
       try {
         mstEstimateItem.setApprovalUnitPrice(Integer.parseInt(str[6]));
       } catch (NumberFormatException | NullPointerException e) {
@@ -189,20 +209,21 @@ public class MstEstimateItemService {
   }
 
 
-  public MstEstimateItem saveCopy(MstEstimateItemForm mstEstimateItemForm, MstMatter matter) {
+  public void saveCopy(List<MstEstimateItemForm> list, MstMatter matter) {
+    List<MstEstimateItem> tmp = new ArrayList<>();
+    for (MstEstimateItemForm a : list) {
+      MstEstimateItem i;
+      i = this.mstEstimateItemFormToEntity(a);
+      i.setId(null);
+      i.getEstimateId().setId(null);
+      i.getEstimateId().setMatter(matter);
+      MstEstimateManagement result = mstEstimateManagementRepository.save(i.getEstimateId());
+      i.setEstimateId(result);
+      i.setMatterId(matter.getId());
+      tmp.add(i);
+    }
+    mstEstimateItemRepository.saveAll(tmp);
 
-    MstEstimateItem tmp = this.mstEstimateItemFormToEntity(mstEstimateItemForm);
-
-
-    tmp.setId(null);
-    tmp.getEstimateId().setId(null);
-    tmp.getEstimateId().setMatter(matter);
-    MstEstimateManagement result = mstEstimateManagementRepository.save(tmp.getEstimateId());
-    tmp.setEstimateId(result);
-    tmp.setMatterId(matter.getId());
-    MstEstimateItem resultItem = mstEstimateItemRepository.save(tmp);
-
-    return resultItem;
   }
 
   public MstEstimateItem mstEstimateItemFormToEntity(MstEstimateItemForm mstEstimateItem) {

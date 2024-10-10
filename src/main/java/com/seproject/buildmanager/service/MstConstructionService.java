@@ -144,5 +144,45 @@ public class MstConstructionService
     mstConstructionRepository.toggleStatus(ConstructionId);
   }
 
+  public MstConstruction saveConstructionRegister(MstConstructionForm mstConstructionForm) {
+    MstConstruction tmp = new MstConstruction();
+
+    if (mstConstructionForm.getId() != null) {
+      tmp.setId(mstConstructionForm.getId());
+      tmp.setCreatedAt(mstConstructionForm.getCreatedat());
+      tmp.setUpdatedAt(LocalDateTime.now());
+    } else {
+      tmp.setCreatedAt(LocalDateTime.now());
+      tmp.setUpdatedAt(LocalDateTime.now());
+    }
+    tmp.setUpdatedMstUserId(commonService.getLoginUserId());
+    tmp.setCostGroupName(mstConstructionForm.getCostGroupName());
+
+    try {
+      tmp.setStatus(Constants.STATUS_TRUE);
+    } catch (NumberFormatException e) {
+      logger.error("Error status MstConstruction : " + tmp.toString(), e);
+      throw new RuntimeException("ステータスが正常ではありません", e);
+    }
+
+    MstConstruction result = mstConstructionRepository.save(tmp);
+
+    logger.info("--- mstConstructionService.saveConstructionRegister END ---");
+    return result;
+  }
+
+  public MstConstructionForm updateConstruction(MstConstruction mstConstruction) {
+    MstConstructionForm tmp = new MstConstructionForm();
+
+    tmp.setId(mstConstruction.getId());
+    tmp.setCostGroupName(mstConstruction.getCostGroupName());
+    tmp.setStatus(String.valueOf(mstConstruction.getStatus()));
+    tmp.setCreatedat(mstConstruction.getCreatedAt());
+    tmp.setUpdatedat(mstConstruction.getUpdatedAt());
+    tmp.setUpdatedmstuserid(mstConstruction.getUpdatedMstUserId());
+    return tmp;
+
+  }
+
 
 }

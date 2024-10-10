@@ -5,8 +5,8 @@ import lombok.Data;
 
 @Data
 public class MstAcceptingOrderDetailForm {
-  private String id;
-  private String orderId; // 発注id
+  private Integer id;
+  private MstAcceptingOrderForm orderId; // 発注id
   private String matterId; // 案件id
   private String estimateItemId; // 見積id
   private String content; // 内容
@@ -20,5 +20,8 @@ public class MstAcceptingOrderDetailForm {
   private Integer registeredUserId; // 登録ユーザーid
   private LocalDateTime registrationDatetime; // 登録日時
   private LocalDateTime lastUpdatedDatetime; // 最終更新日時
+  private Integer estimateSubtotal; // 見積用小計
+  private Integer estimateConsumptionTax; // 見積用消費税
+  private Integer estimateTotal; // 見積用合計
 
 }

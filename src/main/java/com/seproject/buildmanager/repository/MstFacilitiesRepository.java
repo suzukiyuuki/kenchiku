@@ -1,6 +1,7 @@
 package com.seproject.buildmanager.repository;
 
 import java.util.List;
+import java.util.Optional;
 import org.springframework.data.jpa.repository.EntityGraph;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
@@ -12,9 +13,25 @@ public interface MstFacilitiesRepository extends JpaRepository<MstFacilities, In
   public List<MstFacilities> findAll();
 
   @Query(
-      value = "SELECT f.id, f.status, f.equipment_bit, f.name, f.equipment_detail_bit, f.registration_datetime, f.update_datetime, f.update_user FROM mst_facilities f, mst_facilities_management m "
-          + "WHERE m.id = :managementId AND m.equipment_bit & f.equipment_bit != 0",
+      value = "SELECT f.id, f.facilities_management_id, facilities_title_id, f.status "
+          + "FROM mst_facilities f " + "WHERE f.facilities_management_id = :managementId",
       nativeQuery = true)
-  public List<MstFacilities> findFacilitiesByEquipmentBit(
+  public List<MstFacilities> findByFacilitiesManagementId(
       @Param("managementId") Integer managementId);
+
+  @Query(
+      value = "SELECT f.id, f.facilities_management_id, f.facilities_title_id, f.status "
+          + "FROM mst_facilities f "
+          + "WHERE f.facilities_management_id = :managementId AND f.facilities_title_id = :titleId",
+      nativeQuery = true)
+  public Optional<MstFacilities> findByFacilitiesManagementIdAndTitleId(
+      @Param("titleId") Integer titleId, @Param("managementId") Integer managementId);
+
+  @Query(
+      value = "SELECT f.id, f.facilities_management_id, f.facilities_title_id, f.status "
+          + "FROM mst_facilities f "
+          + "WHERE f.facilities_management_id = :managementId AND f.facilities_title_id = :titleId",
+      nativeQuery = true)
+  public List<MstFacilities> findByFacilitiesManagementIdAndTitleIdList(
+      @Param("titleId") Integer titleId, @Param("managementId") Integer managementId);
 }

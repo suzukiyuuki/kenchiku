@@ -202,7 +202,7 @@
                           <th:block th:each="supplier: ${supplier}">
                             <tr>
                               <td><a th:href="@{/supplier-management/update(id=${supplier.id})}"
-                                class="btn btn-primary">変更</a></td>
+                                class="btn btn-primary">詳細</a></td>
                               <td>
                                 <div class="form-group mb-0">
                                   <th:block th:if="${supplier.status} eq ${statusTrue}">

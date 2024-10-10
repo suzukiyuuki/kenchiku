@@ -3,6 +3,8 @@ package com.seproject.buildmanager.controller;
 import java.io.IOException;
 import java.util.List;
 import java.util.UUID;
+import jakarta.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpSession;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
@@ -28,8 +30,6 @@ import com.seproject.buildmanager.service.MstCodeService;
 import com.seproject.buildmanager.service.MstCustomerService;
 import com.seproject.buildmanager.service.MstOwnerManagementService;
 import com.seproject.buildmanager.validation.ValidationGroups;
-import jakarta.servlet.http.HttpServletRequest;
-import jakarta.servlet.http.HttpSession;
 
 @Controller
 @RequestMapping("owner")
@@ -87,6 +87,9 @@ public class OwnerManagementController {
     model.addAttribute("prefectures", mstCodeService.getCodeByKind(PREFECTURES));
     // 法人か個人か
     model.addAttribute("individual", mstCodeService.getCodeByKind(INDIVIDUAL_CORPORATE));
+
+    model.addAttribute("insert", "format_select(${prefectures}, prefectures)");
+
     logger.info("--- UserController.getAllUsers END ---");
     return "owner/owner";
   }
@@ -179,9 +182,26 @@ public class OwnerManagementController {
   @PostMapping("save-register")
   @TransactionTokenCheck("save-register")
   public String saveOwnerRegister(MstOwnerManagementForm mstOwnerForm,
-      @AuthenticationPrincipal LoginUserDetails user) {// DBに登録
+      @AuthenticationPrincipal LoginUserDetails user,@RequestParam("btn") String btnValue,
+      HttpSession session,Model model) {// DBに登録
 
     logger.info("--- OwnerController.saveOwner START ---");
+    if("btn1".equals(btnValue)) {
+      List<MstCustomer> customer = mstCustomerService.getAllCustomers();
+      model.addAttribute("customers", customer);
+
+      String transactionToken = UUID.randomUUID().toString();
+      session.setAttribute("transactionToken", transactionToken);
+      model.addAttribute("transactionToken", transactionToken);
+
+      // 都道府県のリスト
+      model.addAttribute("prefectures", mstCodeService.getCodeByKind(PREFECTURES));
+      // 法人か個人か
+      model.addAttribute("individual", mstCodeService.getCodeByKind(INDIVIDUAL_CORPORATE));
+      model.addAttribute("mstOwnerForm",mstOwnerForm);
+      return "owner/owner_register";
+
+    }
 
 
     mstOwnerService.saveOwnerRegister(mstOwnerForm);
@@ -298,7 +318,6 @@ public class OwnerManagementController {
     // 削除部分 ExcelFileService<MstOwner> fileService = new ExcelFileService<MstOwner>("オーナーデータ.xlsx");
     List<MstOwnerManagement> owner =
         mstOwnerService.changeOwnerForm(mstOwnerService.search(mstOwnerForm));
-    mstOwnerService.download(owner);
 
     return "redirect:/owner";
   }

@@ -17,6 +17,10 @@
   crossorigin="anonymous">
 
 <!-- CSS Libraries -->
+ <style>
+   [readonly]{pointer-events:none;} 
+ </style>
+
 <link rel="stylesheet"
   th:href="@{/node_modules/datatables.net-bs4/css/dataTables.bootstrap4.min.css}">
 <link rel="stylesheet"
@@ -56,11 +60,12 @@
                  <input type="hidden" th:field="*{createdAt}" th:value="${mstSupplier.createdAt}">
                   <div class="card">
                     <div class="card-body">
+						
                       <div class="form-group">
                         <h6>
                           種別
                         </h6>
-                        <select class="form-control w-50" th:field="*{classification}">
+                        <select class="form-control w-50" th:field="*{classification}" disabled>
                           <th:block th:each="select : ${select_supplier}">
                             <option th:value="${select.codeName}"><span th:text="${select.codeName}"></span></option>
                           </th:block>
@@ -68,22 +73,22 @@
                       </div>
                                         
                       <div class="form-group">
-                        <h6>業者・仕入れ先名<span class="badge badge badge-danger ml-1 mt-0">必須</span></h6>
-                        <input type="text" class="form-control" th:field="*{venderName}" th:classappend="${#fields.hasErrors('venderName')} ? 'is-invalid'"> <small
-                          id="" class="invalid-feedback" th:if="${#fields.hasErrors('venderName')}" th:errors="*{venderName}"> </small>
+                        <h6>業者・仕入れ先名<span class="badge badge badge-danger ml-1 mt-0 required-badge" style="display: none;">必須</span></h6>
+                        <input type="text" class="form-control" th:field="*{venderName}" th:classappend="${#fields.hasErrors('venderName')} ? 'is-invalid'" disabled/> 
+						<small id="" class="invalid-feedback" th:if="${#fields.hasErrors('venderName')}" th:errors="*{venderName}"> </small>
                       </div>
                       <div class="form-group">
                         <h6>
-                          郵便番号<span class="badge badge badge-danger ml-1 mt-0">必須</span>
+                          郵便番号<span class="badge badge badge-danger ml-1 mt-0 required-badge" style="display: none;">必須</span>
                         </h6>
-                        <input type="text" class="form-control" th:field="*{postCode}" th:classappend="${#fields.hasErrors('postCode')} ? 'is-invalid'"> <small
-                          id="" class="invalid-feedback" th:if="${#fields.hasErrors('postCode')}" th:errors="*{postCode}"> </small>
+                        <input type="text" class="form-control" th:field="*{postCode}" th:classappend="${#fields.hasErrors('postCode')} ? 'is-invalid'" disabled/> 
+						<small id="" class="invalid-feedback" th:if="${#fields.hasErrors('postCode')}" th:errors="*{postCode}"> </small>
                       </div>
                       <div class="form-group">
                         <h6>
                           都道府県
                         </h6>
-                        <select class="form-control w-50" th:field="*{prefectures}">
+                        <select class="form-control w-50" th:field="*{prefectures}" disabled>
                           <th:block th:each="pref : ${prefectures}">
                             <option th:value="${pref.codeName}"><span th:text="${pref.codeName}"></span></option>
                           </th:block>
@@ -91,58 +96,56 @@
                       </div>
                       <div class="form-group">
                         <h6>
-                          住所<span class="badge badge badge-danger ml-1 mt-0">必須</span>
+                          住所<span class="badge badge badge-danger ml-1 mt-0 required-badge" style="display: none;">必須</span>
                         </h6>
-                        <input type="text" class="form-control" th:field="*{address}"
-                          th:classappend="${#fields.hasErrors('address')} ? 'is-invalid'"> <small
-                          id="" class="invalid-feedback" th:if="${#fields.hasErrors('address')}"
+                        <input type="text" class="form-control" th:field="*{address}" th:classappend="${#fields.hasErrors('address')} ? 'is-invalid'" disabled/>
+						   <small id="" class="invalid-feedback" th:if="${#fields.hasErrors('address')}"
                           th:errors="*{address}"></small>
                       </div>
                       <div class="form-group">
                         <h6>建物名</h6>
-                        <input type="text" class="form-control" th:field="*{buildingName}">
+                        <input type="text" class="form-control" th:field="*{buildingName}" disabled/>
                         <small id="" class="form-text text-muted"> </small>
                       </div>
                       <div class="form-group">
                         <h6>
-                          電話番号<span class="badge badge badge-danger ml-1 mt-0">必須</span>
+                          電話番号<span class="badge badge badge-danger ml-1 mt-0 required-badge" style="display: none;">必須</span>
                         </h6>
-                        <input type="text" class="form-control" th:field="*{phone}"
-                          th:classappend="${#fields.hasErrors('phone')} ? 'is-invalid'"> <small
-                          id="" class="invalid-feedback" th:if="${#fields.hasErrors('phone')}"
-                          th:errors="*{phone}"></small>
+                        <input type="text" class="form-control" th:field="*{phone}" th:classappend="${#fields.hasErrors('phone')} ? 'is-invalid'" disabled/> 
+						  <small id="" class="invalid-feedback" th:if="${#fields.hasErrors('phone')}" th:errors="*{phone}"></small>
                       </div>
                       <div class="form-group">
                         <h6>FAX番号</h6>
-                        <input type="text" class="form-control" th:field="*{faxNum1}"><small
-                          id="" class="form-text text-muted" th:if="${#fields.hasErrors('faxNum1')}" th:errors="*{faxNum1}"></small>
+                        <input type="text" class="form-control" th:field="*{faxNum1}" disabled/>
+						<small id="" class="form-text text-muted" th:if="${#fields.hasErrors('faxNum1')}" th:errors="*{faxNum1}"></small>
                       </div>
                       <div class="form-group">
                         <h6>
-                          メールアドレス<span class="badge badge badge-danger ml-1 mt-0">必須</span>
+                          メールアドレス<span class="badge badge badge-danger ml-1 mt-0 required-badge" style="display: none;">必須</span>
                         </h6>
-                        <input type="text" class="form-control" th:field="*{email}" th:classappend="${#fields.hasErrors('email')} ? 'is-invalid'"> <small
-                          id="" class="invalid-feedback" th:if="${#fields.hasErrors('email')}" th:errors="*{email}"> </small>
+                        <input type="text" class="form-control" th:field="*{email}" th:classappend="${#fields.hasErrors('email')} ? 'is-invalid'" disabled/> 
+						<small id="" class="invalid-feedback" th:if="${#fields.hasErrors('email')}" th:errors="*{email}"> </small>
                       </div>
                       <div class="form-group">
                         <h6>
-                          担当部署<span class="badge badge badge-danger ml-1 mt-0">必須</span>
+                          担当部署<span class="badge badge badge-danger ml-1 mt-0 required-badge" style="display: none;">必須</span>
                         </h6>
-                        <input type="text" class="form-control" th:field="*{department}" th:classappend="${#fields.hasErrors('department')} ? 'is-invalid'"> <small
-                          id="" class="invalid-feedback" th:if="${#fields.hasErrors('department')}" th:errors="*{department}"> </small>
+                        <input type="text" class="form-control" th:field="*{department}" th:classappend="${#fields.hasErrors('department')} ? 'is-invalid'" disabled/> 
+						<small id="" class="invalid-feedback" th:if="${#fields.hasErrors('department')}" th:errors="*{department}"> </small>
                       </div>
                       <div class="form-group">
                         <h6>
-                          担当者名<span class="badge badge badge-danger ml-1 mt-0">必須</span>
+                          担当者名<span class="badge badge badge-danger ml-1 mt-0 required-badge" style="display: none;">必須</span>
                         </h6>
-                        <input type="text" class="form-control" th:field="*{staffName}" th:classappend="${#fields.hasErrors('department')} ? 'is-invalid'"> <small
-                          id="" class="invalid-feedback" th:if="${#fields.hasErrors('department')}" th:errors="*{department}"> </small>
+                        <input type="text" class="form-control" th:field="*{staffName}" th:classappend="${#fields.hasErrors('department')} ? 'is-invalid'" disabled/>
+						 <small id="" class="invalid-feedback" th:if="${#fields.hasErrors('department')}" th:errors="*{department}"> </small>
                       </div>
 
                   <div class="section-body">
                     <div class="buttons">
-                      <a href="/supplier-management" class="btn btn-light btn-lg">前の画面へ戻る</a>
-                      <button type="submit" class="btn btn-success btn-lg">確認</button>
+                      <a href="/supplier-management" class="btn btn-light btn-lg" onclick="showConfirmModal(event)">前の画面へ戻る</a>
+					  <button type="button" class="btn btn-success btn-lg" id="editButton" onclick="enableEditing()">編集</button>
+                      <button type="submit" class="btn btn-success btn-lg" id="confirmButton" disabled>確認</button>
                     </div>
                   </div>
                 </form>
@@ -155,6 +158,12 @@
 
       <div class="insert" th:insert="~{common/footer :: footer}"></div>
     </div>
+  </div>
+
+  <!-- 編集モーダル -->
+  <div id="model_back">
+    <div class="insert"
+      th:replace="common/modal_window :: modal_window(back_modal, '変更した業者・仕入先情報が反映されていませんが宜しいでしょうか？')"></div>
   </div>
 
   <!-- General JS Scripts -->
@@ -174,6 +183,8 @@
   <!-- Template JS File -->
   <script th:src="@{/assets/js/scripts.js}"></script>
   <script th:src="@{/assets/js/custom.js}"></script>
+  
+  <script th:src="@{/js/Supplier/back.js}"></script>
 
   <!-- Page Specific JS File -->
 

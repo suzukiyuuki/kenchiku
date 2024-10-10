@@ -15,11 +15,13 @@ import com.seproject.buildmanager.entity.MstCode;
 import com.seproject.buildmanager.entity.MstEstimateItem;
 import com.seproject.buildmanager.entity.MstEstimateManagement;
 import com.seproject.buildmanager.entity.MstMatter;
+import com.seproject.buildmanager.entity.MstUser;
 import com.seproject.buildmanager.form.MstEstimateManagementForm;
 import com.seproject.buildmanager.repository.MstCodeRepository;
 import com.seproject.buildmanager.repository.MstEstimateItemRepository;
 import com.seproject.buildmanager.repository.MstEstimateManagementRepository;
 import com.seproject.buildmanager.repository.MstMatterRepository;
+import jakarta.mail.MessagingException;
 
 @Service
 
@@ -39,17 +41,27 @@ public class MstEstimateManagementService {
 
   private final MstCodeService mstCodeService;
 
+  private final EmailService emailService;
+
+  private final CommonService commonService;
+
+  private final MstUserService mstUserService;
+
   public MstEstimateManagementService(
       MstEstimateManagementRepository mstEstimateManagementRepository,
       MstEstimateItemRepository mstEstimateItemRepository, MstCodeRepository mstCodeRepesitory,
       MstMatterRepository mstMatterRepository, MstMatterService mstMatterService,
-      MstCodeService mstCodeService) {
+      MstCodeService mstCodeService, EmailService emailService, CommonService commonService,
+      MstUserService mstUserService) {
     this.mstEstimateManagementRepository = mstEstimateManagementRepository;
     this.mstEstimateItemRepository = mstEstimateItemRepository;
     this.mstCodeRepesitory = mstCodeRepesitory;
     this.mstMatterRepository = mstMatterRepository;
     this.mstMatterService = mstMatterService;
     this.mstCodeService = mstCodeService;
+    this.emailService = emailService;
+    this.commonService = commonService;
+    this.mstUserService = mstUserService;
   }
 
   private static final int SITUATION_STATUS = MstCodeEnums.SITUATION_STATUS.getValue();
@@ -121,6 +133,11 @@ public class MstEstimateManagementService {
     return tmp;
   }
 
+  public MstEstimateManagement getEstimateByMatterIdAndVarsion(Integer matterId, Integer varsion) {
+    return this.mstEstimateManagementRepository.getEstimateByMatterAndVarsion(matterId, varsion)
+        .orElse(null);
+  }
+
   public MstEstimateManagement saveNewEstimate(Integer matterId, List<MstEstimateItem> items) {
 
 
@@ -168,13 +185,13 @@ public class MstEstimateManagementService {
   public Integer newestVarsion(Integer matterId) {
     List<MstEstimateManagement> estimate =
         mstEstimateManagementRepository.getEstimateByMatter(matterId);
-    Integer var = 0;
+    Integer ver = 0;
     for (MstEstimateManagement m : estimate) {
-      if (var < m.getEstimateVersion()) {
-        var = m.getEstimateVersion();
+      if (ver < m.getEstimateVersion()) {
+        ver = m.getEstimateVersion();
       }
     }
-    return var;
+    return ver;
   }
 
   public Map<String, String> mekeEstimateTotals() {
@@ -185,19 +202,37 @@ public class MstEstimateManagementService {
     totals.put("原状回復工事費用承諾書用小計", "approvalSubtotal");
     totals.put("原状回復工事費用承諾書用消費税", "approvalTax");
     totals.put("原状回復工事費用承諾書用合計", "approvalTotal");
-    totals.put("メモ", "memo");
     return totals;
   }
 
-  public void sendSimpleMail(String email, String emailToken, String loginCd) {
+  public String detailSheetUrl(Integer matterId) {
+    MstCode situationStatus = this.mstCodeService.getCodeByKindAndName("修繕", TASK_SUBSTANCE);
+    if (this.mstMatterService.findDisplayById(matterId).getTaskSubstance() == situationStatus
+        .getCodeBranchNum()) {
+      return "/js/estimate/detailSheetRepairText.js";
+    } else {
+      return "/js/estimate/detailSheetRecessionText.js";
+    }
+  }
+
+  public void sendMail(String matterName) {
     Map<String, Object> variables = new HashMap<>();
-    variables.put("token", emailToken);
-    variables.put("loginCd", loginCd);
-    /*
-     * try { // 承認依頼メールをHTML形式で送信 emailService.sendHtmlEmail(email, "承認依頼", variables,
-     * "/request.html", null); // ファイル名修正 } catch (MessagingException e) { e.printStackTrace(); //
-     * 例外処理 }
-     */
+    MstUser testUser = this.mstUserService.getUserById(this.commonService.getLoginUserId());
+    variables.put("name", this.commonService.getLoginUserName());
+    variables.put("matterName", matterName);
+
+    try { // 承認依頼メールをHTML形式で送信
+      emailService.sendHtmlEmail(testUser.getEmail(), "承認依頼", variables, "/request.txt", null); // ファイル名修正
+    } catch (MessagingException e) {
+      e.printStackTrace(); // 例外処理
+    }
+
+  }
+
+  public List<MstEstimateManagement> getEstimateVarsionById(Integer matterId) {
+    List<MstEstimateManagement> estimate =
+        mstEstimateManagementRepository.getEstimateByMatter(matterId);
+    return estimate;
   }
 
 }

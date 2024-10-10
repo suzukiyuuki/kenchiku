@@ -21,6 +21,20 @@
   <link rel="stylesheet" th:href="@{/assets/css/components.css}">
 </head>
 
+<style>
+  /* 各行のスタイル */
+  tr {
+    height: 50px; /* 行の高さを指定 */
+  }
+
+  /* 各セルのスタイル */
+  td {
+    border: none;
+    padding: 15px; /* セルの内側の余白を指定 */
+    width: 30%;
+  }
+</style>
+
 <body>
   <div id="app">
     <div class="main-wrapper">
@@ -36,94 +50,132 @@
           </div>          
           <div class="section-body">
             <h2 class="section-title mb-5">物件変更　確認</h2>
-            <p class="section-lead">
-              この情報で変更します。よろしいですか？
-            </p>
+            <p class="section-lead">この情報で変更します。よろしいですか？</p>
+            
             <div class="row">
               <div class="col-12 col-lg-8">
                 <form method="post" th:object="${mstFloorManagementForm}" th:action="@{/floor-management/save-update}">
                 <div class="card">
                   <div class="card-body">
-                  
                       <div class="form-group">
-                        <h6>顧客名<span class="badge badge-danger ml-1 mt-0">必須</span></h6>
-                        <h5><span th:text="${mstFloorManagementForm.customerName}"></span></h5> 
-                        <input type="hidden" th:field="*{customerName}" th:value="${mstFloorManagementForm.customerName}">
-                        <input type="hidden" th:field="*{customerId}" th:value="${mstFloorManagementForm.customerId}">
-                      </div>
-                      
-                     <div class="form-group">
-                        <h6>オーナー名<span class="badge badge-danger ml-1 mt-0">必須</span></h6>
-                        <h5><span th:text="${mstFloorManagementForm.ownerName}"></span></h5> 
-                        <input type="hidden" th:field="*{ownerName}" th:value="${mstFloorManagementForm.ownerName}">
-                        <input type="hidden" th:field="*{ownerId}" th:value="${mstFloorManagementForm.ownerId}">
-                      </div>          
-                               
-                      <div class="form-group p-1">
-                        <h6>物件名</h6> <input type="text" class="form-control"
-                          th:value="${mstFloorManagementForm.floorName}" readonly>
-                      <input type="hidden" th:field="*{floorName}" th:value="${mstFloorManagementForm.floorName}">
-                      </div>
-                      
-                      <div class="form-group p-1">
-                        <h6>間取り</h6> <input type="text" class="form-control"
-                          th:value="${mstFloorManagementForm.arrangement}" readonly>
-                      <input type="hidden" th:field="*{arrangement}" th:value="${mstFloorManagementForm.arrangement}">
-                      </div>
-                      
-                      <div class="form-group p-1">
-                        <h6>家賃</h6> <input type="text" class="form-control"
-                          th:value="${mstFloorManagementForm.rent}" readonly>
-                      <input type="hidden" th:field="*{rent}" th:value="${mstFloorManagementForm.rent}">
-                      </div>
-                      
-                      <div class="form-group p-1">
-                        <h6>敷金</h6> <input type="text" class="form-control"
-                          th:value="${mstFloorManagementForm.securityDeposit}" readonly>
-                      <input type="hidden" th:field="*{securityDeposit}" th:value="${mstFloorManagementForm.securityDeposit}">
-                      </div>
-
-                      <div class="form-group p-1">
-                        <h6>郵便番号</h6> <input type="text" class="form-control"
-                          th:value="${mstFloorManagementForm.postCode}" readonly>
-                      <input type="hidden" th:field="*{postCode}" th:value="${mstFloorManagementForm.postCode}">
-                      </div>
-
-                      <div class="form-group">
-                      <h6>都道府県<span class="badge badge badge-danger ml-1 mt-0">必須</span></h6>
-                      <h5><span th:text="${mstFloorManagementForm.prefectures}"></span></h5> 
-                        <input type="hidden" th:field="*{prefectures}" th:value="${mstFloorManagementForm.prefectures}">
-                    </div>
-
-                      <div class="form-group p-1">
-                        <h6>住所</h6> <input type="text" class="form-control"
-                          th:value="${mstFloorManagementForm.address}" readonly>
-                      <input type="hidden" th:field="*{address}" th:value="${mstFloorManagementForm.address}">
-                      </div>
-
-                      <div class="form-group p-1">
-                        <h6>建物名</h6> <input type="text" class="form-control"
-                          th:value="${mstFloorManagementForm.buildingName}" readonly>
-                      <input type="hidden" th:field="*{buildingName}" th:value="${mstFloorManagementForm.buildingName}">
-                      </div>
-
-                      <div class="form-group">
-                        <h6>電話番号</h6> <input type="tel" class="form-control"
-                          th:value="${mstFloorManagementForm.phone}" readonly>
-                        <input type="hidden" th:field="*{phone}" th:value="${mstFloorManagementForm.phone}">
-                      </div>
-                      
-                      <div class="form-group">
-                        <h6>携帯番号</h6> <input type="tel" class="form-control"
-                          th:value="${mstFloorManagementForm.mobilePhone}" readonly>
-                      <input type="hidden" th:field="*{mobilePhone}" th:value="${mstFloorManagementForm.mobilePhone}">
-                          
-                      </div>
-
-                      <div class="form-group p-1">
-                        <h6>坪数</h6> <input type="text" class="form-control"
-                          th:value="${mstFloorManagementForm.area}" readonly>
-                      <input type="hidden" th:field="*{area}" th:value="${mstFloorManagementForm.area}">
+                      <table style="border-collapse: collapse; width: 100%;">
+                        <tr>
+                          <td><h6>顧客名<span class="badge badge-danger ml-1 mt-0">必須</span></h6></td>
+                          <td>
+                            <h5><span th:text="${mstFloorManagementForm.customerName}"></span></h5> 
+                            <input type="hidden" th:field="*{customerName}" th:value="${mstFloorManagementForm.customerName}">
+                            <input type="hidden" th:field="*{customerId}" th:value="${mstFloorManagementForm.customerId}">
+                          </td>
+                         </tr>
+                        
+                        <tr>
+                          <td><h6>オーナー名<span class="badge badge-danger ml-1 mt-0">必須</span></h6></td>
+                          <td>
+                            <h5><span th:text="${mstFloorManagementForm.ownerName}"></span></h5> 
+                            <input type="hidden" th:field="*{ownerName}" th:value="${mstFloorManagementForm.ownerName}">
+                            <input type="hidden" th:field="*{ownerId}" th:value="${mstFloorManagementForm.ownerId}">
+                          </td>
+                        </tr>
+                                 
+                        <tr>
+                          <td><h6>物件名</h6></td>
+                          <td>
+                            <h5><span th:text="${mstFloorManagementForm.floorName}"></span></h5> 
+                            <input type="hidden" class="form-control" th:value="${mstFloorManagementForm.floorName}">
+                            <input type="hidden" th:field="*{floorName}" th:value="${mstFloorManagementForm.floorName}">
+                          </td>
+                        </tr>
+                        
+                        <tr>
+                          <td><h6>間取り</h6></td>
+                          <td>
+                            <h5><span th:text="${mstFloorManagementForm.arrangement}"></span></h5> 
+                            <input type="hidden" class="form-control" th:value="${mstFloorManagementForm.arrangement}">
+                            <input type="hidden" th:field="*{arrangement}" th:value="${mstFloorManagementForm.arrangement}">
+                          </td>
+                        </tr>
+                        
+                         <tr>
+                          <td><h6>家賃</h6></td>
+                          <td>
+                            <h5><span th:text="${mstFloorManagementForm.rent}"></span>円</h5>
+                            <input type="hidden" class="form-control" th:value="${mstFloorManagementForm.rent}">
+                            <input type="hidden" th:field="*{rent}" th:value="${mstFloorManagementForm.rent}">
+                          </td>
+                        </tr>
+                        
+                        <tr>
+                          <td><h6>敷金</h6></td>
+                          <td>
+                            <h5><span th:text="${mstFloorManagementForm.securityDeposit}"></span>円</h5> 
+                            <input type="hidden" class="form-control" th:value="${mstFloorManagementForm.securityDeposit}">
+                            <input type="hidden" th:field="*{securityDeposit}" th:value="${mstFloorManagementForm.securityDeposit}">
+                          </td>
+                        </tr>
+  
+                        <tr>
+                          <td><h6>郵便番号</h6></td>
+                          <td>
+                            <h5><span th:text="${mstFloorManagementForm.postCode}"></span></h5> 
+                            <input type="hidden" class="form-control" th:value="${mstFloorManagementForm.postCode}">
+                            <input type="hidden" th:field="*{postCode}" th:value="${mstFloorManagementForm.postCode}">
+                          </td>
+                        </tr>
+  
+                       
+                        <tr>
+                          <td><h6>都道府県<span class="badge badge badge-danger ml-1 mt-0">必須</span></h6></td>
+                          <td>
+                            <h5><span th:text="${mstFloorManagementForm.prefectures}"></span></h5> 
+                            <input type="hidden" th:field="*{prefectures}" th:value="${mstFloorManagementForm.prefectures}">
+                          </td>
+                        </tr>
+                        
+                        <tr>
+                          <td><h6>住所</h6></td>
+                          <td>
+                            <h5><span th:text="${mstFloorManagementForm.address}"></span></h5> 
+                            <input type="hidden" class="form-control" th:value="${mstFloorManagementForm.address}">
+                            <input type="hidden" th:field="*{address}" th:value="${mstFloorManagementForm.address}">
+                          </td>
+                        </tr>
+  
+                        <tr>
+                          <td><h6>建物名</h6></td>
+                          <td>
+                            <h5><span th:text="${mstFloorManagementForm.buildingName}"></span></h5> 
+                            <input type="hidden" class="form-control" th:value="${mstFloorManagementForm.buildingName}">
+                            <input type="hidden" th:field="*{buildingName}" th:value="${mstFloorManagementForm.buildingName}">
+                          </td>
+                        </tr>
+                        
+                        <tr>
+                          <td><h6>電話番号</h6></td>
+                          <td>
+                            <h5><span th:text="${mstFloorManagementForm.phone}"></span></h5> 
+                            <input type="hidden" class="form-control" th:value="${mstFloorManagementForm.phone}">
+                            <input type="hidden" th:field="*{phone}" th:value="${mstFloorManagementForm.phone}">
+                          </td>
+                        </tr>
+                        
+                        <tr>
+                          <td><h6>携帯番号</h6></td>
+                          <td>
+                            <h5><span th:text="${mstFloorManagementForm.mobilePhone}"></span></h5> 
+                            <input type="hidden" class="form-control" th:value="${mstFloorManagementForm.mobilePhone}">
+                            <input type="hidden" th:field="*{mobilePhone}" th:value="${mstFloorManagementForm.mobilePhone}">
+                          </td>  
+                        </tr>
+                        
+                        <tr>    
+                          <td><h6>坪数</h6></td>
+                          <td>
+                            <h5><span th:text="${mstFloorManagementForm.area}"></span>坪</h5> 
+                            <input type="hidden" class="form-control" th:value="${mstFloorManagementForm.area}">
+                            <input type="hidden" th:field="*{area}" th:value="${mstFloorManagementForm.area}">
+                          </td>
+                        </tr>
+                       </table>
                       </div>
 
                       

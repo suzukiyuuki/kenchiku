@@ -69,6 +69,7 @@
                         <thead>
                           <tr>
                             <th class="text-center"></th>
+                            <th>見積承認審査</th>
                             <th>ステータス</th>
                             <th>状況ステータス</th>
                             <th>種別<br />案件名
@@ -83,10 +84,12 @@
                         </thead>
                         <tbody id="tbody">
                           <th:block th:each="estimateInfo : ${estimateManagementInfo}">
-                            <tr>
-                              <td><a
-                                th:href="@{estimate/detail(id=${estimateInfo.id})}"
+                            <tr class="tr">
+                              <td><a th:href="@{estimate/detail(id=${estimateInfo.id})}"
                                 class="btn btn-primary">詳細</a></td>
+                              <td><a th:href="@{estimate/request-view(id=${estimateInfo.id})}"
+                                class="btn btn-primary disappear">見積承認依頼一覧</a> <input
+                                type="hidden" id="current_varsion" th:value="${varsion}"></td>
                               <td>
                                 <div class="form-group mb-0">
                                   <th:block th:if="${estimateInfo.status} eq ${statusTrue}">
@@ -111,16 +114,13 @@
                               </td>
                               <td>
                                 <div class="form-group mb-0">
-                                  <select class="form-control" th:id="${estimateInfo.id}" name="status">
-                                    <th:block th:each="situation : ${estimateInfo.situationStatusSelectList}">
+                                  <select class="form-control situation" th:id="${estimateInfo.id}"
+                                    name="status">
+                                    <th:block
+                                      th:each="situation : ${estimateInfo.situationStatusSelectList}">
                                       <th:block
                                         th:if="${situation.codeName} eq ${estimateInfo.situationStatus}">
                                         <option th:value="${situation.codeName}" selected><span
-                                            th:text="${situation.codeName}"></span></option>
-                                      </th:block>
-                                      <th:block
-                                        th:if="${situation.codeName} ne ${estimateInfo.situationStatus}">
-                                        <option th:value="${situation.codeName}"><span
                                             th:text="${situation.codeName}"></span></option>
                                       </th:block>
                                     </th:block>
@@ -195,6 +195,7 @@
 
   <!-- Page Specific JS File -->
   <script src="../../assets/js/page/modules-datatables.js"></script>
+  <script th:src="@{/js/estimate/disappearButton.js}"></script>
 
   <script>
 			

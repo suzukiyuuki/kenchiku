@@ -47,7 +47,7 @@
 
             <div class="row">
               <div class="col-12 col-lg-8">
-                <form th:action="@{/floor-management/register}" th:object="${mstFloorManagement}" method="post"novalidate>
+                <form th:action="@{/floor-management/register}" class="h-adr" th:object="${mstFloorManagement}" method="post"novalidate>
                 <input type="hidden" name="transactionToken" th:value="${transactionToken}">
                 <input type="hidden" th:field="*{status}" value="1">
                 <div class="card">
@@ -97,14 +97,15 @@
 
                       <div class="form-group">
                         <h6>郵便番号</h6>
-                        <input type="text" class="form-control" th:field="*{postCode}" th:classappend="${#fields.hasErrors('postCode')} ? 'is-invalid'" />
-                        <small class="invalid-feedback"> ハイフンを含む書式で入力してください（例：012-3456） </small>
+                        <input type="text" class="form-control p-postal-code" th:field="*{postCode}" th:classappend="${#fields.hasErrors('postCode')} ? 'is-invalid'" />
+						<input type="hidden" class="p-country-name" value="Japan">
+						<small class="invalid-feedback"> ハイフンを含まない書式で入力してください </small>
                         <small class="invalid-feedback" th:if="${#fields.hasErrors('postCode')}" th:errors="*{postCode}"></small>
                       </div>
 
                       <div class="form-group">
                         <h6>都道府県<span class="badge badge badge-danger ml-1 mt-0">必須</span></h6>
-                        <select class="form-control w-50" th:field="*{prefectures}">
+                        <select class="form-control w-50 p-region" th:field="*{prefectures}">
                            <th:block th:each="pref : ${prefectures}">
                               <option th:value="${pref.codeName}"><span th:text="${pref.codeName}"></span></option>
                            </th:block>
@@ -113,7 +114,7 @@
                     
                       <div class="form-group">
                         <h6>住所</h6>
-                        <input type="text" class="form-control" th:field="*{address}">
+                        <input type="text" class="form-control p-locality p-street-address p-extended-address" th:field="*{address}">
                         <small id="" class="form-text text-muted">
                         </small>
                       </div>
@@ -128,14 +129,14 @@
                       <div class="form-group">
                         <h6>電話番号</h6>
                         <input type="text" class="form-control w-50" th:field="*{phone}" th:classappend="${#fields.hasErrors('phone')} ? 'is-invalid'" aria-describedby="nameHelpBlock"/>                     
-                         <small id="nameHelpBlock" class="form-text text-muted"> 0x00-00-1111のような書式で入力してください </small>                  
+                         <small id="nameHelpBlock" class="form-text text-muted"> ハイフンを含まない書式で入力してください </small>                  
                         <small class="invalid-feedback" th:if="${#fields.hasErrors('phone')}" th:errors="*{phone}"></small> 
                       </div>
 
                       <div class="form-group">
                         <h6>携帯番号</h6>
                         <input type="text" class="form-control w-50" th:field="*{mobilePhone}" th:classappend="${#fields.hasErrors('mobilePhone')} ? 'is-invalid'" />   
-                         <small id="nameHelpBlock" class="form-text text-muted"> 0x0-0000-1111のような書式で入力してください </small>                  
+                         <small id="nameHelpBlock" class="form-text text-muted"> ハイフンを含まない書式で入力してください </small>                  
                         <small class="invalid-feedback" th:if="${#fields.hasErrors('mobilePhone')}" th:errors="*{mobilePhone}"></small>
                       </div>
     
@@ -149,11 +150,7 @@
 
                       <div class="section-body">
                   <div class="buttons">
-                    <a
-                      href="/floor-management"
-                      class="btn btn-light btn-lg"
-                      >前の画面へ戻る</a
-                    >
+                    <a href="/floor-management" class="btn btn-light btn-lg" id="back" onclick="showConfirmModal(event)">前の画面へ戻る</a>
                     <button type="submit" class="btn btn-success btn-lg">確認</button>
                   </div>
                 </div>
@@ -175,6 +172,13 @@
       </footer>
     </div>
   </div>
+  
+      <!-- 編集モーダル -->
+  <div id="model_back">
+    <div class="insert"
+      th:replace="common/modal_window :: modal_window(back_modal, '作成した物件情報が登録されていませんが宜しいでしょうか？')"></div>
+  </div>
+ 
 
   <!-- General JS Scripts -->
   <script src="https://cdn.jsdelivr.net/npm/jquery@3.6.0/dist/jquery.min.js"></script>
@@ -185,10 +189,13 @@
   <script src="@{/assets/js/stisla.js}"></script>
 
   <!-- JS Libraies -->
+  
 <script th:src="@{/assets/js/admin/jquery.dataTables.custom.js}"></script>
   <script th:src="@{/node_modules/datatables.net-bs4/js/dataTables.bootstrap4.min.js}"></script>
   <script th:src="@{/node_modules/datatables.net-select-bs4/js/select.bootstrap4.min.js}"></script>
   <script th:src="@{/node_modules/jquery-ui-dist/jquery-ui.min.js}"></script>
+  <script src="https://yubinbango.github.io/yubinbango/yubinbango.js" charset="UTF-8"></script>
+
   <!-- Template JS File -->
   <script th:src="@{/assets/js/scripts.js}"></script> 
    <script th:src="@{/assets/js/custom.js}"></script> 
@@ -196,5 +203,8 @@
   <!-- Page Specific JS File -->
   <script th:src="@{/assets/js/page/modules-datatables.js}"></script>
   <script th:src="@{/assets/js/admin/sep.dataTables.common.js}"></script>
+  
+  <script th:src="@{/js/floor/backModal.js}"></script>
+  
 </body>
 </html>

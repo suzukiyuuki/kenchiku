@@ -2,6 +2,9 @@ package com.seproject.buildmanager.controller;
 
 import java.util.List;
 import java.util.UUID;
+import jakarta.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpServletResponse;
+import jakarta.servlet.http.HttpSession;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
@@ -26,9 +29,6 @@ import com.seproject.buildmanager.repository.MstSupplierManagementRepository;
 import com.seproject.buildmanager.service.MstCodeService;
 import com.seproject.buildmanager.service.MstSupplierManagementService;
 import com.seproject.buildmanager.validation.ValidationGroups;
-import jakarta.servlet.http.HttpServletRequest;
-import jakarta.servlet.http.HttpServletResponse;
-import jakarta.servlet.http.HttpSession;
 
 @Controller
 @RequestMapping("supplier-management")
@@ -142,9 +142,31 @@ public class SupplierManagementController {
   @PostMapping("save")
   @TransactionTokenCheck("save")
   public String saveSupplier(
-      @ModelAttribute("mstSupplierForm") MstSupplierManagementForm mstSupplierForm) {
+      @ModelAttribute("mstSupplierForm") MstSupplierManagementForm mstSupplierForm,
+      @RequestParam("btn") String btnValue, HttpSession session, Model model) {
 
     logger.info("--- SupplierManagementController.savesaveSupplierManagement START ---");
+    
+    if("btn1".equals(btnValue)) {
+      List<MstSupplierManagement> supplier = mstSupplierService.getAllSupplierManagement();
+      model.addAttribute("supplier", supplier);
+      String transactionToken = UUID.randomUUID().toString();
+      session.setAttribute("transactionToken", transactionToken);
+      model.addAttribute("transactionToken", transactionToken);
+
+
+      // 都道府県のリスト
+      model.addAttribute("prefectures", mstCodeService.getCodeByKind(PREFECTURES));
+      // 業者か個人か
+      model.addAttribute("select_supplier", mstCodeService.getCodeByKind(SELECT_SUPPLIER));
+
+      model.addAttribute("transactionToken", transactionToken);
+      
+      model.addAttribute("mstSupplierManagement",mstSupplierForm);
+      
+      return "supplierManagement/supplier_register";
+
+    }
     mstSupplierForm.setId(null);
     mstSupplierService.saveSupplierManagement(mstSupplierForm);
 

@@ -159,7 +159,7 @@
                           <th:block th:each="floorInfo : ${floor}">
                             <tr>
                               <td><a th:href="@{/floor-management/update(id=${floorInfo.id})}"
-                                class="btn btn-primary">変更</a></td>
+                                class="btn btn-primary">詳細</a></td>
                               <td>
                                 <div class="form-group mb-0">
                                   <th:block th:if="${floorInfo.status} eq ${statusTrue}">
@@ -233,6 +233,10 @@
       </div>
     </div>
   </div>
+  
+  <!-- modal --> 
+    <div class="insert" th:replace="common/modal_window :: modal_window(confirmModal, ステータスを変更しますか？)"></div>
+    
 
   <!-- General JS Scripts -->
   <script src="https://cdn.jsdelivr.net/npm/jquery@3.6.0/dist/jquery.min.js"></script>
@@ -267,6 +271,7 @@
   <!-- Page Specific JS File -->
   <script th:src="@{/assets/js/page/modules-datatables.js}"></script>
 
+  <script th:src="@{/js/common/switchStatus.js}"></script>
   <script th:src="@{/js/floor/floorManagement.js}"></script>
 
   <script th:src="@{/assets/js/admin/sep.dataTables.common.js}"></script>

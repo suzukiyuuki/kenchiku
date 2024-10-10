@@ -25,6 +25,9 @@ public class MstAcceptingOrderDetailHistory {
   @Column(name = "order_detail_id")
   private Integer orderDetailId; // 発注詳細id
 
+  @Column(name = "note")
+  private String note; // 内容
+
   @Column(name = "registered_user_id")
   private Integer registeredUserId; // 登録ユーザーid
 

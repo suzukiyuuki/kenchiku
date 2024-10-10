@@ -106,23 +106,6 @@
               <div class="card">
                 <div class="card-header">
                   <a th:href="@{/cost/register}" class="btn btn-primary btn-lg w-25 ml-1 btn-square mt-2">新規作成</a>
-                  
-                      <form method="post" th:action="@{/cost/upload}" class="upload-form">
-                       <button type="submit" class="btn btn-primary btn-lg fas fa-upload" id="uploadButton" title="アップロード"></button>
-                      </form>
-                     
-                   <form method="post" th:action="@{/cost/download}" th:object="${searchCost}" class="download-form">
-                   <input type="hidden" class="form-control" th:field="*{custName}" th:value="${searchCost.custName}" id="custName">
-                    <input type="hidden" class="form-control" th:field="*{groupName}" th:value="${searchCost.groupName}" id="groupName">
-                    <input type="hidden" class="form-control" th:field="*{costContents}" th:value="${searchCost.costContents}" id="costContents">
-                    <input type="hidden" class="form-control" th:field="*{costPrice1}" th:value="${searchCost.costPrice1}" id="costPrice1">
-                    <input type="hidden" class="form-control" th:field="*{costPrice3}" th:value="${searchCost.costPrice3}" id="costPrice3">
-                    <input type="hidden" class="form-control" th:field="*{status}" th:value="${searchCost.status}" id="status">
-                    <input type="hidden" class="form-control" th:field="*{createAt1}" th:value="${searchCost.createAt1}" id="createAt1">
-                    <input type="hidden" class="form-control" th:field="*{updatedAt1}" th:value="${searchCost.updatedAt1}" id="updatedAt1">
-                    <button type="submit" class="btn btn-primary btn-lg btn-download"
-                         id="downloadButton" title="ダウンロード"><i class="fas fa-download"></i></button>
-                    </form>
                 </div>
 				
                 <div class="card-body">
@@ -147,7 +130,7 @@
                         <th:block th:each="cost: ${cost}">
                           <tr>
                             <td><a th:href="@{/cost/update(id=${cost.id})}"
-                              class="btn btn-primary">変更</a></td>
+                              class="btn btn-primary">詳細</a></td>
                             <td>
                               <div class="form-group mb-0">
                                 <th:block th:if="${cost.status} eq ${statusTrue}">
@@ -178,8 +161,11 @@
                               </div>
                             </td>
 
-                            <td><span th:text="${cost.custName}"> <span hidden="hideen"
-                                id="id" th:text="${cost.id}"> </span></span></td>
+                            <td>
+                              <span th:text="${cost.custName}">
+                                 <span hidden="hideen" id="id" th:text="${cost.id}"></span>
+                               </span>
+                            </td>
                             <td><span th:text="${cost.groupName}"></span></td>
                             <td><span th:text="${cost.costContents}"></span></td>
                             <td><span th:text="${cost.costPrice}"></span>円</td>
@@ -253,6 +239,7 @@
   <script th:src="@{/assets/js/custom.js}"></script>
 
   <!-- Page Specific JS File -->
+  <script th:src="@{/js/common/switchStatus.js}"></script>
   <script th:src="@{/assets/js/page/modules-datatables.js}"></script>
 
   <script th:src="@{/js/Cost/cost.js}"></script>

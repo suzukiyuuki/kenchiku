@@ -159,30 +159,29 @@
                           id="" class="invalid-feedback" th:if="${#fields.hasErrors('department')}" th:errors="*{department}"> </small>
                       </div>
 
-
-
-                    
-
-
-
                     <input type="hidden" value="1" id="status" th:field="*{status}" name="status" />
                 </form>
                 <div class="section-body">
                   <div class="buttons">
-                    <a href="/supplier-management" class="btn btn-light btn-lg">前の画面へ戻る</a>
+                    <a href="/supplier-management" class="btn btn-light btn-lg" id="back" onclick="showConfirmModal(event)">前の画面へ戻る</a>
                     <button type="submit" class="btn btn-success btn-lg">確認</button>
                     </div>
                     </div>
                   </div>
                 </div>
               </div>
-            </div>
-          </div>
-        </section>
+            </section>
+           </div>
+       </div>
       </div>
-    </div>
     <div class="insert" th:insert="~{common/footer :: footer}"></div>
+  
+      <!-- 編集モーダル -->
+  <div id="model_back">
+    <div class="insert"
+      th:replace="common/modal_window :: modal_window(back_modal, '作成した業者・仕入先情報が登録されていませんが宜しいでしょうか？')"></div>
   </div>
+  
 
 
   <!-- General JS Scripts -->
@@ -211,6 +210,8 @@
   <!-- Page Specific JS File -->
   <script th:src="@{/assets/js/page/modules-datatables.js}"></script>
   <script th:src="@{/assets/js/admin/sep.dataTables.common.js}"></script>
+  <script th:src="@{/js/Supplier/backModal.js}"></script>
+  
 
 </body>
 </html>

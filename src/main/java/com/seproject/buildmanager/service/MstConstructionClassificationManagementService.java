@@ -125,13 +125,12 @@ public class MstConstructionClassificationManagementService implements
       MstConstructionClassificationManagement mstCost, String custName, String groupName) {
     MstConstructionClassificationManagementtForm tmp =
         new MstConstructionClassificationManagementtForm();
-    tmp.setCustId(String.valueOf(mstCost.getCustId())); // 顧客ID
     tmp.setCustName(custName); // 顧客名
     tmp.setCostGroupId(String.valueOf(mstCost.getCostGroupId())); // 工事区分分類ID
     tmp.setGroupName(groupName); // 工事区分分類名
     tmp.setViewDetail(mstCost.getViewDetail()); // 表示順
     tmp.setCostContents(mstCost.getCostContents()); // 作業内容
-    tmp.setContentsKana(mstCost.getContentsKana()); // 作業内容カナ
+    // tmp.setContentsKana(mstCost.getContentsKana()); // 作業内容カナ
     tmp.setCostPrice(mstCost.getCostPrice()); // 原状回復工事費用承諾書用単価
     tmp.setCostPrice2(mstCost.getCostPrice2()); // 見積用単価
     tmp.setCreateAt(mstCost.getCreateAt());
@@ -157,6 +156,9 @@ public class MstConstructionClassificationManagementService implements
       Integer groupId) {
     List<MstConstructionClassificationManagement> costList =
         mstCostRepository.findByContents(contents, groupId);
+    if (costList == null || costList.isEmpty()) {
+      return null;
+    }
     return costList.get(0);
   }
 
@@ -175,13 +177,12 @@ public class MstConstructionClassificationManagementService implements
     logger.info("--- MstCostService.saveCost START ---");
 
     MstConstructionClassificationManagement tmp = new MstConstructionClassificationManagement();
-    tmp.setCustId(Integer.parseInt(mstCostForm.getCustId()));
     tmp.setCustName(mstCostForm.getCustName());
     tmp.setCostGroupId(Integer.parseInt(mstCostForm.getCostGroupId()));
     tmp.setGroupName(mstCostForm.getGroupName());
     tmp.setViewDetail(mstCostForm.getViewDetail());
     tmp.setCostContents(mstCostForm.getCostContents());
-    tmp.setContentsKana(mstCostForm.getContentsKana());
+    // tmp.setContentsKana(mstCostForm.getContentsKana());
     tmp.setCostPrice(mstCostForm.getCostPrice());
     tmp.setCostPrice2(mstCostForm.getCostPrice2());
 
@@ -216,13 +217,12 @@ public class MstConstructionClassificationManagementService implements
 
     MstConstructionClassificationManagement tmp = new MstConstructionClassificationManagement();
     tmp.setId(mstCostForm.getId());
-    tmp.setCustId(Integer.parseInt(mstCostForm.getCustId())); // 顧客ID
     tmp.setCustName(mstCostForm.getCustName());
     tmp.setCostGroupId(Integer.parseInt(mstCostForm.getCostGroupId())); // 工事区分分類ID
     tmp.setGroupName(mstCostForm.getGroupName());
     tmp.setViewDetail(mstCostForm.getViewDetail()); // 表示順
     tmp.setCostContents(mstCostForm.getCostContents()); // 作業内容
-    tmp.setContentsKana(mstCostForm.getContentsKana()); // 作業内容カナ
+    // tmp.setContentsKana(mstCostForm.getContentsKana()); // 作業内容カナ
     tmp.setCostPrice(mstCostForm.getCostPrice()); // 原状回復工事費用承諾書用単価
     tmp.setCostPrice2(mstCostForm.getCostPrice2()); // 見積用単価
     tmp.setCreateAt(mstCostForm.getCreateAt());
@@ -260,11 +260,10 @@ public class MstConstructionClassificationManagementService implements
     tmp.setId(mstCost.getId());
     tmp.setCostGroupId(String.valueOf(mstCost.getCostGroupId())); // 工事区分分類ID
     tmp.setGroupName(mstCost.getGroupName());
-    tmp.setCustId(String.valueOf(mstCost.getCustId())); // 顧客ID
     tmp.setCustName(mstCost.getCustName());
     tmp.setViewDetail(mstCost.getViewDetail()); // 表示順
     tmp.setCostContents(mstCost.getCostContents()); // 作業内容
-    tmp.setContentsKana(mstCost.getContentsKana()); // 作業内容カナ
+    // tmp.setContentsKana(mstCost.getContentsKana()); // 作業内容カナ
     tmp.setCostPrice(mstCost.getCostPrice()); // 原状回復工事費用承諾書用単価
     tmp.setCostPrice2(mstCost.getCostPrice2()); // 見積用単価
     tmp.setStatus(String.valueOf(mstCost.getStatus()));
@@ -288,13 +287,12 @@ public class MstConstructionClassificationManagementService implements
 
     MstConstructionClassificationManagement tmp = new MstConstructionClassificationManagement();
     tmp.setId(n.getId());
-    tmp.setCustId(n.getCustId()); // 顧客ID
     tmp.setCustName(n.getCustName());
     tmp.setCostGroupId(n.getCostGroupId()); // 工事区分分類ID
     tmp.setGroupName(n.getGroupName());
     tmp.setViewDetail(Integer.parseInt(a)); // 表示順
     tmp.setCostContents(n.getCostContents()); // 作業内容
-    tmp.setContentsKana(n.getContentsKana()); // 作業内容カナ
+    // tmp.setContentsKana(n.getContentsKana()); // 作業内容カナ
     tmp.setCostPrice(n.getCostPrice()); // 原状回復工事費用承諾書用単価
     tmp.setCostPrice2(n.getCostPrice2());// 見積用単価
 

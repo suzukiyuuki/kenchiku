@@ -6,8 +6,8 @@ import lombok.Data;
 @Data
 public class MstAcceptingOrderForm {
   private String id;
-  private String matterId; // 案件id
-  private String estimateId; // 見積id
+  private MstMatterForm matterId; // 案件id
+  private MstEstimateItemForm estimateItemId; // 見積項目id
   private String suppliermanagementId; // 業者仕入先id
   private String suppliermanagementName;// 業者仕入れ先名
   private String orderStatus; // 発注ステータス

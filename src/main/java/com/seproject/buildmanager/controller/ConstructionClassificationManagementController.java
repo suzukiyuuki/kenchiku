@@ -119,7 +119,8 @@ public class ConstructionClassificationManagementController {
   @PostMapping("register")
   public String processRegistration(
       @ModelAttribute("mstCost") @Validated(ValidationGroups.Registration.class) MstConstructionClassificationManagementtForm mstCostForm,
-      BindingResult bindingResult, HttpSession session, Model model) {// 新規登録確認画面
+      BindingResult bindingResult, HttpSession session, Model model,
+      @RequestParam(name = "corpName") String custName) {// 新規登録確認画面
 
     logger.info("--- CostController.processRegistration START ---");
     // bindingResult.hasErrors()でチェックの結果を取得 trueの場合、エラーがあるということになる
@@ -146,8 +147,13 @@ public class ConstructionClassificationManagementController {
       return "constructionClassificationManagement/cost_register";
     }
 
-    mstCostForm.setCustName(mstCustomerService
-        .getCustomerById(Integer.parseInt(mstCostForm.getCustId())).getCorpName());
+    if (mstCostForm.getCustId() == null || mstCostForm.getCustId().isEmpty()) {
+      mstCostForm.setCustName(custName);
+    } else {
+      mstCostForm.setCustName(mstCustomerService
+          .getCustomerById(Integer.parseInt(mstCostForm.getCustId())).getCorpName());
+    }
+
     model.addAttribute("mstCostForm", mstCostForm);
 
     mstCostForm.setGroupName(mstConstructionService
@@ -164,9 +170,32 @@ public class ConstructionClassificationManagementController {
   @PostMapping("saveRegister")
   @TransactionTokenCheck("saveRegister")
   public String saveCostRegister(MstConstructionClassificationManagementtForm mstCostForm,
-      @AuthenticationPrincipal LoginUserDetails user) {// DBに登録
+      @AuthenticationPrincipal LoginUserDetails user, @RequestParam("btn") String btnValue,
+      HttpSession session, Model model) {// DBに登録
 
     logger.info("--- CostController.saveCost START ---");
+
+    if ("btn1".equals(btnValue)) {
+      List<MstCustomer> customer = mstCustomerService.getAllCustomers();
+      model.addAttribute("customer", customer);
+      model.addAttribute("inputCustomer", new MstCustomer());
+
+      List<MstConstruction> construction = mstConstructionService.getAllConstructions();
+      model.addAttribute("construction", construction);
+      model.addAttribute("inputConstruction", new MstConstruction());
+
+
+      String transactionToken = UUID.randomUUID().toString();
+      session.setAttribute("transactionToken", transactionToken);
+      model.addAttribute("transactionToken", transactionToken);
+
+      // 単位のリスト
+      model.addAttribute("unitId", mstCodeService.getCodeByKind(UNIT));
+
+      model.addAttribute("mstCost", mstCostForm);
+      return "constructionClassificationManagement/cost_register";
+
+    }
 
 
     mstCostService.saveCostRegister(mstCostForm);

@@ -10,15 +10,12 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import com.seproject.buildmanager.form.MstFacilitiesManagementForm;
-import com.seproject.buildmanager.service.MstMatterService;
 import com.seproject.buildmanager.service.MstFacilitiesService;
 import jakarta.servlet.http.HttpServletRequest;
 
 @Controller
 @RequestMapping("facilities")
 public class FacilitiesController {
-  @Autowired
-  private MstMatterService mstCaseService;// サービスのインスタンス
 
   @Autowired
   private MstFacilitiesService mstFacilitiesService;
@@ -32,8 +29,8 @@ public class FacilitiesController {
     CsrfToken csrfToken = (CsrfToken) request.getAttribute(CsrfToken.class.getName());
     model.addAttribute("csrfToken", csrfToken.getToken());
     model.addAttribute("csrfHeaderName", csrfToken.getHeaderName());
-    model.addAttribute("facilitiesManagements",
-        mstFacilitiesService.viewFacilitiesManagementForm());
+    // model.addAttribute("facilitiesManagements",
+    // mstFacilitiesService.viewFacilitiesManagementForm());
 
 
     return "facilities/facilities";
@@ -46,7 +43,8 @@ public class FacilitiesController {
     model.addAttribute("csrfToken", csrfToken.getToken());
     model.addAttribute("csrfHeaderName", csrfToken.getHeaderName());
     model.addAttribute("facilitiesManagementForm",
-        this.mstFacilitiesService.getFaciliriesManagementByCaseId(id));
+        this.mstFacilitiesService.getFacilitieManagementByMatterIdFromForm(id));
+    model.addAttribute("searchForms", this.mstFacilitiesService.showFacilitiesForm());
 
     return "facilities/facilitiesList";
   }
@@ -61,6 +59,6 @@ public class FacilitiesController {
     CsrfToken csrfToken = (CsrfToken) request.getAttribute(CsrfToken.class.getName());
     model.addAttribute("csrfToken", csrfToken.getToken());
     model.addAttribute("csrfHeaderName", csrfToken.getHeaderName());
-    return "facilities/facilitiesList";
+    return "redirect:/case";
   }
 }

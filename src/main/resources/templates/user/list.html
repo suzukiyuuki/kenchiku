@@ -144,7 +144,7 @@
                         <tbody id="tbody">
                           <th:block th:each="user : ${users}">
                             <tr>
-                              <td><a th:href="@{/user/update(id=${user.id})}" class="btn btn-primary">変更</a></td>
+                              <td><a th:href="@{/user/update(id=${user.id})}" class="btn btn-primary">修正</a></td>
                               <td>
                                 <div class="form-group mb-0">
                                   <th:block th:if="${user.status} eq ${statusTrue}">
@@ -185,6 +185,10 @@
   </div>
 
   <div class="insert" th:insert="~{common/update_end :: update_end}"></div>
+  
+  <!-- modal --> 
+       <div class="insert" th:replace="common/modal_window :: modal_window(confirmModal, ステータスを変更しますか？)"></div>
+
 
   <!-- General JS Scripts -->
   <script src="https://cdn.jsdelivr.net/npm/jquery@3.6.0/dist/jquery.min.js"></script>
@@ -210,6 +214,7 @@
 
 
   <!-- Page Specific JS File -->
+  <script th:src="@{/js/common/switchStatus.js}"></script>
   <script th:src="@{/assets/js/page/modules-datatables.js}"></script>
   <!-- Template JS File -->
   <script th:src="@{/assets/js/scripts.js}"></script>

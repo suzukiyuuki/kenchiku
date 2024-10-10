@@ -4,7 +4,6 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -21,6 +20,7 @@ import com.seproject.buildmanager.service.MstConstructionClassificationManagemen
 import com.seproject.buildmanager.service.MstConstructionService;
 import com.seproject.buildmanager.service.MstEstimateItemService;
 import com.seproject.buildmanager.service.MstEstimateManagementService;
+import com.seproject.buildmanager.service.MstMatterService;
 
 @RestController
 @RequestMapping("/api/estimate")
@@ -32,16 +32,22 @@ public class EstimateManagementApiController {
 
   private final MstConstructionService mstConstructionService;
 
+  private final MstMatterService mstMatterService;
+
   private final MstConstructionClassificationManagementService costClassificationService;
 
-  @Autowired
+
+
   public EstimateManagementApiController(MstEstimateManagementService estimateManagementService,
       MstEstimateItemService mstEstimateItemService, MstConstructionService mstConstructionService,
-      MstConstructionClassificationManagementService costClassificationService) {
+      MstConstructionClassificationManagementService costClassificationService,
+      MstMatterService mstMatterService) {
     this.estimateManagementService = estimateManagementService;
     this.mstEstimateItemService = mstEstimateItemService;
     this.mstConstructionService = mstConstructionService;
     this.costClassificationService = costClassificationService;
+    this.mstMatterService = mstMatterService;
+
   }
 
   // 見積もりアイテム一覧を取得するAPI
@@ -124,6 +130,7 @@ public class EstimateManagementApiController {
       item.setEstimateId(estimate);
       mstEstimateItemService.save(item);
     }
+    this.mstMatterService.save(Integer.parseInt(values[values.length - 1][0]), "見積候補あり");
     return new ResponseEntity<>("おーるぐりーん", HttpStatus.OK);
   }
 }

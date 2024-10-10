@@ -3,6 +3,8 @@ package com.seproject.buildmanager.controller;
 import java.io.IOException;
 import java.util.List;
 import java.util.UUID;
+import jakarta.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpSession;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
@@ -25,8 +27,6 @@ import com.seproject.buildmanager.form.MstCustomerForm;
 import com.seproject.buildmanager.service.MstCodeService;
 import com.seproject.buildmanager.service.MstCustomerService;
 import com.seproject.buildmanager.validation.ValidationGroups;
-import jakarta.servlet.http.HttpServletRequest;
-import jakarta.servlet.http.HttpSession;
 
 
 @Controller
@@ -133,10 +133,29 @@ public class CustomerController {
   // 保存
   @PostMapping("save")
   @TransactionTokenCheck("save")
-  public String saveCustomer(@ModelAttribute("mstCustomerForm") MstCustomerForm mstCustomerForm) {
+  public String saveCustomer(@ModelAttribute("mstCustomerForm") MstCustomerForm mstCustomerForm,
+      @RequestParam("btn") String btnValue, HttpSession session, Model model) {
 
     logger.info("--- CustomerController.saveCustomer START ---");
-    // mstCustomerForm.setId(null);
+    
+    if("btn1".equals(btnValue)) {
+      List<MstCustomer> customer = mstCustomerService.getAllCustomers();
+      model.addAttribute("customer", customer);
+      String transactionToken = UUID.randomUUID().toString();
+      session.setAttribute("transactionToken", transactionToken);
+      model.addAttribute("transactionToken", transactionToken);
+
+
+      // 都道府県のリスト
+      model.addAttribute("prefectures", mstCodeService.getCodeByKind(PREFECTURES));
+      // 法人か個人か
+      model.addAttribute("individual", mstCodeService.getCodeByKind(INDIVIDUAL_CORPORATE));
+      
+      model.addAttribute("mstCustomer", mstCustomerForm);
+      
+      return "customer/kokyaku_register";
+
+    }
     mstCustomerService.saveCustomer(mstCustomerForm);
 
     logger.info("--- CustomerController.saveCustomer END ---");
@@ -185,10 +204,10 @@ public class CustomerController {
       model.addAttribute("individual", mstCodeService.getCodeByKind(INDIVIDUAL_CORPORATE));
 
 
-      String transactionToken = (String) session.getAttribute("transactionToken");
-
-
+      String transactionToken = UUID.randomUUID().toString();
+      session.setAttribute("transactionToken", transactionToken);
       model.addAttribute("transactionToken", transactionToken);
+
       return "customer/kokyaku_update";
     }
 
@@ -202,9 +221,24 @@ public class CustomerController {
   @PostMapping("save-update")
   @TransactionTokenCheck("saveUpdate")
   public String saveCustomerUpdate(
-      @ModelAttribute("mstCustomerForm") MstCustomerForm mstCustomerForm) {// DBに登録
+      @ModelAttribute("mstCustomerForm") MstCustomerForm mstCustomerForm,
+      @RequestParam("btn") String bntValue,HttpSession session,Model model) {// DBに登録
 
     logger.info("--- CustomerController.saveCustomer START ---");
+    
+    if("btn1".equals(bntValue)) {
+      model.addAttribute("prefectures", mstCodeService.getCodeByKind(PREFECTURES));
+      model.addAttribute("individual", mstCodeService.getCodeByKind(INDIVIDUAL_CORPORATE));
+
+      String transactionToken = UUID.randomUUID().toString();
+      model.addAttribute("transactionToken", transactionToken);
+      session.setAttribute("transactionToken", transactionToken);
+      
+      
+      model.addAttribute("mstCustomer",mstCustomerForm);
+      return "customer/kokyaku_update";
+
+    }
 
     mstCustomerService.saveCustomer(mstCustomerForm);
 

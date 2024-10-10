@@ -60,7 +60,7 @@ public class MstCustomerForm {
       message = "カナ文字で入力してください")
   private String fNameKana;
 
-  @Pattern(regexp = "^\\d{3}-\\d{4}$",
+  @Pattern(regexp = "^\\d{3}\\d{4}$",
       groups = {ValidationGroups.Registration.class, ValidationGroups.Update.class},
       message = "正しい郵便番号を表示してください")
   private String zip;
@@ -73,13 +73,14 @@ public class MstCustomerForm {
 
   private String address2;
 
-  @Pattern(regexp = "^[0-9-]+$",
+  @Pattern(
+      regexp = "\\A0(\\d{1}[(]?\\d{4}|\\d{2}[(]?\\d{3}|\\d{3}[(]?\\d{2}|\\d{4}[(]?\\d{1})[)]?\\d{4}\\z|\\A0[5789]0\\d{4}\\d{4}\\z|",
       groups = {ValidationGroups.Registration.class, ValidationGroups.Update.class},
       message = "正しい電話番号を入力してください")
 
   private String tel;
 
-  @Pattern(regexp = "^[0-9-]*$",
+  @Pattern(regexp = "\\A0[5789]0\\d{4}\\d{4}\\z|",
       groups = {ValidationGroups.Registration.class, ValidationGroups.Update.class},
       message = "正しい電話番号を入力してください")
   private String mobile;

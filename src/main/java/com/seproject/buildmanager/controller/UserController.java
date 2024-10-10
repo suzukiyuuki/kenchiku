@@ -147,9 +147,20 @@ public class UserController {
    */
   @PostMapping("save")
   @TransactionTokenCheck("save")
-  public String saveUser(@ModelAttribute("mstUserForm") MstUserForm mstUserForm) {
+  public String saveUser(@ModelAttribute("mstUserForm") MstUserForm mstUserForm,
+      @RequestParam("btn") String btnValue, HttpSession session, Model model) {
     logger.info("--- UserController.saveUser START ---");
 
+    if ("btn1".equals(btnValue)) {
+
+      String transactionToken = UUID.randomUUID().toString();
+      session.setAttribute("transactionToken", transactionToken);
+      model.addAttribute("transactionToken", transactionToken);
+      model.addAttribute("mstAuths", this.mstAuthService.getAllActiveAuth());
+      model.addAttribute("mstUser", mstUserForm);
+      return "user/update";
+
+    }
     this.mstUserService.saveUser(mstUserForm);
 
     logger.info("--- UserController.saveUser END ---");

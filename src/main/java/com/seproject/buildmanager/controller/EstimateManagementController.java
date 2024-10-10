@@ -18,8 +18,8 @@ import org.springframework.web.bind.annotation.RequestParam;
 import com.seproject.buildmanager.common.Constants;
 import com.seproject.buildmanager.common.MstCodeEnums;
 import com.seproject.buildmanager.entity.MstEstimateItem;
+import com.seproject.buildmanager.entity.MstEstimateManagement;
 import com.seproject.buildmanager.entity.MstMatter;
-import com.seproject.buildmanager.entity.MstUser;
 import com.seproject.buildmanager.service.CommonService;
 import com.seproject.buildmanager.service.MstCodeService;
 import com.seproject.buildmanager.service.MstEstimateItemService;
@@ -90,8 +90,8 @@ public class EstimateManagementController {
   }
 
   @GetMapping("/request")
-
-  public String quotation_approval(@RequestParam(value = "id") String matterId, HttpSession session,
+  public String quotation_approval(@RequestParam(value = "id") String matterId,
+      @RequestParam(value = "varsion", required = false) Integer varsion, HttpSession session,
       Model model, HttpServletRequest request) {
 
     MstMatter mstCase = mstMatterService.findDisplayById(Integer.parseInt(matterId));
@@ -102,51 +102,46 @@ public class EstimateManagementController {
     CsrfToken csrfToken = (CsrfToken) request.getAttribute(CsrfToken.class.getName());
     model.addAttribute("csrfToken", csrfToken.getToken());
     model.addAttribute("csrfHeaderName", csrfToken.getHeaderName());
-    model.addAttribute("matter", mstMatterService.findDisplay());
     model.addAttribute("statusTrue", Constants.STATUS_TRUE);
-    model.addAttribute("estimateItem", mstEstimateItemService.findAll());
-
     String transactionToken = UUID.randomUUID().toString();
     session.setAttribute("transactionToken", transactionToken);
     model.addAttribute("transactionToken", transactionToken);
 
     model.addAttribute("matterId", matterId);
+    model.addAttribute("varsion", varsion);
 
-    List<MstEstimateItem> estimateItems = mstEstimateItemService.findAll();
+
+    MstEstimateManagement estimateManagement = this.mstEstimateManagementService
+        .getEstimateByMatterIdAndVarsion(Integer.parseInt(matterId), varsion);
+
+    model.addAttribute("estimate", estimateManagement);
+    List<MstEstimateItem> estimateItems =
+        this.mstEstimateItemService.findAllByVerId(Integer.parseInt(matterId), varsion);
     model.addAttribute("estimateItems", estimateItems);
 
-    // logger.info("--- UserController.getAllUsers END ---");
-
-    csrfToken = (CsrfToken) request.getAttribute(CsrfToken.class.getName());
-    model.addAttribute("csrfToken", csrfToken.getToken());
-    // model.addAttribute("");
 
     return "estimateManagement/quotation_approval_request";
   }
 
 
   @PostMapping("/request")
-  public String quotationApproval(@RequestParam("email") String email, // 追加されたリクエストパラメータ
-      @RequestParam("loginCd") String loginCd, HttpSession session, Model model) {
+  public String quotationApproval(@RequestParam(value = "varsion") Integer varsion,
+      @RequestParam(value = "matterId") String matterId,
+      @RequestParam(value = "matterName") String matterName, Model model) {
 
-    // ログインユーザーの情報取得
-    MstUser mstUser = mstUserService.getUserById(commonService.getLoginUserId());
-
-    // ランダムなトークンを生成
-    String emailToken = UUID.randomUUID().toString();
-
-    // 承認依頼メールを送信
-    mstEstimateManagementService.sendSimpleMail(email, emailToken, loginCd);
+    this.mstEstimateManagementService.sendMail(matterName);
+    this.mstMatterService.save(Integer.parseInt(matterId), varsion, "見積承認待ち");
 
     // 見積もり承認リクエストページに遷移
-    return "estimateManagement/quotation_approval_request";
+    return "redirect:/estimate/detail?id=" + matterId;
   }
 
 
 
   @GetMapping("/cancel")
 
-  public String approval_request(@RequestParam(value = "id") String matterId, HttpSession session,
+  public String approval_request(@RequestParam(value = "id") String matterId,
+      @RequestParam(value = "varsion", required = false) Integer varsion, HttpSession session,
       Model model, HttpServletRequest request) {
 
     MstMatter mstCase = mstMatterService.findDisplayById(Integer.parseInt(matterId));
@@ -154,9 +149,38 @@ public class EstimateManagementController {
 
     CsrfToken csrfToken = (CsrfToken) request.getAttribute(CsrfToken.class.getName());
     model.addAttribute("csrfToken", csrfToken.getToken());
+    model.addAttribute("csrfHeaderName", csrfToken.getHeaderName());
+    model.addAttribute("statusTrue", Constants.STATUS_TRUE);
+    String transactionToken = UUID.randomUUID().toString();
+    session.setAttribute("transactionToken", transactionToken);
+    model.addAttribute("transactionToken", transactionToken);
+
+    model.addAttribute("matterId", matterId);
+    model.addAttribute("varsion", varsion);
+
     // model.addAttribute("");
 
+    MstEstimateManagement estimateManagement = this.mstEstimateManagementService
+        .getEstimateByMatterIdAndVarsion(Integer.parseInt(matterId), varsion);
+
+    model.addAttribute("estimate", estimateManagement);
+    List<MstEstimateItem> estimateItems =
+        this.mstEstimateItemService.findAllByVerId(Integer.parseInt(matterId), varsion);
+    model.addAttribute("estimateItems", estimateItems);
+
+
     return "estimateManagement/approval_request_cancel";
+  }
+
+  @PostMapping("/cancel")
+  public String approval_request(@RequestParam(value = "matterId") String matterId,
+      @RequestParam(value = "matterName") String matterName, Model model) {
+
+    this.mstEstimateManagementService.sendMail(matterName);
+    this.mstMatterService.save(Integer.parseInt(matterId), "見積候補あり");
+
+    // 見積もり承認リクエストページに遷移
+    return "redirect:/estimate/detail?id=" + matterId;
   }
 
   @GetMapping("/detail")
@@ -170,6 +194,20 @@ public class EstimateManagementController {
       model.addAttribute("varsion",
           mstEstimateManagementService.newestVarsion(Integer.parseInt(matterId)));
     }
+    Integer var = 0;
+    if (varsion != null) {
+      var = varsion;
+    } else {
+      var = mstEstimateManagementService.newestVarsion(Integer.parseInt(matterId));
+    }
+    MstEstimateManagement estimate =
+        this.mstEstimateManagementService.getEstimateByMatterIdAndVarsion(varsion, var);
+    String memo = "";
+    if (estimate != null) {
+      memo = estimate.getMemo();
+    }
+    model.addAttribute("memo", memo);
+
     model.addAttribute("newestvarsion",
         mstEstimateManagementService.newestVarsion(Integer.parseInt(matterId)));
     MstMatter mstCase = mstMatterService.findDisplayById(Integer.parseInt(matterId));
@@ -192,6 +230,11 @@ public class EstimateManagementController {
 
     model.addAttribute("matterId", matterId);
 
+    model.addAttribute("url",
+        this.mstEstimateManagementService.detailSheetUrl(Integer.parseInt(matterId)));
+
+
+
     List<MstEstimateItem> estimateItems = mstEstimateItemService.findAll();
     model.addAttribute("estimateItems", estimateItems);
 
@@ -202,8 +245,9 @@ public class EstimateManagementController {
 
 
   @GetMapping("/consent")
-  public String consent(@RequestParam("id") String matterId, HttpSession session, Model model,
-      HttpServletRequest request) {
+  public String consent(@RequestParam("id") String matterId,
+      @RequestParam(value = "varsion", required = false) Integer varsion, HttpSession session,
+      Model model, HttpServletRequest request) {
 
     // logger.info("--- UserController.getAllUsers START ---");
 
@@ -215,7 +259,7 @@ public class EstimateManagementController {
     model.addAttribute("estimate",
         mstEstimateManagementService.getEstimateId(Integer.parseInt(matterId)));
     model.addAttribute("estimateItem",
-        mstEstimateItemService.findAllById(Integer.parseInt(matterId)));
+        mstEstimateItemService.findAllByVerId(Integer.parseInt(matterId), varsion));
     model.addAttribute("statusTrue", Constants.STATUS_TRUE);
 
     String transactionToken = UUID.randomUUID().toString();
@@ -244,6 +288,52 @@ public class EstimateManagementController {
   private String formatTime(LocalDateTime dateTime) {
     DateTimeFormatter formatter = DateTimeFormatter.ofPattern("HH:mm");
     return dateTime.format(formatter);
+  }
+
+  @GetMapping("/request-view")
+  public String requestView(@RequestParam("id") String matterId, HttpSession session, Model model,
+      HttpServletRequest request) {
+    CsrfToken csrfToken = (CsrfToken) request.getAttribute(CsrfToken.class.getName());
+    model.addAttribute("csrfToken", csrfToken.getToken());
+    model.addAttribute("csrfHeaderName", csrfToken.getHeaderName());
+    model.addAttribute("matter", mstMatterService.findDisplay());
+    model.addAttribute("statusTrue", Constants.STATUS_TRUE);
+    MstMatter mstCase = mstMatterService.findDisplayById(Integer.parseInt(matterId));
+    model.addAttribute("mstCaseForm", mstMatterService.updateCaseForm(mstCase));
+    model.addAttribute("matterId", matterId);
+    Integer varsion =
+        mstMatterService.getCaseById(Integer.parseInt(matterId)).getEstimatefinalversion();
+    model.addAttribute("varsion", varsion);
+    MstEstimateManagement estimateManagement = this.mstEstimateManagementService
+        .getEstimateByMatterIdAndVarsion(Integer.parseInt(matterId), varsion);
+
+    model.addAttribute("estimate", estimateManagement);
+    List<MstEstimateItem> estimateItems =
+        this.mstEstimateItemService.findAllByVerId(Integer.parseInt(matterId), varsion);
+    model.addAttribute("estimateItems", estimateItems);
+
+
+
+    String transactionToken = UUID.randomUUID().toString();
+    session.setAttribute("transactionToken", transactionToken);
+    model.addAttribute("transactionToken", transactionToken);
+    return "estimateManagement/requestView";
+  }
+
+  @PostMapping("/request-view")
+  public String requestView(@RequestParam(value = "matterId") String matterId,
+      @RequestParam(value = "matterName") String matterName, Model model) {
+    this.mstEstimateManagementService.sendMail(matterName);
+    this.mstMatterService.save(Integer.parseInt(matterId), "受注");
+    return "redirect:/estimate/request-view?id=" + matterId;
+  }
+
+  @PostMapping("/request-view_cancel")
+  public String requestViewCancel(@RequestParam(value = "matterId") String matterId,
+      @RequestParam(value = "matterName") String matterName, Model model) {
+    this.mstEstimateManagementService.sendMail(matterName);
+    this.mstMatterService.save(Integer.parseInt(matterId), "見積承認却下");
+    return "redirect:/estimate/request-view?id=" + matterId;
   }
 
 }

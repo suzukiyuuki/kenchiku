@@ -82,17 +82,37 @@ public class MstMatterForm {
 
   private String leavingStatus = "退去立ち合い"; // 種別が退去
 
+  private String vist = "未入力";
+
   private List<MstCode> situationStatusSelectList; // 状況ステータスに応じた選択肢
 
   @AssertTrue(message = "種別が退去立ち合いの場合は必須入力です", groups = ValidationGroups.Registration.class)
-  public boolean isTaskSubstanceCheck() {
+  public boolean isLeavingValid() {
+    if (taskSubstance == null || taskSubstance.isEmpty()) {
+      return true;
+    }
     if (taskSubstance.equals(leavingStatus)) {
-      if (scheduledVisitDatetime == null || visitId == null) {
+      if (scheduledVisitDatetime == null) {
         return false;
       }
     }
     return true;
   }
+
+  @AssertTrue(message = "種別が退去立ち合いの場合は必須入力です", groups = ValidationGroups.Registration.class)
+  public boolean isVisitValid() {
+    if (taskSubstance == null || taskSubstance.isEmpty()) {
+      return true;
+    }
+    if (taskSubstance.equals(leavingStatus)) {
+      if (visitId == null) {
+        return false;
+      }
+    }
+    return true;
+  }
+
+
 
   // 検索用
   private String visit;

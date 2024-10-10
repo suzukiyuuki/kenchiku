@@ -50,7 +50,7 @@
 
             <div class="row">
               <div class="col-12 col-lg-8">
-                <form th:action="@{/case/update}" th:object="${mstCase}" method="post">
+                <form th:action="@{/case/update}" class="h-adr"  th:object="${mstCase}" method="post">
                   <input type="hidden" name="transactionToken" th:value="${transactionToken}">
                   <input type="hidden" th:field="*{id}" th:value="*{id}">
 
@@ -75,13 +75,17 @@
                         <h6>
                           物件名<span class="badge badge badge-danger ml-1 mt-0">必須</span>
                         </h6>
-                        <input type="text" class="form-control w-75 float-left"
-                          th:field="*{propertyName}" th:classappend="${#fields.hasErrors('propertyName')} ? 'is-invalid'" id="aaaa" readonly data-val="locked"/> 
-                        <input type="hidden" th:field="*{propertyId}" id="floorid">
+                        <input type="text" id="propertyName" class="form-control w-75 float-left"
+                          th:field="*{propertyName}" th:classappend="${#fields.hasErrors('propertyName')} ? 'is-invalid'"  readonly data-val="locked"/> 
+                        <input type="hidden" th:field="*{propertyId}" id="propertyId">
                            <button type="button" id="find_button" class="btn btn-primary mt-1 ml-1" disabled>物件検索<span
                           class="glyphicon glyphicon-new-window" aria-hidden="true"></span></button>
                           <small class="invalid-feedback" th:if="${#fields.hasErrors('propertyName')}" th:errors="*{propertyName}"></small>
                       </div>
+                      <input type="hidden" th:field="*{propertyAddress}" id="propertyAddress">
+                      <input type="hidden" th:field="*{propertyBuildingName}" id="propertyBuildingName">
+                      
+                      
                       <div class="form-group">
                         <h6>
                           種別<span class="badge badge badge-danger ml-1 mt-0">必須</span>
@@ -122,12 +126,12 @@
                       <div class="form-group">
                         <h6>賃貸契約日</h6>
                         <input type="datetime-local" class="form-control" id="rentalContractDate" name="rentalContractDate"
-                          th:value="*{rentalContractDate}"readonly data-val="locked"/> <small
+                          th:value="*{rentalContractDate}" readonly data-val="locked"/> <small
                           class="form-text text-muted"> </small>
                       </div>
                       <div class="form-group">
                         <h6>賃貸契約終了日</h6>
-                        <input type="datetime-local" class="form-control"id="rentalContractEndDate" name="rentalContractEndDate"
+                        <input type="datetime-local" class="form-control" id="rentalContractEndDate" name="rentalContractEndDate"
                            th:value="*{rentalContractEndDate}" readonly data-val="locked"/> <small
                           class="form-text text-muted"> </small>
                       </div>
@@ -136,28 +140,28 @@
 
                       <div class="form-group w-50 float-left p-1">
                         <h6>
-                          入居者姓<span class="badge badge-danger ml-1 mt-0">必須</span>
+                          入居者姓
                         </h6>
                         <input type="text" class="form-control" th:field="*{mstTenantForm.lastName}"　th:classappend="${#fields.hasErrors('mstTenantForm.lastName')} ? 'is-invalid'" readonly data-val="locked"/>
                          <small class="invalid-feedback" th:if="${#fields.hasErrors('mstTenantForm.lastName')}" th:errors="*{mstTenantForm.lastName}"></small>
                       </div>
                       <div class="form-group p-1">
                         <h6>
-                          入居者名<span class="badge badge-danger ml-1 mt-0">必須</span>
+                          入居者名
                         </h6>
                         <input type="text" class="form-control w-50" th:field="*{mstTenantForm.firstName}"　th:classappend="${#fields.hasErrors('mstTenantForm.firstName')} ? 'is-invalid'" readonly data-val="locked"/>
                         <small class="invalid-feedback" th:if="${#fields.hasErrors('mstTenantForm.firstName')}" th:errors="*{mstTenantForm.firstName}"></small>
                       </div>
                       <div class="form-group w-50 float-left p-1">
                         <h6>
-                          入居者姓カナ<span class="badge badge-danger ml-1 mt-0">必須</span>
+                          入居者姓カナ
                         </h6>
                         <input type="text" class="form-control" th:field="*{mstTenantForm.lastNameKana}"　th:classappend="${#fields.hasErrors('mstTenantForm.lastNameKana')} ? 'is-invalid'" readonly data-val="locked"/>
                          <small class="invalid-feedback" th:if="${#fields.hasErrors('mstTenantForm.lastNameKana')}" th:errors="*{mstTenantForm.lastNameKana}"></small>
                       </div>
                       <div class="form-group p-1">
                         <h6>
-                          入居者名カナ<span class="badge badge-danger ml-1 mt-0">必須</span>
+                          入居者名カナ
                         </h6>
                         <input type="text" class="form-control w-50" th:field="*{mstTenantForm.firstNameKana}"　th:classappend="${#fields.hasErrors('mstTenantForm.firstNameKana')} ? 'is-invalid'"  readonly data-val="locked"/>
                         <small class="invalid-feedback" th:if="${#fields.hasErrors('mstTenantForm.firstNameKana')}" th:errors="*{mstTenantForm.firstNameKana}"></small>
@@ -170,16 +174,17 @@
                         </div>
 
                       <div class="form-group">
-                        <h6>転居先郵便番号</h6>
-                        <input type="text" class="form-control" th:field="*{mstTenantForm.postCode}" readonly data-val="locked"/> <small
-                          id="" class="form-text text-muted"> </small>
-                      </div>
+                        <h6>入居者転居先郵便番号</h6>
+                        <input type="text" class="form-control p-postal-code" th:field="*{mstTenantForm.postCode}" th:classappend="${#fields.hasErrors('mstTenantForm.postCode')} ? 'is-invalid'" readonly data-val="locked"/> <small
+                          id="" class="invalid-feedback" th:if="${#fields.hasErrors('mstTenantForm.postCode')}" th:errors="*{mstTenantForm.postCode}"> </small>
+						  <input type="hidden" class="p-country-name" value="Japan">
+						  </div>
 
                       <div class="form-group">
                         <h6>
-                          転居先都道府県<span class="badge badge badge-danger ml-1 mt-0">必須</span>
+                          入居者転居先都道府県
                         </h6>
-                        <select class="form-control w-50" th:field="*{mstTenantForm.prefectures}" readonly data-val="locked">
+                        <select class="form-control w-50 p-region" th:field="*{mstTenantForm.prefectures}" readonly data-val="locked">
                           <th:block th:each="pref : ${prefectures}">
                             <option th:value="${pref.codeName}"><span
                                 th:text="${pref.codeName}"></span></option>
@@ -188,13 +193,13 @@
                       </div>
 
                       <div class="form-group">
-                        <h6>転居先住所</h6>
-                        <input type="text" class="form-control" th:field="*{mstTenantForm.address}" readonly data-val="locked"/>
+                        <h6>入居者転居先住所</h6>
+                        <input type="text" class="form-control p-locality p-street-address p-extended-address" th:field="*{mstTenantForm.address}" readonly data-val="locked"/>
                         <small id="" class="form-text text-muted"> </small>
                       </div>
 
                       <div class="form-group">
-                        <h6>転居先建物名</h6>
+                        <h6>入居者転居先建物名</h6>
                         <input type="text" class="form-control" th:field="*{mstTenantForm.buildingName}" readonly data-val="locked"/>
                         <small id="" class="form-text text-muted"> </small>
                       </div>
@@ -226,8 +231,7 @@
                       </div>
                       <div class="form-group">
                         <h6>シリンダー番号</h6>
-                        <input type="text" class="form-control" th:field="*{mstTenantForm.cylinderNumber}" readonly data-val="locked"/> <small
-                          id="" class="form-text text-muted"> </small>
+                        <input type="text" class="form-control" th:field="*{mstTenantForm.cylinderNumber}" readonly data-val="locked"/> <small class="invalid-feedback" th:if="${#fields.hasErrors('mstTenantForm.firstNameKana')}" th:errors="*{mstTenantForm.firstNameKana}"></small>
                       </div>
                       <div class="form-group">
                         <h6>備考</h6>
@@ -235,11 +239,8 @@
                         <small id="" class="form-text text-muted"> </small>
                       </div>
                       
-                      
-                      
-                    
-                      
-                      
+                      <input type="hidden" th:field="*{situationStatus}">
+                      <input type="hidden" th:field="*{registrationDatetime}">
                       
                     </div>
                   </div>
@@ -288,9 +289,9 @@
                               <span th:text="${floor.floorName}" id="floorName"></span>
                             </td>
                             <td>
-                              <span th:text="${floor.postCode}"></span><br />
-                              <span th:text="${floor.address}"></span><br />
-                              <span th:text="${floor.buildingName}"></span>
+                              <span th:text="${floor.postCode}" ></span><br />
+                              <span th:text="${floor.address}" id="address"></span><br />
+                              <span th:text="${floor.buildingName}" id="buildingName"></span>
                             </td>
                           </tr>
                         </th:block>
@@ -314,6 +315,7 @@
   <script src="../../assets/js/stisla.js"></script>
 
   <!-- JS Libraies -->
+  <script src="https://yubinbango.github.io/yubinbango/yubinbango.js" charset="UTF-8"></script>
 
   <!-- Template JS File -->
   <script src="../../assets/js/scripts.js"></script>

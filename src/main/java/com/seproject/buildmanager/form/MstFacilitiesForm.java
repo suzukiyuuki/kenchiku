@@ -1,6 +1,7 @@
 package com.seproject.buildmanager.form;
 
 import java.util.List;
+import com.seproject.buildmanager.entity.MstFacilitiesTitle;
 import lombok.Data;
 
 @Data
@@ -9,7 +10,7 @@ public class MstFacilitiesForm {
 
   private Integer status;
 
-  private List<MstFacilitiesDetailForm> mstFacilitiesDetailForms;
+  private MstFacilitiesTitle title;
 
-  private String name;
+  private List<MstFacilitiesSubcategoryForm> mstFacilitiesSubcategoryForms;
 }

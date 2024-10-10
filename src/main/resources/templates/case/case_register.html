@@ -46,7 +46,7 @@
 
             <div class="row">
               <div class="col-12 col-lg-8">
-                <form th:action="@{/case/register}" th:object="${mstCase}" method="post" novalidate>
+                <form th:action="@{/case/register}" class="h-adr" th:object="${mstCase}" method="post" novalidate>
                   <input type="hidden" name="transactionToken" th:value="${transactionToken}">
 
                   <div class="card">
@@ -105,32 +105,33 @@
                       <div class="form-group">
                         <h6>訪問予定日時</h6>
                         <input type="datetime-local" class="form-control"
-                          th:field="*{scheduledVisitDatetime}" th:classappend="${#fields.hasErrors('scheduledVisitDatetime') || #fields.hasErrors('taskSubstance')} ? 'is-invalid'" /> 
-                          <small class="invalid-feedback" th:if="${#fields.hasErrors('taskSubstance')}" th:errors="*{taskSubstance}"></small>
+                          th:value="*{scheduledVisitDatetime}" id="scheduledVisitDatetime" name="scheduledVisitDatetime"  th:classappend="${#fields.hasErrors('scheduledVisitDatetime') || #fields.hasErrors('leavingValid')} ? 'is-invalid'" /> 
+                          <small class="invalid-feedback" th:if="${#fields.hasErrors('leavingValid')}" th:errors="*{leavingValid}"></small>
                       </div>
 
                       <div class="form-group">
                         <h6>訪問担当者</h6>
-                        <select class="form-control w-50" th:field="*{visitId}">
+                        <select class="form-control w-50" th:field="*{visitId}" th:classappend="${#fields.hasErrors('visitValid')} ? 'is-invalid'">
                           <option value=""><span>未選択</span></option>
                           <th:block th:each="visit : ${visitUser}">
                             <option th:value="${visit.id}"><span
                                 th:text="${visit.lName} + ${visit.fName}"></span></option>
                           </th:block>
                         </select> <small id="" class="form-text text-muted"> </small>
+                        <small class="invalid-feedback" th:if="${#fields.hasErrors('visitValid')}" th:errors="*{visitValid}"></small>
                       </div>
 
                     
                       <div class="form-group">
                         <h6>賃貸契約日</h6>
-                        <input type="datetime-local" class="form-control"
-                          th:field="*{rentalContractDate}" /> <small id=""
+                        <input type="datetime-local" class="form-control" id="rentalContractDate" name="rentalContractDate"
+                          th:value="*{rentalContractDate}" /> <small id=""
                           class="form-text text-muted"> </small>
                       </div>
                       <div class="form-group">
                         <h6>賃貸契約終了日</h6>
-                        <input type="datetime-local" class="form-control"
-                          th:field="*{rentalContractEndDate}" /> <small id=""
+                        <input type="datetime-local" class="form-control" id="rentalContractEndDate" name="rentalContractEndDate"
+                          th:value="*{rentalContractEndDate}" /> <small id=""
                           class="form-text text-muted"> </small>
                       </div>
 
@@ -163,25 +164,6 @@
                         <small class="invalid-feedback" th:if="${#fields.hasErrors('mstTenantForm.firstNameKana')}" th:errors="*{mstTenantForm.firstNameKana}"></small>
                       </div>
                       
-                      
-                     
-                      
-                      <div class="form-group p-1">
-                        <h6>
-                          入居者市外局番
-                        </h6>
-                        <input type="text" class="form-control w-50" th:field="*{mstTenantForm.areaCode}"　th:classappend="${#fields.hasErrors('mstTenantForm.areaCode')} ? 'is-invalid'"  />
-                        <small class="invalid-feedback" th:if="${#fields.hasErrors('mstTenantForm.areaCode')}" th:errors="*{mstTenantForm.areaCode}"></small>
-                      </div>
-                      
-                      <div class="form-group p-1">
-                        <h6>
-                          入居者市内局番
-                        </h6>
-                        <input type="text" class="form-control w-50" th:field="*{mstTenantForm.cityCode}"　th:classappend="${#fields.hasErrors('mstTenantForm.cityCode')} ? 'is-invalid'"  />
-                        <small class="invalid-feedback" th:if="${#fields.hasErrors('mstTenantForm.cityCode')}" th:errors="*{mstTenantForm.cityCode}"></small>
-                      </div>
-                      
                       <div class="form-group p-1">
                         <h6>
                           入居者電話番号
@@ -192,15 +174,16 @@
 
                       <div class="form-group">
                         <h6>入居者転居先郵便番号</h6>
-                        <input type="text" class="form-control" th:field="*{mstTenantForm.postCode}" th:classappend="${#fields.hasErrors('mstTenantForm.postCode')} ? 'is-invalid'"  /> <small
+                        <input type="text" class="form-control p-postal-code" th:field="*{mstTenantForm.postCode}" th:classappend="${#fields.hasErrors('mstTenantForm.postCode')} ? 'is-invalid'"  /> <small
                           id="" class="invalid-feedback" th:if="${#fields.hasErrors('mstTenantForm.postCode')}" th:errors="*{mstTenantForm.postCode}"> </small>
-                      </div>
+						  <input type="hidden" class="p-country-name" value="Japan">
+						  </div>
 
                       <div class="form-group">
                         <h6>
                           入居者転居先都道府県
                         </h6>
-                        <select class="form-control w-50" th:field="*{mstTenantForm.prefectures}">
+                        <select class="form-control w-50 p-region" th:field="*{mstTenantForm.prefectures}">
                           <option value=""><span>未選択</span></option>
                           <th:block th:each="pref : ${prefectures}">
                             <option th:value="${pref.codeName}"><span
@@ -211,7 +194,7 @@
 
                       <div class="form-group">
                         <h6>入居者転居先住所</h6>
-                        <input type="text" class="form-control" th:field="*{mstTenantForm.address}" />
+                        <input type="text" class="form-control p-locality p-street-address p-extended-address" th:field="*{mstTenantForm.address}" />
                         <small id="" class="form-text text-muted"> </small>
                       </div>
 
@@ -348,6 +331,7 @@
   <!-- JS Libraies -->
   <script th:src="@{/js/case/case_find.js}"></script>
   <script th:src="@{/js/case/case_back.js}"></script>
+  <script src="https://yubinbango.github.io/yubinbango/yubinbango.js" charset="UTF-8"></script>
   <!-- Template JS File -->
   <script src="../../assets/js/scripts.js"></script>
   <script src="../../assets/js/custom.js"></script>

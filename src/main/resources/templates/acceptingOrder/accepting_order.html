@@ -48,85 +48,8 @@
           <div class="section-header">
             <h1>受注管理</h1>
           </div>
-          <!-- 検索フォームの追加 -->
-          <div class="dropdown">
-            <button class="btn btn-primary dropdown-toggle" type="button" id="ownerSearchButton"
-              data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">受注管理</button>
-            <div class="dropdown-menu w-100 p-4 rounded border border-dark"
-              aria-labelledby="ownerSearchButton">
-              <form th:action="@{/accepting-order/search}" th:object="${search}" method="get">
-                <div class="form-row">
-                  <div class="form-group col-md-2">
-                    <label for="prefecture">状況ステータス</label> <select class="form-control"
-                      th:field="*{situationStatus}">
-                      <option value=""></option>
-                      <th:block th:each="situation : ${situations}">
-                        <option th:value="${situation.codeName}"><span
-                            th:text="${situation.codeName}"></span>
-                        </option>
-                      </th:block>
-                    </select>
-                  </div>
-                  <div class="form-group col-md-2">
-                    <label for="prefecture">種別</label> <select class="form-control"
-                      th:field="*{taskSubstance}">
-                      <option value=""></option>
-                      <th:block th:each="caseKind : ${caseKind}">
-                        <option th:value="${caseKind.codeName}"><span
-                            th:text="${caseKind.codeName}"></span>
-                        </option>
-                      </th:block>
-                    </select>
-                  </div>
-                  <div class="form-group col-md-2">
-                    <label for="dateFrom">訪問日</label> <input type="date" class="form-control"
-                      th:field="*{visit}" id="dateFrom">
-                  </div>
-                  <div class="form-group col-md-2">
-                    <label for="email">案件名</label> <input type="text" class="form-control"
-                      th:field="*{matterName}" id="email">
-                  </div>
-                  <div class="form-group col-md-2">
-                    <label for="customerName">顧客名</label> <input type="text" class="form-control"
-                      th:field="*{customerName}" id="customerName">
-                  </div>
-                  <div class="form-group col-md-2">
-                    <label for="customerName">物件名</label> <input type="text" class="form-control"
-                      th:field="*{propertyName}" id="customerName">
-                  </div>
-                  <div class="form-group col-md-2">
-                    <label for="customerName">物件住所</label> <input type="text" class="form-control"
-                      th:field="*{propertyAddress}" id="customerName">
-                  </div>
-                  <div class="form-group col-md-2">
-                    <label for="customerName">建物名</label> <input type="text" class="form-control"
-                      th:field="*{propertyBuildingName}" id="customerName">
-                  </div>
-                  <div class="form-group col-md-2">
-                    <label for="ownerType">設備一覧</label> <select id="facility" class="form-control"
-                      th:field="*{facility}">
-                      <option value=""></option>
-                      <option value="有">有</option>
-                      <option value="無">無</option>
-                    </select>
-                  </div>
-                  <div class="form-group col-md-2">
-                    <label for="dateFrom">登録日</label> <input type="date" class="form-control"
-                      th:field="*{createdAt1}" id="dateFrom">
-                  </div>
-                  <div class="form-group col-md-2">
-                    <label for="updateDate">更新日</label> <input type="date" class="form-control"
-                      th:field="*{updatedAt1}" id="updateDate">
-                  </div>
-                  <div class="form-group col-md-2 align-self-end">
-                    <button type="submit" class="btn btn-primary">検索</button>
-                    <button type="reset" class="btn btn-secondary">リセット</button>
-                  </div>
-                </div>
-              </form>
-            </div>
-          </div>
-          <!-- 検索フォームの追加終了 -->
+
+
 
           <div class="section-body">
             <!-- <h2 class="section-title">DataTables</h2>
